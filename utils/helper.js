@@ -1,8 +1,8 @@
 var axi = require("axios");
 var S = require('string');
-exports.convert = function(result)
+const convert = (result) =>
 {
-	var json = {usn : result[0], Name: result[1], Semester: result[2]};
+  var json = {usn : result[0], Name: result[1], Semester: result[2]};
   var i=3;j=1;
   var subdetails={};
   while(!(S(result[i]).contains('Total Marks')))
@@ -19,7 +19,7 @@ exports.convert = function(result)
   return json;
 }
 
-	exports.processstring = function(str)
+const processstring = (str) =>
   {
   	var sub="<div class=\"panel-heading text-center\">";
   	var strt=str.indexOf("<span class=\"glyphicon glyphicon-globe\"></span>");
@@ -39,3 +39,5 @@ exports.convert = function(result)
   	}
   	var student = convert(result);
 }
+exports.processstring=processstring;
+exports.convert=convert;
