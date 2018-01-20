@@ -2,7 +2,7 @@ var http = require('http');
 var axi = require("axios");
 var qs = require('qs');
 var S = require('string');
-var vtu = require('./utils/utility.js')
+var vtu = require('./utils/helper.js')
 
 //http.createServer(function (req, res) {
 axi.post('http://results.vtu.ac.in/results17/result_page.php', qs.stringify({ usn: '1ox14cs068' }))

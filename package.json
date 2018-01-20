@@ -1,4 +1,18 @@
 {
+  "name": "auto-result-analyzer-and-faculty-feedback-sys",
+  "version": "0.1.0",
+  "description": "Backend scraper ",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahuljain5/auto-result-analyzer-and-faculty-feedback-sys.git",
   "dependencies": {
     "async-process": "0.0.1",
     "axios": "^0.17.1",
