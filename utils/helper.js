@@ -1,6 +1,6 @@
 var axi = require("axios");
 var S = require('string');
-const convert = (result) =>
+const tojson = (result) =>
 {
   var json = {usn : result[0], Name: result[1], Semester: result[2]};
   var i=3;j=1;
@@ -19,7 +19,7 @@ const convert = (result) =>
   return json;
 }
 
-const processstring = (str) =>
+const parse_html = (str) =>
   {
   	var sub="<div class=\"panel-heading text-center\">";
   	var strt=str.indexOf("<span class=\"glyphicon glyphicon-globe\"></span>");
@@ -37,7 +37,7 @@ const processstring = (str) =>
   		nameusn[i] = S(nameusn[i]).collapseWhitespace().stripPunctuation();
   		if(!nameusn[i].isEmpty() && ! arr.includes(nameusn[i].s)) {result[j++]=nameusn[i].s;}
   	}
-  	var student = convert(result);
+  	var student = tojson(result);
 }
-exports.processstring=processstring;
-exports.convert=convert;
+exports.parse_html=parse_html;
+exports.tojson=tojson;
