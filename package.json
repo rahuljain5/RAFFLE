@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "async-process": "0.0.1",
+    "axios": "^0.17.1",
+    "express": "^4.16.2",
+    "express-validator": "^4.3.0",
+    "fs": "0.0.1-security",
+    "http": "latest",
+    "qs": "latest",
+    "string": "^3.3.3"
+  }
+}
