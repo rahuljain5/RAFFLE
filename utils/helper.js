@@ -1,6 +1,5 @@
 var axi = require("axios");
 var S = require('string');
-var deep_copy = require('deep-copy')
 const tojson = (result, num_of_tables) =>
 {
   var backlog = {}
