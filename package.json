@@ -12,10 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rahuljain5/auto-result-analyzer-and-faculty-feedback-sys.git",
+    "url": "git+https://github.com/rahuljain5/auto-result-analyzer-and-faculty-feedback-sys.git"
+  },
   "dependencies": {
     "async-process": "0.0.1",
     "axios": "^0.17.1",
+    "deep-copy": "^1.4.2",
+    "deepcopy": "^0.6.3",
     "express": "^4.16.2",
     "express-validator": "^4.3.0",
     "fs": "0.0.1-security",

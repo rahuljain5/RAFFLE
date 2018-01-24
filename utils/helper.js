@@ -1,21 +1,50 @@
 var axi = require("axios");
 var S = require('string');
-const tojson = (result) =>
+var deep_copy = require('deep-copy')
+const tojson = (result, num_of_tables) =>
 {
-  var json = {usn : result[0], Name: result[1], Semester: result[2]};
-  var i=3;j=1;
-  var subdetails={};
-  while(!(S(result[i]).contains('Total Marks')))
+  var backlog = {}
+  var array = ['Current_results', 'Backlog_results'];
+  var json = { 'student_details' :{usn : result[0], Name: result[1], Semester: result[2]}};
+  num_of_tables--;
+  var key=0, back_sem;
+  var i=3;
+  while(num_of_tables > 0)
   {
-    subject = {SubCode: result[i], SubName: result[i+1], Internal: result[i+2], External: result[i+3],SubTotal: result[i+4], SubRes: result[i+5]};
-    subdetails['Sub' + j] = subject;
-    i=i+6;
-    j++;
+      j=1;
+      var subdetails={};
+      if(key == 1)
+      {
+          back_sem = result[i++];
+      }
+      while(!(S(result[i]).contains('Total Marks')))
+      {
+          subject = {SubCode: result[i], SubName: result[i+1], Internal: result[i+2], External: result[i+3],SubTotal: result[i+4], SubRes: result[i+5]};
+          subdetails["Subject" + j] = subject;
+          i = i + 6;
+          j++;
+      }
+      num_of_tables-=2;
+      if(key==0)
+      {
+          json[array[key] ] = subdetails;
+          json[result[i]] = result[++i];
+          json['Result'] = result[++i];
+      }
+      else
+      {
+          subdetails[result[i]] = result[++i];
+          subdetails['Result'] = result[++i];
+          backlog[back_sem ] = subdetails;
+
+      }
+      if(num_of_tables>0)
+      {
+        key=1;
+      }
+      i++;
   }
-  json['Subject_results'] = subdetails;
-  json[result[i]] = result[++i];
-  json['result'] = result[++i];
-  console.log(json);
+  if(key == 1) json['Backlog_results'] = backlog;
   return json;
 }
 
@@ -27,7 +56,7 @@ const parse_html = (str) =>
     end-=strt;
     sub=str.substr(strt,end);
   	sub+="</div></div></div>";
-  	var num= S(sub).count("<table");
+  	var num_of_tables= S(sub).count("<table");
   	var nameusn = S(sub).stripTags();
   	nameusn = nameusn.lines();
   	var result = S();
@@ -37,7 +66,9 @@ const parse_html = (str) =>
   		nameusn[i] = S(nameusn[i]).collapseWhitespace().stripPunctuation();
   		if(!nameusn[i].isEmpty() && ! arr.includes(nameusn[i].s)) {result[j++]=nameusn[i].s;}
   	}
-  	var student = tojson(result);
+    if(num_of_tables!=0)
+        var student = tojson(result, num_of_tables);
+    console.log(JSON.stringify(student));
 }
 exports.parse_html=parse_html;
 exports.tojson=tojson;
