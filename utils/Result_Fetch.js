@@ -6,6 +6,7 @@ var jsdom = require('jsdom');
 var asyncProcess = require('async-process');
 var padder = require('zpad');
 var vtu = require('./helper.js')
+var conf = require('../config/config.js');
 const {JSDOM} = jsdom;
 const scrape = (base_usn) => {
     var usn = [];
@@ -14,7 +15,7 @@ const scrape = (base_usn) => {
         usn[i - 1] = base_usn + i;
     }
     var scraper = function (rusn, cb) {
-        axi.post('http://results.vtu.ac.in/vitaviresultcbcs/resultpage.php', qs.stringify({ lns: rusn }))
+        axi.post(conf.result_url, qs.stringify({ lns: rusn }))
             .then(function (response) {
 
                 var str = S(response.data);
