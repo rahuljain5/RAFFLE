@@ -21,6 +21,7 @@
     "express-validator": "^4.3.0",
     "fs": "0.0.1-security",
     "http": "latest",
+    "jsdom": "^11.6.2",
     "qs": "latest",
     "string": "^3.3.3",
     "zpad": "^0.5.0"
