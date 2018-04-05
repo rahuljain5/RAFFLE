@@ -1,6 +1,6 @@
 var axi = require("axios");
 var S = require('string');
-var csvReader = require('csvreader');
+
 
 const ResultJsonParser = (tables, sems) => {
     var Results = {};
@@ -48,25 +48,8 @@ const UsnGenerator = (base_usn) =>
 }
 return usn;
 }
-const UsnFromCsv = (__filename) =>
-{
-    function recordHandler(data){
-        arr.push(data[0]);
-      
-    }
-    csvReader
-      .read("File1.csv", recordHandler)
-      .then(() => {
-        console.log('Done!');
-        console.log(arr);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-}
 
 exports.ResultJsonParser = ResultJsonParser;
 exports.getNameUsn = getNameUsn;
 exports.getSemesters = getSemesters;
 exports.UsnGenerator = Usn.UsnGenerator;
-exports.UsnFromCsv = UsnFromCsv;
