@@ -10,11 +10,7 @@ var conf = require('../config/config.js');
 const {JSDOM} = jsdom;
 //Function that scrapes results from VTU 
 const scrape = (base_usn) => {
-    var usn = [];
-    for (var i = 1; i < 120; i++) {
-        i = padder(i, 3);
-        usn[i - 1] = base_usn + i;
-    }
+    var usn = UsnGenerator(base_usn);
     //Function that will be called Asynchronously
     var scraper = function (rusn, cb) {
         //Send Request to VTU with string USN as POST 
