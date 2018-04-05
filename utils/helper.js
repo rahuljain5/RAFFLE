@@ -37,6 +37,34 @@ const getSemesters = (tables, str) => {
     }
     return sems;
 }
+const UsnGenerator = (base_usn) =>
+{
+    var usn = [];
+    for (var i = 1; i < 120; i++) {
+        i = padder(i, 3);
+    usn[i - 1] = base_usn + i;
+}
+return usn;
+}
+const UsnFromCsv = (__filename) =>
+{
+    function recordHandler(data){
+        arr.push(data[0]);
+      
+    }
+    csvReader
+      .read("File1.csv", recordHandler)
+      .then(() => {
+        console.log('Done!');
+        console.log(arr);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+}
+
 exports.ResultJsonParser = ResultJsonParser;
 exports.getNameUsn = getNameUsn;
 exports.getSemesters = getSemesters;
+exports.UsnGenerator = Usn.UsnGenerator;
+exports.UsnFromCsv = UsnFromCsv;
