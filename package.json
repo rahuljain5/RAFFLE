@@ -17,6 +17,7 @@
   "dependencies": {
     "async-process": "0.0.1",
     "axios": "^0.17.1",
+    "csvreader": "^1.0.3",
     "express": "^4.16.2",
     "express-validator": "^4.3.0",
     "fs": "0.0.1-security",
