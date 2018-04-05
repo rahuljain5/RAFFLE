@@ -20,6 +20,7 @@
     "csvreader": "^1.0.3",
     "express": "^4.16.2",
     "express-validator": "^4.3.0",
+    "formidable": "^1.2.1",
     "fs": "0.0.1-security",
     "http": "latest",
     "jsdom": "^11.6.2",
