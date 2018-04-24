@@ -48,25 +48,8 @@ const UsnGenerator = (base_usn) =>
 }
 return usn;
 }
-const UsnFromCSV = (csv_filename, callback) =>
-{
-  function recordHandler(data){
-    arr.push(data[0]);
-}
-var arr =[];
-csvReader
-  .read("File1.csv", recordHandler)
-  .then(() => {
-    console.log('USN Generated from the CSV file at ' + csv_filename);
-    callback(arr);
-  })
-  .catch(err => {
-    console.error(err);
-  });
-}
 
 exports.ResultJsonParser = ResultJsonParser;
 exports.getNameUsn = getNameUsn;
 exports.getSemesters = getSemesters;
 exports.UsnGenerator = Usn.UsnGenerator;
-exports.UsnFromCSV = UsnFromCSV;
