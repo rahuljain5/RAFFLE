@@ -52,4 +52,4 @@ return usn;
 exports.ResultJsonParser = ResultJsonParser;
 exports.getNameUsn = getNameUsn;
 exports.getSemesters = getSemesters;
-exports.UsnGenerator = Usn.UsnGenerator;
+exports.UsnGenerator = UsnGenerator;
