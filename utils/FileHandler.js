@@ -20,22 +20,23 @@ const FileUploader = () =>
  }
  return newpath;
 }  
-const UsnFromCsv = (FilePath) =>
+const UsnFromCSV = (csv_filename, callback) =>
 {
-    function recordHandler(data){
-        arr.push(data[0]);
-      
-    }
-    csvReader
-      .read(FilePath, recordHandler)
-      .then(() => {
-        console.log('Done!');
-        console.log(arr);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+  function recordHandler(data){
+    arr.push(data[0]);
+}
+var arr =[];
+csvReader
+  .read("File1.csv", recordHandler)
+  .then(() => {
+    console.log('USN Generated from the CSV file at ' + csv_filename);
+    callback(arr);
+  })
+  .catch(err => {
+    console.error(err);
+  });
 }
 
 exports.FileUploader = FileUploader;
 exports.UsnFromCsv = UsnFromCsv;
+
