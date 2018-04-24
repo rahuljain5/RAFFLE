@@ -42,14 +42,14 @@ const scrape = (base_usn) => {
                     // console.log(JSON.stringify(Json));
                 }
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+            .catch(err => {
+                console.error("Failed with Status Code" + err.response.status);
+              });
     }
 
     //Asynchronously send Requests
     new asyncProcess(usn, scraper, function () {
-        //At this point all the files are loaded
+        //At this point all the USN requests are sent
         console.log("All usn have been processed");
         this.tasksFails.forEach(function (id) {
             console.warn("Requesting usn : " + id + " failed.");
