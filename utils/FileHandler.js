@@ -19,5 +19,6 @@ csvReader
     console.error(err);
   });
 }
+
 exports.UsnFromCSV = UsnFromCSV;
 
