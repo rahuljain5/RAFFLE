@@ -4,7 +4,7 @@ var S = require('string');
 var jsdom = require('jsdom');
 var asyncProcess = require('async-process');
 var padder = require('zpad');
-var vtu = require('./helper.js')
+var vtu = require('./helper.js');
 var config = require('../config/config.js');
 const {JSDOM} = jsdom;
 //Function that scrapes results from VTU 
