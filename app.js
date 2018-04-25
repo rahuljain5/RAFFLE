@@ -9,7 +9,6 @@ var index = require('./routes/index.js');
 var users = require('./routes/users.js');
 var ClassResult = require('./routes/ClassResult.js');
 var file_handler = require('./utils/FileHandler.js');
-var Result_Fetch = require('./utils/Result_Fetch.js');
 
 var upload = multer({ dest: 'tmp/' });
 var app = express();
@@ -28,7 +27,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const initroutes = () => {
   app.use('/', index);
+
   app.use('/users', users);
+
   app.use('/ClassResult', ClassResult); 
   
   app.post('/CSVResult', upload.single('filetoupload'), function (req, res) {
@@ -37,7 +38,7 @@ const initroutes = () => {
     file_handler.CSVResultFetch(req.file.path);  
   });
 
-  // catch 404 and forward to error handler
+ // catch 404 and forward to error handler
   app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
@@ -59,7 +60,7 @@ const startserver = () => {
   console.log("Server Started at " + port)
 }
 
-// app.listen(3000);
 initroutes();
 startserver();
+
 module.exports = app;
