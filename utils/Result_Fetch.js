@@ -55,4 +55,5 @@ const scrape = (usn) => {
         })
     });
 }
+
 exports.scrape = scrape;
