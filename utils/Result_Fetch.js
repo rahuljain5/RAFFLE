@@ -1,19 +1,18 @@
-var http = require('http');
-var axi = require("axios");
+var axios = require("axios");
 var qs = require('qs');
 var S = require('string');
 var jsdom = require('jsdom');
 var asyncProcess = require('async-process');
 var padder = require('zpad');
 var vtu = require('./helper.js')
-var conf = require('../config/config.js');
+var config = require('../config/config.js');
 const {JSDOM} = jsdom;
 //Function that scrapes results from VTU 
 const scrape = (usn) => {
     //Function that will be called Asynchronously
     var scraper = function (rusn, cb) {
         //Send Request to VTU with string USN as POST 
-        axi.post(conf.result_url, qs.stringify({ lns: rusn }))
+        axios.post(config.result_url, qs.stringify({ lns: rusn }))
             .then(function (response) {
 
                 var str = S(response.data);

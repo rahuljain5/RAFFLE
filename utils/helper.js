@@ -1,4 +1,3 @@
-var axi = require("axios");
 var S = require('string');
 var fs = require('fs');
 var padder = require('zpad');
@@ -40,14 +39,16 @@ const getSemesters = (tables, str) => {
     }
     return sems;
 }
+
 const UsnGenerator = (base_usn) =>
 {
-    var usn = [];
-    for (var i = 1; i < 120; i++) {
-        i = padder(i, 3);
+  var usn = [];
+  for (var i = 1; i < 120; i++) 
+  {
+    i = padder(i, 3);
     usn[i - 1] = base_usn + i;
-}
-return usn;
+  }
+  return usn;
 }
 
 exports.ResultJsonParser = ResultJsonParser;
