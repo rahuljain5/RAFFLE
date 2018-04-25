@@ -1,31 +1,17 @@
 {
   "name": "auto-result-analyzer-and-faculty-feedback-sys",
-  "version": "0.1.0",
-  "description": "Backend scraper ",
-  "main": "app.js",
-  "directories": {
-    "test": "test"
-  },
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rahuljain5/auto-result-analyzer-and-faculty-feedback-sys.git"
+    "start": "node ./bin/www"
   },
   "dependencies": {
-    "async-process": "0.0.1",
-    "axios": "^0.17.1",
-    "csvreader": "^1.0.3",
-    "express": "^4.16.2",
-    "express-validator": "^4.3.0",
-    "formidable": "^1.2.1",
-    "fs": "0.0.1-security",
-    "http": "latest",
-    "jsdom": "^11.6.2",
-    "qs": "latest",
-    "string": "^3.3.3",
-    "zpad": "^0.5.0"
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "morgan": "~1.9.0",
+    "pug": "2.0.0-beta11",
+    "serve-favicon": "~2.4.5"
   }
 }
