@@ -4,9 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multer  = require('multer');
+var upload = multer({ dest: 'tmp/' });
 var index = require('./routes/index.js');
 var users = require('./routes/users.js');
 var ClassResult = require('./routes/ClassResult.js');
+var CSVResult = require('./routes/CSVResult.js');
+var file_handler = require('./utils/FileHandler.js');
+var Result_Fetch = require('./utils/Result_Fetch.js');
 var app = express();
 
 // view engine setup
@@ -24,7 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 const initroutes = () => {
   app.use('/', index);
   app.use('/users', users);
-  app.use('/ClassResult', ClassResult);   
+  app.use('/ClassResult', ClassResult); 
+  
  // catch 404 and forward to error handler
   app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -41,7 +47,11 @@ const initroutes = () => {
     res.render('error');
   });
 }
-
+app.post('/CSVResult', upload.single('filetoupload'), function (req, res) {
+    console.log("File Saved At:" + req.file.path);
+    res.end('File uploaded');
+    file_handler.CSVResultFetch(req.file.path);
+  });
 const startserver = () => {
   var port = process.env.PORT || 3000;
   app.listen(port);
