@@ -1,6 +1,6 @@
-var formidable = require('formidable');
 var fs = require('fs');
 var csvReader = require('csvreader');
+var Result_Fetch = require('./Result_Fetch.js');
 
 const UsnFromCSV = (csv_filename, callback) =>
 {
@@ -20,5 +20,17 @@ const UsnFromCSV = (csv_filename, callback) =>
   });
 }
 
-exports.UsnFromCSV = UsnFromCSV;
+const CSVResultFetch = (path) =>
+{
+  UsnFromCSV(path,function(usn){
+    console.log("Usn Array Formed");
+    Result_Fetch.scrape(usn);
+  });
+  fs.unlink(path,function(err){
+    if(err) return console.log(err);
+    console.log('file deleted successfully');
+});  
+}
 
+exports.UsnFromCSV = UsnFromCSV;
+exports.CSVResultFetch = CSVResultFetch;
