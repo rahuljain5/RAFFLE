@@ -4,7 +4,7 @@ var S = require('string');
 var jsdom = require('jsdom');
 var asyncProcess = require('async-process');
 var padder = require('zpad');
-var vtu = require('./helper.js');
+var Helper = require('./helper.js');
 var config = require('../config/config.js');
 const {JSDOM} = jsdom;
 //Function that scrapes results from VTU 
@@ -31,11 +31,11 @@ const scrape = (usn) => {
                     //Access Result Tables using their Class
                     var tables = parser.window.document.getElementsByClassName("divTable");
                     //Get the Semesters for which Results are being displayed
-                    sems = vtu.getSemesters(tables, str);
+                    sems = Helper.getSemesters(tables, str);
                     //Get Name and USN of Student
-                    Json = vtu.getNameUsn(parser, Json);
+                    Json = Helper.getNameUsn(parser, Json);
                     //Get the Final JSON
-                    Json.Results = vtu.ResultJsonParser(tables, sems);
+                    Json.Results = Helper.ResultJsonParser(tables, sems);
                     console.log(Json);
                     // console.log(JSON.stringify(Json));
                 }
