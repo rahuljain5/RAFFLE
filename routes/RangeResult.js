@@ -7,7 +7,6 @@ var router = express.Router();
 router.all('/', function(req, res) {
 try 
 {
-    console.log(req);
     Helper.RangeUsnGenerator(req.query.baseusn, req.query.startusn, req.query.endusn, function(usn){
        console.log(usn);
 //Scrape and get Results
