@@ -51,7 +51,19 @@ const UsnGenerator = (base_usn) =>
   return usn;
 }
 
+const RangeUsnGenerator = (base_usn, start_usn, last_usn, callback) =>
+{
+  var usn = [];
+  for (var i = start_usn; i < last_usn; i++) 
+  {
+    i = padder(i, 3);
+    usn[i - 1] = base_usn + i;
+  }
+  callback(usn); 
+}
+
 exports.ResultJsonParser = ResultJsonParser;
 exports.getNameUsn = getNameUsn;
 exports.getSemesters = getSemesters;
 exports.UsnGenerator = UsnGenerator;
+exports.RangeUsnGenerator = RangeUsnGenerator;
