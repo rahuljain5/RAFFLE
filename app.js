@@ -11,7 +11,6 @@ var ClassResult = require('./routes/ClassResult.js');
 var file_handler = require('./utils/FileHandler.js');
 var RangeResult = require('./routes/RangeResult.js');
 var Result = require('./routes/Result.js');
-
 var upload = multer({ dest: 'tmp/' });
 var app = express();
 
@@ -44,8 +43,6 @@ const initroutes = () => {
     file_handler.CSVResultFetch(req.file.path);  
   });
 
-  
-
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -70,5 +67,4 @@ const startserver = () => {
 
 initroutes();
 startserver();
-
 module.exports = app;
