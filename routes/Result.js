@@ -5,8 +5,7 @@ var config = require('../config/config.js')
 var router = express.Router();
 
 router.get('/:id', function(req, res) {
-    var usn = [req.params.id];
-    ResultFetch.scrape(usn);
+    ResultFetch.scrape([req.params.id]);
 });
 
 module.exports = router;
