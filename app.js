@@ -62,7 +62,7 @@ const initroutes = () => {
 const startserver = () => {
   var port = process.env.PORT || 3000;
   app.listen(port);
-  console.log("Server Started at " + port)
+  console.log(`Server Started on Port: ${port} at ${new Date().toLocaleString()}`);
 }
 
 initroutes();
