@@ -25,7 +25,6 @@ const scrape = (usn) => {
                 {
                     var str, sems=[];
                     var Json = {};    
-                // fs.readFile('sample result.html', 'utf8',function(err, str) {
                     //Convert Response HTML into DOM Object
                     var parser = new JSDOM(str);
                     //Access Result Tables using their Class
