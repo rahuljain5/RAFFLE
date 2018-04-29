@@ -4,14 +4,16 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var multer  = require('multer');
+var multer = require('multer');
 var index = require('./routes/index.js');
 var users = require('./routes/users.js');
 var ClassResult = require('./routes/ClassResult.js');
 var file_handler = require('./utils/FileHandler.js');
 var RangeResult = require('./routes/RangeResult.js');
 var Result = require('./routes/Result.js');
-var upload = multer({ dest: 'tmp/' });
+var upload = multer({
+  dest: 'tmp/'
+});
 var app = express();
 
 // view engine setup
@@ -22,7 +24,9 @@ app.set('view engine', 'pug');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -31,30 +35,30 @@ const initroutes = () => {
 
   app.use('/users', users);
 
-  app.use('/ClassResult', ClassResult); 
+  app.use('/ClassResult', ClassResult);
 
   app.use('/RangeResult', RangeResult);
-  
+
   app.use("/Result", Result);
 
   app.post('/CSVResult', upload.single('filetoupload'), function (req, res) {
     console.log("File Saved At:" + req.file.path);
     res.end('File uploaded');
-    file_handler.CSVResultFetch(req.file.path);  
+    file_handler.CSVResultFetch(req.file.path);
   });
 
   // catch 404 and forward to error handler
-  app.use(function(req, res, next) {
+  app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
   });
-// error handler
-  app.use(function(err, req, res, next) {
-// set locals, only providing error in development
+  // error handler
+  app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-// render the error page
+    // render the error page
     res.status(err.status || 500);
     res.render('error');
   });
