@@ -13,7 +13,7 @@ router.all('/', function (req, res) {
       ResultFetch.scrape(usn)
       .then(function(Result_Json){
         console.log('Range Result Fetched and Converted');
-        console.log(JSON.stringify(Result_Json));  
+        res.write(JSON.stringify(Result_Json));  
       })
       .catch(err =>{
         console.error(err);
