@@ -52,7 +52,7 @@ const RangeUsnGenerator = (base_usn, start_usn, last_usn, callback) => {
     i = padder(i, 3);
     usn[i - 1] = base_usn + i;
   }
-  callback(usn);
+  callback(usn.filter(x=>( x != undefined && x != null)));
 }
 
 exports.ResultJsonParser = ResultJsonParser;

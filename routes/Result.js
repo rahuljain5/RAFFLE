@@ -5,8 +5,9 @@ var config = require('../config/config.js')
 var router = express.Router();
 
 router.get('/:id', function (req, res) {
-    ResultFetch.scrape([req.params.id])
-        .then(function (Result_Json) {
+    var result = ResultFetch.scrape([req.params.id]);
+        console.log(result);
+        result[0].then(function (Result_Json) {
             res.setHeader('Content-Type', 'application/json');
             console.log('Result Fetched and Converted');
             res.write(JSON.stringify(Result_Json));
@@ -15,5 +16,5 @@ router.get('/:id', function (req, res) {
         .catch(err => {
             console.error(err);
         });
-});
+ });
 module.exports = router;
