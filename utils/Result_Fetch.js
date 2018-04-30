@@ -43,7 +43,7 @@ const extract = (usn) =>{
                 })
                 .catch(err => {
                     console.error("Connection could not be established.");
-                    reject(err);
+                   resolve({error:true,errorMessage:err,userMessage:"Unable to Process the Request"});
                 });
   });
   
