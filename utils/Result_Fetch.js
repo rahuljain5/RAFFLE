@@ -31,6 +31,7 @@ const extract = (usn) =>{
                             responeData = Helper.getNameUsn(parser, responeData);
                             responeData.Results = Helper.ResultJsonParser(tables, sems);
 //                           	console.log("Inside Axios Respone => "+ responeData)
+                            responseData.error =false
                             resolve(responeData);
                            // console.log(`${usn}: Result Fetch Completed`);
                         }
