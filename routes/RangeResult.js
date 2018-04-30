@@ -6,14 +6,15 @@ var router = express.Router();
 
 router.all('/', function (req, res) {
   try {
-    Helper.RangeUsnGenerator(req.query.baseusn, req.query.startusn, req.query.endusn, function (usn) {
+    Helper.RangeUsnGenerator(req.query.baseusn, req.query.startusn, req.query.endusn, function (USNs) {
       res.setHeader('Content-Type', 'application/json');
-      console.log(usn);
+      console.log(USNs);
       //Scrape and get Results
-      ResultFetch.scrape(usn)
-      .then(function(Result_Json){
+      Promise.all(ResultFetch.scrape(USNs)).then(function(values) {
+        console.log(values);
         console.log('Range Result Fetched and Converted');
-        res.write(JSON.stringify(Result_Json));  
+        // console.log(Result_Json);  
+        // res.write(JSON.stringify(Result_Json));  
       })
       .catch(err =>{
         console.error(err);
