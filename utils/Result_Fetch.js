@@ -2,57 +2,56 @@ var axios = require("axios");
 var qs = require('qs');
 var S = require('string');
 var jsdom = require('jsdom');
-var asyncProcess = require('async-process');
 var padder = require('zpad');
 var Helper = require('./helper.js');
 var config = require('../config/config.js');
-const {JSDOM} = jsdom;
+// var DB = require('./Database_Operations.js');
+const {
+    JSDOM
+} = jsdom;
 //Function that scrapes results from VTU 
-const scrape = (usn) => {
-    //Function that will be called Asynchronously
-    var scraper = function (rusn, cb) {
-        //Send Request to VTU with string USN as POST 
-        axios.post(config.result_url, qs.stringify({ lns: rusn }))
-            .then(function (response) {
 
-                var str = S(response.data);
-                //Check if Result Exists or Not
-                if (str.contains("alert(\"University Seat Number is not available or Invalid..!\");") != false) 
-                {
-                    console.log(rusn + "Failed/Doesn't Exist");
-                }
-                else
-                {
-                    var str, sems=[];
-                    var Json = {};    
-                // fs.readFile('sample result.html', 'utf8',function(err, str) {
-                    //Convert Response HTML into DOM Object
-                    var parser = new JSDOM(str);
-                    //Access Result Tables using their Class
-                    var tables = parser.window.document.getElementsByClassName("divTable");
-                    //Get the Semesters for which Results are being displayed
-                    sems = Helper.getSemesters(tables, str);
-                    //Get Name and USN of Student
-                    Json = Helper.getNameUsn(parser, Json);
-                    //Get the Final JSON
-                    Json.Results = Helper.ResultJsonParser(tables, sems);
-                    console.log(Json);
-                    // console.log(JSON.stringify(Json));
-                }
-            })
-            .catch(err => {
-                console.error("Failed with Status Code" + err.response.status);
-              });
-    }
+const extract = (usn) =>{
+  return new Promise((resolve, reject) => {
+            axios.post(config.result_url, qs.stringify({
+                    lns: usn
+                }))
+                .then(function (response) {
+                    var str = S(response.data);
+                    if (response.status == 200) {
+                        if (str.contains("alert(\"University Seat Number is not available or Invalid..!\");") != false) {
+//                             console.log(usn + " Failed/Doesn't Exist");
+                            resolve({error:true, errorMessage:"USN not found "+usn,userMessage:usn + " Failed/Doesn't Exist"});
+                        } else {
+                            var str, sems = [];
+                            var responeData = {};
+                            var parser = new JSDOM(str);
+                            var tables = parser.window.document.getElementsByClassName("divTable");
+                            sems = Helper.getSemesters(tables, str);
+                            responeData = Helper.getNameUsn(parser, responeData);
+                            responeData.Results = Helper.ResultJsonParser(tables, sems);
+//                           	console.log("Inside Axios Respone => "+ responeData)
+                            responeData["error"] = false;
+                            resolve(responeData);
+                           // console.log(`${usn}: Result Fetch Completed`);
+                        }
+                    } else {
+                        var error = `Request Returned ${response.status}: ${response.statusText}`;
+                        resolve({error:true,errorMessage:error,userMessage:"Unable to Process the Request"});
+                        //console.error(error);
+                    }
+                })
+                .catch(err => {
+                    console.error("Connection could not be established.");
+                   resolve({error:true,errorMessage:err,userMessage:"Unable to Process the Request"});
+                });
+  });
+  
+}
 
-    //Asynchronously send Requests
-    new asyncProcess(usn, scraper, function () {
-        //At this point all the USN requests are sent
-        console.log("All usn have been processed");
-        this.tasksFails.forEach(function (id) {
-            console.warn("Requesting usn : " + id + " failed.");
-        })
-    });
+const scrape = (USNs) => {
+    return USNs.map(extract);
 }
 
 exports.scrape = scrape;
+exports.extract = extract;
