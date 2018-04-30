@@ -18,6 +18,7 @@ router.all('/', function (req, res) {
         // res.write(JSON.stringify(Result_Json));  
       })
       .catch(err =>{
+        res.send(err);
         console.error(err);
       }); 
     });
