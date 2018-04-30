@@ -10,7 +10,7 @@ router.all('/', function (req, res) {
       res.setHeader('Content-Type', 'application/json');
       console.log(USNs);
       //Scrape and get Results
-      Promise.all(ResultFetch.scrape(USNs)).then(function(values) {
+      Promise.some(ResultFetch.scrape(USNs)).then(function(values) {
         console.log(values);
         res.send(values);
         console.log('Range Result Fetched and Converted');
