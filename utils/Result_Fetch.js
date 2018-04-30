@@ -20,7 +20,7 @@ const extract = (usn) =>{
                     var str = S(response.data);
                     if (response.status == 200) {
                         if (str.contains("alert(\"University Seat Number is not available or Invalid..!\");") != false) {
-                            console.log(usn + " Failed/Doesn't Exist");
+//                             console.log(usn + " Failed/Doesn't Exist");
                             reject(usn + " Failed/Doesn't Exist");
                         } else {
                             var str, sems = [];
