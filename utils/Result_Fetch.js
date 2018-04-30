@@ -49,7 +49,7 @@ const extract = (usn) =>{
 }
 
 const scrape = (USNs) => {
-    return USNs.forEach(usn => extract);
+    return USNs.map(extract);
 }
 
 exports.scrape = scrape;
