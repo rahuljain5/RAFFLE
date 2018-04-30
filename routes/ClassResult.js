@@ -9,9 +9,14 @@ router.all('/', function (req, res) {
     // Generate USNs for class results
     var usn = vtu.UsnGenerator(config.test.usn);
     //Scrape and get Results
-    ResultFetch.scrape(usn);
-    console.log('Class Result Fetched and Converted');
-    res.send('Class Result Fetched and Converted');
+    ResultFetch.scrape(usn)
+      .then(function (ResultJson) {
+        console.log('Class Result Fetched and Converted');
+        res.send('Class Result Fetched and Converted');
+      })
+      .catch(err => {
+        console.error(err);
+      });
   } catch (error) {
     throw (error);
     exit();

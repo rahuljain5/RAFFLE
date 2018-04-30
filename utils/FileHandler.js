@@ -21,11 +21,14 @@ const UsnFromCSV = (csv_filename, callback) => {
 const CSVResultFetch = (path) => {
   UsnFromCSV(path, function (usn) {
     console.log("Usn Array Formed");
-    Result_Fetch.scrape(usn);
-  });
-  fs.unlink(path, function (err) {
-    if (err) return console.log(err);
-    console.log('file deleted successfully');
+    Result_Fetch.scrape(usn)
+    .then(function(Result_Json){
+      console.log("Result Fetched");
+      fs.unlink(path, function (err) {
+        if (err) return console.log("File Deletion:" + err);
+        console.log('file deleted successfully');
+      });    
+    })
   });
 }
 
