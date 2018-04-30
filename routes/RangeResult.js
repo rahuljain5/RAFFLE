@@ -1,4 +1,5 @@
 var express = require('express');
+var Promise = require("bluebird");
 var Helper = require('../utils/helper.js')
 var ResultFetch = require('../utils/Result_Fetch.js');
 var config = require('../config/config.js')
