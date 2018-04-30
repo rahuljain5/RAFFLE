@@ -53,3 +53,4 @@ const scrape = (USNs) => {
 }
 
 exports.scrape = scrape;
+exports.extract = extract;
