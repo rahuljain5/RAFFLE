@@ -70,6 +70,7 @@ const startserver = (app) => {
   app.listen(port);
   console.log(`Server Started on Port: ${port} at ${new Date().toLocaleString()}`);
 }
+
 if(cluster.isMaster) {
     var numWorkers = require('os').cpus().length;
 
@@ -94,6 +95,6 @@ if(cluster.isMaster) {
   initmiddleware(app);
   initroutes(app);
   startserver(app);
-  
+  module.exports = app;
 }
-module.exports = app;
+
