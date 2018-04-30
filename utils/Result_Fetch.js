@@ -20,7 +20,7 @@ const scrape = (USNs) => {
                     var str = S(response.data);
                     if (response.status == 200) {
                         if (str.contains("alert(\"University Seat Number is not available or Invalid..!\");") != false) {
-                            console.log(usn + "Failed/Doesn't Exist");
+                            console.log(usn + " Failed/Doesn't Exist");
                         } else {
                             var str, sems = [];
                             var responeData = {};
@@ -30,12 +30,12 @@ const scrape = (USNs) => {
                             responeData = Helper.getNameUsn(parser, responeData);
                             responeData.Results = Helper.ResultJsonParser(tables, sems);
                             resolve(responeData);
-                            console.log(`${usn}: Result Fetch Completed`);
+                           // console.log(`${usn}: Result Fetch Completed`);
                         }
                     } else {
                         var error = `Request Returned ${response.status}: ${response.statusText}`;
                         reject(error);
-                        console.error(error);
+                        //console.error(error);
                     }
                 })
                 .catch(err => {
