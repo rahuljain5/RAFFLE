@@ -10,9 +10,9 @@ const {
     JSDOM
 } = jsdom;
 //Function that scrapes results from VTU 
-const scrape = (USNs) => {
-    return USNs.forEach(usn => {
-       	return new Promise((resolve, reject) => {
+
+const extract = (usn) =>{
+  return new Promise((resolve, reject) => {
             axios.post(config.result_url, qs.stringify({
                     lns: usn
                 }))
@@ -29,6 +29,7 @@ const scrape = (USNs) => {
                             sems = Helper.getSemesters(tables, str);
                             responeData = Helper.getNameUsn(parser, responeData);
                             responeData.Results = Helper.ResultJsonParser(tables, sems);
+                          	console.log("Inside Axios Respone => "+responseData)
                             resolve(responeData);
                            // console.log(`${usn}: Result Fetch Completed`);
                         }
@@ -42,8 +43,12 @@ const scrape = (USNs) => {
                     console.error("Connection could not be established.");
                     reject(err);
                 });
-        });
-    });
+  });
+  
+}
+
+const scrape = (USNs) => {
+    return USNs.forEach(usn => extract);
 }
 
 exports.scrape = scrape;
