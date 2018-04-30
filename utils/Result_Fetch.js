@@ -11,11 +11,11 @@ const {
     JSDOM
 } = jsdom;
 //Function that scrapes results from VTU 
-const scrape =  (usn) => {
+const scrape =  (usns) => {
     return new Promise((resolve, reject) => {
         //Function that will be called Asynchronously
-        var scraper = function (rusn, cb) {
-            //Send Request to VTU with string USN as POST 
+        usns.forEach(rusn => {
+        //Send Request to VTU with string USN as POST 
             axios.post(config.result_url, qs.stringify({
                     lns: rusn
                 }))
@@ -54,17 +54,8 @@ const scrape =  (usn) => {
                     console.error("Connection could not be established.");
                     reject(err);
                 });
-        }
-
-
-        //Asynchronously send Requests
-        new asyncProcess(usn, scraper, function () {
-            //At this point all the USN requests are sent
-            console.log("All usn have been processed");
-            this.tasksFails.forEach(function (id) {
-                console.warn("Requesting usn : " + id + " failed.");
-            })
         });
+    
     });
 }
 
