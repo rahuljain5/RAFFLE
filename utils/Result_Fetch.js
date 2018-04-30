@@ -21,7 +21,7 @@ const extract = (usn) =>{
                     if (response.status == 200) {
                         if (str.contains("alert(\"University Seat Number is not available or Invalid..!\");") != false) {
 //                             console.log(usn + " Failed/Doesn't Exist");
-                            reject(usn + " Failed/Doesn't Exist");
+                            resolve({error:true, errorMessage:"USN not found "+usn,userMessage:usn + " Failed/Doesn't Exist"});
                         } else {
                             var str, sems = [];
                             var responeData = {};
@@ -36,7 +36,7 @@ const extract = (usn) =>{
                         }
                     } else {
                         var error = `Request Returned ${response.status}: ${response.statusText}`;
-                        reject(error);
+                        resolve({error:true,errorMessage:error,userMessage:"Unable to Process the Request"});
                         //console.error(error);
                     }
                 })
