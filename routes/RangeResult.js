@@ -9,7 +9,6 @@ router.all('/', function (req, res) {
   try {
     Helper.RangeUsnGenerator(req.query.baseusn, req.query.startusn, req.query.endusn, function (USNs) {
 //       res.setHeader('Content-Type', 'application/json');
-      USNs=USNs.filter(x=>( x != undefined && x != null))
       console.log(USNs);
       //Scrape and get Results
       Promise.all(ResultFetch.scrape(USNs)).then(function(values) {
