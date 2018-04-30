@@ -6,7 +6,7 @@ var asyncProcess = require('async-process');
 var padder = require('zpad');
 var Helper = require('./helper.js');
 var config = require('../config/config.js');
-var DB = require('./Database_Operations.js')
+// var DB = require('./Database_Operations.js');
 const {
     JSDOM
 } = jsdom;
