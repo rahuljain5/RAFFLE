@@ -12,7 +12,7 @@ router.all('/', function (req, res) {
       USNs=USNs.filter(x=>( x != undefined && x != null))
       console.log(USNs);
       //Scrape and get Results
-      Promise.some(ResultFetch.scrape(USNs)).then(function(values) {
+      Promise.any(ResultFetch.scrape(USNs)).then(function(values) {
         console.log(values);
         res.send(values);
         console.log('Range Result Fetched and Converted');
