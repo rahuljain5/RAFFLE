@@ -15,5 +15,6 @@ module.exports = {
     api_key: process.env.API_KEY,
     redis_url : process.env.REDIS_URL
   },
-  result_url: 'http://results.vtu.ac.in/vitaviresultcbcs/resultpage.php'
+  result_url: 'http://results.vtu.ac.in/vitaviresultcbcs/resultpage.php',
+  result_ttl : 60*10//10mins
 };
