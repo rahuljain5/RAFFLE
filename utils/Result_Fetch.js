@@ -14,7 +14,7 @@ const {
 
 const extract = (usn) =>{
   return new Promise((resolve, reject) => {
-            const cachedData = redis.get(usn.toString());
+            redis.get(usn).then((cachedData)=>{;
             console.log("USN: "+usn+" Cached Data: "+ cachedData);
             if(cachedData != undefined && cachedData != null){
                 console.log("Resolve data from redis");
@@ -57,7 +57,7 @@ const extract = (usn) =>{
                     console.error("Connection could not be established.");
                    resolve({error:true,errorMessage:err,userMessage:"Unable to Process the Request"});
                 });
-  }
+  }})
    });
   
 }
