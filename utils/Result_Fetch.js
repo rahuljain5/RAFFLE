@@ -5,6 +5,7 @@ var jsdom = require('jsdom');
 var padder = require('zpad');
 var Helper = require('./helper.js');
 var config = require('../config/config.js');
+const redis = require("../services/redis")
 // var DB = require('./Database_Operations.js');
 const {
     JSDOM
@@ -13,6 +14,10 @@ const {
 
 const extract = (usn) =>{
   return new Promise((resolve, reject) => {
+            const cachedData = redis.get(usn);
+            if(cachedData != null)
+                resolve(JSON.parse(cachedData);
+            else{
             axios.post(config.result_url, qs.stringify({
                     lns: usn
                 }))
@@ -32,6 +37,7 @@ const extract = (usn) =>{
                             responeData.Results = Helper.ResultJsonParser(tables, sems);
 //                           	console.log("Inside Axios Respone => "+ responeData)
                             responeData["error"] = false;
+                            redis.setex(usn,JSON.stringify(responseData),600);//TTL 10mins
                             resolve(responeData);
                            console.log(`${usn}: Result Fetch Completed`);
                         }
@@ -45,7 +51,8 @@ const extract = (usn) =>{
                     console.error("Connection could not be established.");
                    resolve({error:true,errorMessage:err,userMessage:"Unable to Process the Request"});
                 });
-  });
+  }
+   });
   
 }
 
