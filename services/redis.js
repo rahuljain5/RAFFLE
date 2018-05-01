@@ -1,4 +1,4 @@
-
+"use strict";
 var redis = require("redis");
 const client = redis.createClient(redisURL);
 
@@ -15,4 +15,6 @@ const get = function(key, cb) {
 
 exports.redis = client;
 exports.set = set;
+exports.setex = setex;
 exports.get = get;
+
