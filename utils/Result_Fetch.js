@@ -14,9 +14,9 @@ const {
 
 const extract = (usn) =>{
   return new Promise((resolve, reject) => {
-            const cachedData = redis.get(usn);
-            console.log("Cached Data: "+ cachedData);
-            if(cachedData != null){
+            const cachedData = redis.get(usn.toString());
+            console.log("USN: "+usn+" Cached Data: "+ cachedData);
+            if(cachedData != undefined && cachedData != null){
                 console.log("Resolve data from redis");
                 resolve(JSON.parse(cachedData));}
             else{
