@@ -2,7 +2,7 @@ var MongoClient = require('mongodb').MongoClient;
 var Config = require('../config/config.js')
 var url = Config.test.connection_url;
 
-var CreateDBCollection = (DBName, CollectionName) => {
+const CreateDBCollection = (DBName, CollectionName) => {
     url = url + DBName;
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
@@ -16,7 +16,7 @@ var CreateDBCollection = (DBName, CollectionName) => {
     });
 }
 
-var InsertOne = (DBName, CollectionName, DataObject) => {
+const InsertOne = (DBName, CollectionName, DataObject) => {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db(DBName);
@@ -28,31 +28,33 @@ var InsertOne = (DBName, CollectionName, DataObject) => {
     });
 }
 
-var Find = (DBName, CollectionName) => {
+const Find = (DBName, CollectionName) => {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db(DBName);
         dbo.collection(CollectionName).find({}).toArray(function (err, result) {
             if (err) throw err;
             console.log(result);
+            return result;
             db.close();
         });
     });
 }
 
-var FindOne = (DBName, CollectionName) => {
+const FindOne = (DBName, CollectionName) => {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db(DBName);
         dbo.collection(CollectionName).findOne({}, function (err, result) {
             if (err) throw err;
             console.log(result.name);
+            return result;
             db.close();
         });
     });
 }
 
-var Query = (DBName, CollectionName, Query) => {
+const Query = (DBName, CollectionName, Query) => {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db(DBName);
@@ -64,7 +66,7 @@ var Query = (DBName, CollectionName, Query) => {
     });
 }
 
-var DeleteOne = (DBName, CollectionName, DeleteQuery) => {
+const DeleteOne = (DBName, CollectionName, DeleteQuery) => {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db(DBName);
@@ -76,7 +78,7 @@ var DeleteOne = (DBName, CollectionName, DeleteQuery) => {
     });
 }
 
-var DeleteMany = (DBName, CollectionName, DeleteQuery) => {
+const DeleteMany = (DBName, CollectionName, DeleteQuery) => {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db(DBName);
@@ -88,19 +90,20 @@ var DeleteMany = (DBName, CollectionName, DeleteQuery) => {
     });
 }
 
-var Sort = (DBName, CollectionName, SortQuery) => {
+const Sort = (DBName, CollectionName, SortQuery) => {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db(DBName);
         dbo.collection(CollectionName).find().sort(SortQuery).toArray(function (err, result) {
             if (err) throw err;
             console.log(result);
+            return result;
             db.close();
         });
     });
 }
 
-var UpdateOne = (DBName, CollectionName, Query, UpdateValues) => {
+const UpdateOne = (DBName, CollectionName, Query, UpdateValues) => {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db(DBName);
@@ -110,11 +113,12 @@ var UpdateOne = (DBName, CollectionName, Query, UpdateValues) => {
         dbo.collection(CollectionName).updateOne(Query, newvalues, function (err, res) {
             if (err) throw err;
             console.log(res.result.nModified + ` document(s) updated at ${new Date().toLocaleString()}`);
+            return result;
             db.close();
         });
     });
 }
-var UpdateMany = (DBName, CollectionName, Query, UpdateValues) => {
+const UpdateMany = (DBName, CollectionName, Query, UpdateValues) => {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db(DBName);
