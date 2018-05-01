@@ -18,7 +18,7 @@ const extract = (usn) =>{
             if(cachedData != null)
                 resolve(JSON.parse(cachedData));
             else{
-                console.log("Check Result for "+usn+" at URL: +config.result_url);
+                console.log("Check Result for "+usn+" at URL:" +config.result_url);
             axios.post(config.result_url, qs.stringify({
                     lns: usn
                 }))
