@@ -2,7 +2,7 @@ module.exports = {
   development: {
     connection_url: process.env.DATABASE_URL,
     api_key: "",
-    redis_url : process.env.REDIS_URL || "redis://localhost:3000"
+    redis_url : process.env.REDIS_URL || "redis://localhost:6379"
   },
   test: {
     connection_url: "mongodb://localhost:27017/",
