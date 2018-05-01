@@ -15,8 +15,10 @@ const {
 const extract = (usn) =>{
   return new Promise((resolve, reject) => {
             const cachedData = redis.get(usn);
-            if(cachedData != null)
-                resolve(JSON.parse(cachedData));
+            console.log("Cached Data: "+ cachedData);
+            if(cachedData != null){
+                console.log("Resolve data from redis");
+                resolve(JSON.parse(cachedData));}
             else{
                 console.log("Check Result for "+usn+" at URL:" +config.result_url);
             axios.post(config.result_url, qs.stringify({
