@@ -45,8 +45,7 @@ const initroutes = (app) => {
 
   app.post('/CSVResult', upload.single('filetoupload'), function (req, res) {
     console.log("File Saved At:" + req.file.path);
-    res.end('File uploaded');
-    file_handler.CSVResultFetch(req.file.path);
+    file_handler.CSVResultFetch(req.file.path, res);
   });
 
   // catch 404 and forward to error handler
