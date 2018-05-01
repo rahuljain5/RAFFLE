@@ -6,7 +6,7 @@ const set = function(key, value) {
   return client.set(key, value, redis.print);
 }
 const setex = function(key,value,ttl){
-return client.setexAsync(key, ttl, value);
+return client.set(key, value,'EX',ttl);
 }
 const get = function(key, cb) {
   client.get(key, cb);
