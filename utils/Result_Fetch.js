@@ -16,7 +16,7 @@ const extract = (usn) =>{
   return new Promise((resolve, reject) => {
             const cachedData = redis.get(usn);
             if(cachedData != null)
-                resolve(JSON.parse(cachedData);
+                resolve(JSON.parse(cachedData));
             else{
             axios.post(config.result_url, qs.stringify({
                     lns: usn
