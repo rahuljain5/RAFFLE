@@ -18,6 +18,7 @@ const extract = (usn) =>{
             if(cachedData != null)
                 resolve(JSON.parse(cachedData));
             else{
+                console.log("Check Result for "+usn+" at URL: +config.result_url);
             axios.post(config.result_url, qs.stringify({
                     lns: usn
                 }))
@@ -38,7 +39,7 @@ const extract = (usn) =>{
 //                           	console.log("Inside Axios Respone => "+ responeData)
                             responeData["error"] = false;
 //                             redis.setex(usn,JSON.stringify(responseData),600);//TTL 10mins
-                            redis.set(usn,JSON.stringify(responseData));
+//                             redis.set(usn,JSON.stringify(responseData));
                             resolve(responeData);
                            console.log(`${usn}: Result Fetch Completed`);
                         }
