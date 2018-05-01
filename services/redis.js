@@ -10,8 +10,9 @@ const set = function(key, value) {
 const setex = function(key,value,ttl){
 return client.set(key, value,'EX',ttl);
 }
-const get = function(key, cb) {
-  client.get(key, cb);
+const get = function(key) {
+ client.getAsync(key);
+  }
 }
 
 
