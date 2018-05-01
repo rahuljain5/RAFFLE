@@ -12,7 +12,7 @@ return client.set(key, value,'EX',ttl);
 }
 const get = function(key) {
  client.getAsync(key);
-  }
+  
 }
 
 
