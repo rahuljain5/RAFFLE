@@ -15,7 +15,7 @@ const get = function(key, cb) {
 }
 
 
-exports.redis = client;
+
 exports.set = set;
 exports.setex = setex;
 exports.get = get;
