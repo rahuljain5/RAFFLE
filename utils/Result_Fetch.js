@@ -29,11 +29,13 @@ const extract = (usn) => {
             if (response.status == 200) {
               if (str.contains("alert(\"University Seat Number is not available or Invalid..!\");") != false) {
                 //                             console.log(usn + " Failed/Doesn't Exist");
-                resolve({
+                let failresponse = {
                   error: true,
                   errorMessage: "USN not found " + usn,
                   userMessage: usn + " Failed/Doesn't Exist"
-                });
+                }
+                redis.setex(usn, JSON.stringify(failresponse), config.result_ttl);
+                resolve(failresponse);
               } else {
                 var str, sems = [];
                 var responeData = {};
@@ -45,7 +47,7 @@ const extract = (usn) => {
                 //                           	console.log("Inside Axios Respone => "+ responeData)
                 responeData["error"] = false;
                 console.log("Set data in Redis");
-                redis.setex(usn, JSON.stringify(responeData), 600); //TTL 10min
+                redis.setex(usn, JSON.stringify(responeData), config.result_ttl); //TTL 10min
                 //                             redis.set(usn,JSON.stringify(responeData));
                 console.log("Resolve Response");
                 resolve(responeData);
