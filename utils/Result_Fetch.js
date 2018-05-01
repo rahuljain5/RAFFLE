@@ -38,8 +38,10 @@ const extract = (usn) =>{
                             responeData.Results = Helper.ResultJsonParser(tables, sems);
 //                           	console.log("Inside Axios Respone => "+ responeData)
                             responeData["error"] = false;
-//                             redis.setex(usn,JSON.stringify(responseData),600);//TTL 10mins
-//                             redis.set(usn,JSON.stringify(responseData));
+                            console.log("Set data in Redis");
+                            redis.setex(usn,JSON.stringify(responeData),600);//TTL 10min
+//                             redis.set(usn,JSON.stringify(responeData));
+                            console.log("Resolve Response");
                             resolve(responeData);
                            console.log(`${usn}: Result Fetch Completed`);
                         }
