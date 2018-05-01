@@ -34,7 +34,7 @@ const extract = (usn) => {
                   errorMessage: "USN not found " + usn,
                   userMessage: usn + " Failed/Doesn't Exist"
                 }
-                redis.setex(usn, JSON.stringify(failresponse), config.result_ttl);
+                //redis.setex(usn, JSON.stringify(failresponse), config.result_ttl);
                 resolve(failresponse);
               } else {
                 var str, sems = [];
