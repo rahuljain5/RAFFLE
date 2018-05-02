@@ -11,6 +11,7 @@ var ClassResult = require('./routes/ClassResult.js');
 var file_handler = require('./utils/FileHandler.js');
 var RangeResult = require('./routes/RangeResult.js');
 var Result = require('./routes/Result.js');
+var Feedback = require('./routes/Feedback.js');
 var upload = multer({ dest: 'tmp/' });
 var app = express();
 
@@ -36,6 +37,8 @@ const initroutes = () => {
   app.use('/RangeResult', RangeResult);
   
   app.use("/Result", Result);
+
+  app.use("/Feedback", Feedback);
 
   app.post('/CSVResult', upload.single('filetoupload'), function (req, res) {
     console.log("File Saved At:" + req.file.path);
