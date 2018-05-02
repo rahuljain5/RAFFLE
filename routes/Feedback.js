@@ -12,5 +12,11 @@ router.get('/ClassRooms', function(req, res) {
 });
 
 router.post('/NewClassRoom', function(req, res) {
-    DB.InsertOne('Faculty_Feedback', 'ClassRooms', Class_Json);
+    console.log(req.body);
+    res.send("sent whatt i should have")
+    
+
+    
+    // DB.InsertOne('Faculty_Feedback', 'ClassRooms', Class_Json);
 })
+module.exports = router;
