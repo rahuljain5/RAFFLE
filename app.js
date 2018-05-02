@@ -1,4 +1,5 @@
 var express = require('express');
+var cluster = require('cluster');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -14,8 +15,8 @@ var Result = require('./routes/Result.js');
 var upload = multer({
   dest: 'tmp/'
 });
-var app = express();
 
+const initmiddleware = (app) =>{
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -29,8 +30,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+}
 
-const initroutes = () => {
+const initroutes = (app) => {
   app.use('/', index);
 
   app.use('/users', users);
@@ -62,12 +64,36 @@ const initroutes = () => {
     res.render('error');
   });
 }
-const startserver = () => {
+const startserver = (app) => {
   var port = process.env.PORT || 3000;
   app.listen(port);
   console.log(`Server Started on Port: ${port} at ${new Date().toLocaleString()}`);
 }
 
-initroutes();
-startserver();
-module.exports = app;
+if(cluster.isMaster) {
+    var numWorkers = require('os').cpus().length;
+
+    console.log('Master cluster setting up ' + numWorkers + ' workers...');
+
+    for(var i = 0; i < numWorkers; i++) {
+        cluster.fork();
+    }
+
+    cluster.on('online', function(worker) {
+        console.log('Worker ' + worker.process.pid + ' is online');
+    });
+
+    cluster.on('exit', function(worker, code, signal) {
+        console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
+        console.log('Starting a new worker');
+        cluster.fork();
+    });
+} else {
+  var app = express();
+  app.all('/pid', function(req, res) {res.send('process ' + process.pid + ' says hello!').end();})//can be removed
+  initmiddleware(app);
+  initroutes(app);
+  startserver(app);
+  module.exports = app;
+}
+
