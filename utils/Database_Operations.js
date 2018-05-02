@@ -11,8 +11,8 @@ const CreateDBCollection = (DBName, CollectionName) => {
         dbo.createCollection(CollectionName, function (err, res) {
             if (err) throw err;
             console.log(`Database  ${CollectionName} created: at ${new Date().toLocaleString()}`);
-            db.close();
         });
+        db.close();
     });
 }
 
@@ -23,8 +23,9 @@ const InsertOne = (DBName, CollectionName, DataObject) => {
         dbo.collection(CollectionName).insertOne(DataObject, function (err, res) {
             if (err) throw err;
             console.log(`1 document inserted into DB: ${DBName}, Collection: ${CollectionName} at ${new Date().toLocaleString()}`);
-            db.close();
+            
         });
+        db.close();
     });
 }
 
@@ -36,8 +37,8 @@ const Find = (DBName, CollectionName) => {
             if (err) throw err;
             console.log(result);
             return result;
-            db.close();
         });
+        db.close();
     });
 }
 
@@ -55,13 +56,16 @@ const FindOne = (DBName, CollectionName) => {
 }
 
 const Query = (DBName, CollectionName, Query) => {
-    MongoClient.connect(url, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db(DBName);
-        dbo.collection(CollectionName).find(Query).toArray(function (err, result) {
-            if (err) throw err;
-            console.log(result);
-            dbclose();
+    return new Promise((resolve, reject)=> {
+        MongoClient.connect(url, function (err, db) {
+            if (err) reject(err);
+            var dbo = db.db(DBName);
+            dbo.collection(CollectionName).find(Query).toArray(function (err, result) {
+                if (err) reject(err);
+                console.log(result);
+           resolve(result);
+                db.close();
+            });
         });
     });
 }
@@ -128,8 +132,8 @@ const UpdateMany = (DBName, CollectionName, Query, UpdateValues) => {
         dbo.collection(CollectionName).updateMany(Query, newvalues, function (err, res) {
             if (err) throw err;
             console.log(res.result.nModified + ` document(s) updated at ${new Date().toLocaleString()}`);
-            db.close();
         });
+        db.close();
     });
 }
 
