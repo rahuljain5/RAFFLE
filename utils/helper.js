@@ -39,7 +39,7 @@ const getSemesters = (tables, str) => {
 
 const UsnGenerator = (base_usn) => {
   var usn = [];
-  for (var i = 1; i < 120; i++) {
+  for (var i = 1; i < 130; i++) {
     i = padder(i, 3);
     usn[i - 1] = base_usn + i;
   }
@@ -48,7 +48,7 @@ const UsnGenerator = (base_usn) => {
 
 const RangeUsnGenerator = (base_usn, start_usn, last_usn, callback) => {
   var usn = [];
-  for (var i = start_usn; i < last_usn; i++) {
+  for (var i = start_usn; i <= last_usn; i++) {
     i = padder(i, 3);
     usn[i - 1] = base_usn + i;
   }
