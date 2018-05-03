@@ -33,7 +33,7 @@ const extract = (usn) =>{
 //                           	console.log("Inside Axios Respone => "+ responeData)
                             responeData["error"] = false;
                             resolve(responeData);
-                           // console.log(`${usn}: Result Fetch Completed`);
+                           console.log(`${usn}: Result Fetch Completed`);
                         }
                     } else {
                         var error = `Request Returned ${response.status}: ${response.statusText}`;
