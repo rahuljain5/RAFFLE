@@ -53,7 +53,7 @@ router.post('/NewClassRoom', function (req, res) {
     }
 });
 
-router.post('/NewFeedback', function (req, res) {
+router.post('/ClassDetail', function (req, res) {
     console.log(req);
     
     DB.Query('Faculty_Feedback', 'ClassRooms', {
@@ -68,5 +68,25 @@ router.post('/NewFeedback', function (req, res) {
         console.error(err);
     })
 })
+
+router.post('/AddFeedback', function (req, res) {
+    if (req.headers["content-type"] == 'application/json') {
+        DB.InsertOne('Faculty_Feedback', 'Feedback', req.body)
+            .then(function (result) {
+                console.log(`New FeedBack Recorded at: ${new Date().toLocaleString()}`);
+                res.send(JSON.stringify({
+                    status: "success"
+                }));
+            })
+            .catch(err => {
+                console.error("Error Occured Creating New ClassRoom");
+            })
+    } else {
+        res.send(JSON.stringify({
+            status: "Failed",
+            message: "Improper Content Type; JSON Expected."
+        }));
+    }
+});
 
 module.exports = router;
