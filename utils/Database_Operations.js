@@ -11,7 +11,16 @@ const CreateDBCollection = (DBName, CollectionName) => {
             var dbo = db.db(DBName);
             dbo.createCollection(CollectionName, function (err, res) {
                 if (err) reject(err);
-                console.log(`Database  ${CollectionName} created: at ${new Date().toLocaleString()}`);
+                console.log(`Collection  ${CollectionName} created: at ${new Date().toLocaleString()}`);
+            });
+            dbo.collection("ClassRooms").createIndex({
+                "classroom": 1,
+                "batch": 1
+            }, {
+                unique: true
+            }, function (err, res) {
+                if (err) console.log(err);
+                console.log("Index Created!");
             });
             db.close();
         });
@@ -27,7 +36,24 @@ const InsertOne = (DBName, CollectionName, DataObject) => {
                 if (err) reject(err);
                 else {
                     console.log(`1 document inserted into DB: ${DBName}, Collection: ${CollectionName} at ${new Date().toLocaleString()}`);
-                    resolve(result);
+                    resolve(res);
+                }
+            });
+            db.close();
+        });
+    });
+}
+
+const InsertMany = (DBName, CollectionName, DataObject) => {
+    return new Promise((resolve, reject) => {
+        MongoClient.connect(url, function (err, db) {
+            if (err) reject(err);
+            var dbo = db.db(DBName);
+            dbo.collection(CollectionName).insertMany(DataObject, function (err, res) {
+                if (err) reject(err);
+                else {
+                    console.log(`1 document inserted into DB: ${DBName}, Collection: ${CollectionName} at ${new Date().toLocaleString()}`);
+                    resolve(res);
                 }
             });
             db.close();
@@ -38,14 +64,15 @@ const InsertOne = (DBName, CollectionName, DataObject) => {
 const Find = (DBName, CollectionName) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
-            if (err) reject(err);
+            if (err) console.log(err);
             var dbo = db.db(DBName);
-            dbo.collection(CollectionName).find({}).toArray(function (err, result) {
+            var collection = dbo.collection(CollectionName);
+            collection.find().toArray(function (err, result) {
                 if (err) reject(err);
-                console.log(result);
                 resolve(result);
-            });
-            db.close();
+                db.close();
+            })
+
         });
     })
 }
@@ -57,7 +84,7 @@ const FindOne = (DBName, CollectionName) => {
             var dbo = db.db(DBName);
             dbo.collection(CollectionName).findOne({}, function (err, result) {
                 if (err) reject(err);
-                console.log(result.name);
+                console.log(result);
                 resolve(result);
                 db.close();
             });
@@ -88,6 +115,7 @@ const DeleteOne = (DBName, CollectionName, DeleteQuery) => {
             dbo.collection(CollectionName).deleteOne(myquery, function (err, obj) {
                 if (err) reject(err);
                 console.log(`Mongo: ${obj.result.n} document(s) deleted from ${DBName + "->" + CollectionName } at ${new Date().toLocaleString()}`);
+                resolve(obj);
                 db.close();
             });
         });
@@ -164,6 +192,7 @@ const UpdateMany = (DBName, CollectionName, Query, UpdateValues) => {
 
 exports.CreateDBCollection = CreateDBCollection;
 exports.InsertOne = InsertOne;
+exports.InsertMany = InsertMany;
 exports.Find = Find;
 exports.FindOne = FindOne;
 exports.Query = Query;
