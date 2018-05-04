@@ -55,18 +55,18 @@ router.post('/NewClassRoom', function (req, res) {
 
 router.post('/ClassDetail', function (req, res) {
     console.log(req);
-    
+
     DB.Query('Faculty_Feedback', 'ClassRooms', {
-        classroom : req.query.classroom,
-        batch :  req.query.batch
-    })
-    .then(function (result) {
-        res.send(JSON.stringify(result));
-    })
-    .catch(err => {
-        console.error("An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch);
-        console.error(err);
-    })
+            classroom: req.query.classroom,
+            batch: req.query.batch
+        })
+        .then(function (result) {
+            res.send(JSON.stringify(result));
+        })
+        .catch(err => {
+            console.error("An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch);
+            console.error(err);
+        })
 })
 
 router.post('/AddFeedback', function (req, res) {

@@ -14,7 +14,7 @@ var Result = require('./routes/Result.js');
 var Feedback = require('./routes/Feedback.js');
 var upload = multer({ dest: 'tmp/' });
 var app = express();
-
+var DBSync = require("./models/Faculty_Feedback.js")
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
