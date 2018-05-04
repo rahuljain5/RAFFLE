@@ -1,14 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var DB = require('../utils/Database_Operations.js');
-DB.CreateDBCollection('Faculty_Feedback', 'ClassRooms');
+// DB.CreateDBCollection('Faculty_Feedback', 'ClassRooms');
 
 router.all('/', function(req, res) {
 
 });
 
 router.get('/:id', function(req, res) {
-       DB.Query('Faculty_Feedback', 'ClassRooms', {classroom: req.params.id})
+    console.log(req)
+    DB.Query('Faculty_Feedback', 'ClassRooms', {classroom: req.params.id})
         .then(function(result){
             res.send(JSON.stringify(result));    
         })
@@ -18,9 +19,10 @@ router.get('/:id', function(req, res) {
     })
 });
 
-router.get('/ClassRooms', function(req, res) {
+router.post('/ClassRooms', function(req, res) {
     DB.Find('Faculty_Feedback', 'ClassRooms')
     .then(function(classrooms){
+        console.log(`ClassRooms Query: ${classrooms} `)
         res.send(JSON.stringify(classrooms));
     })
     .catch(err=>{
@@ -44,7 +46,6 @@ router.post('/NewClassRoom', function(req, res) {
     {
         res.send(JSON.stringify({status: "Failed", message: "Improper Content Type; JSON Expected."}));
     }
-    console.log(req.headers["content-type"]);
 });
 
 module.exports = router;
