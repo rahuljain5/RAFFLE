@@ -14,7 +14,7 @@ var RangeResult = require('./routes/RangeResult.js');
 var Result = require('./routes/Result.js');
 
 const initmiddleware = (app) =>{
-var Feedback = require('./routes/Feedback.js');
+// var Feedback = require('./routes/Feedback.js');
 var upload;
 const initmiddleware = (app) =>{
 upload = multer({ dest: 'tmp/' });
@@ -46,7 +46,7 @@ const initroutes = (app) => {
 
   app.use("/Result", Result);
 
-  app.use("/Feedback", Feedback);
+//   app.use("/Feedback", Feedback);
 
   app.post('/CSVResult', upload.single('filetoupload'), function (req, res) {
     console.log("File Saved At:" + req.file.path);
