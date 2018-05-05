@@ -5,7 +5,7 @@ var jsdom = require('jsdom');
 var padder = require('zpad');
 var Helper = require('./helper.js');
 var config = require('../config/config.js');
-const redis = require("../services/redis")
+const redis = require("../services/redis");
 // var DB = require('./Database_Operations.js');
 const {
   JSDOM
@@ -38,19 +38,19 @@ const extract = (usn) => {
                 resolve(failresponse);
               } else {
                 var str, sems = [];
-                var responeData = {};
+                var responseData = {};
                 var parser = new JSDOM(str);
                 var tables = parser.window.document.getElementsByClassName("divTable");
                 sems = Helper.getSemesters(tables, str);
-                responeData = Helper.getNameUsn(parser, responeData);
-                responeData.Results = Helper.ResultJsonParser(tables, sems);
-                //                           	console.log("Inside Axios Respone => "+ responeData)
-                responeData["error"] = false;
+                responseData = Helper.getNameUsn(parser, responseData);
+                responseData.Results = Helper.ResultJsonParser(tables, sems);
+                //                           	console.log("Inside Axios Respone => "+ responseData)
+                responseData["error"] = false;
                 console.log("Set data in Redis");
-                redis.setex(usn, JSON.stringify(responeData), config.result_ttl); //TTL 10min
-                //                             redis.set(usn,JSON.stringify(responeData));
+                redis.setex(usn, JSON.stringify(responseData), config.result_ttl); //TTL 10min
+                //                             redis.set(usn,JSON.stringify(responseData));
                 console.log("Resolve Response");
-                resolve(responeData);
+                resolve(responseData);
                 console.log(`${usn}: Result Fetch Completed`);
               }
             } else {
