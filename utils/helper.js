@@ -27,8 +27,6 @@ const ResultJsonParser = (tables, sems) => {
   }
   if(Backlog!=null)
   Results["Backlogs"] = Backlog;
-  console.log(Backlog);
-  
   return Results;
 }
 
