@@ -39,15 +39,17 @@ const extract = (usn) => {
               } else {
                 var str, sems = [];
                 var responseData = {};
+                var date = new Date();
                 var parser = new JSDOM(str);
                 var tables = parser.window.document.getElementsByClassName("divTable");
                 sems = Helper.getSemesters(tables, str);
                 responseData = Helper.getNameUsn(parser, responseData);
+                responseData.timestamp = `${date.getMonth()}-${date.getFullYear()}`;
                 responseData.Results = Helper.ResultJsonParser(tables, sems);
                 //                           	console.log("Inside Axios Respone => "+ responseData)
                 responseData["error"] = false;
                 console.log("Set data in Redis");
-                redis.setex(usn, JSON.stringify(responseData), config.result_ttl); //TTL 10min
+                redis.setex(usn, JSON.stringify(responseData), config.result_ttl); //TTL 14Days
                 //                             redis.set(usn,JSON.stringify(responseData));
                 console.log("Resolve Response");
                 resolve(responseData);
