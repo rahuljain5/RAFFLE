@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var DB = require('../utils/Database_Operations.js');
+var analyze = require('../utils/analyze.js');
+var config = require('../config/config.js');
+const redis = require("../services/redis.js");
+
 // DB.CreateDBCollection('Faculty_Feedback', 'ClassRooms');
 
 router.all('/', function (req, res) {
@@ -8,7 +12,6 @@ router.all('/', function (req, res) {
 });
 
 router.get('/:id', function (req, res) {
-    console.log(req)
     DB.Query('Faculty_Feedback', 'ClassRooms', {
             classroom: req.params.id
         })
@@ -54,19 +57,30 @@ router.post('/NewClassRoom', function (req, res) {
 });
 
 router.post('/ClassDetail', function (req, res) {
-    console.log(req);
+    redis.get(req.query.classroom + req.query.batch, (err, cachedData) => {
+        if (!err) {
+            if (cachedData == null || cachedData == undefined) {
+                DB.Query('Faculty_Feedback', 'ClassRooms', {
+                        classroom: req.query.classroom,
+                        batch: req.query.batch
+                    })
+                    .then(function (result) {
+                        console.log("Got Result From DataBase");
+                        redis.setex(req.query.classroom + req.query.batch, JSON.stringify(result), config.result_ttl);
+                        res.send(JSON.stringify(result));
+                    })
+                    .catch(err => {
+                        console.error("An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch);
+                        res.send("An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch);
+                        console.error(err);
+                    })
+            } else {
+                console.log("Got Result From Redis");
+                res.send(cachedData);
+            }
+        } else console.error(err);
+    })
 
-    DB.Query('Faculty_Feedback', 'ClassRooms', {
-            classroom: req.query.classroom,
-            batch: req.query.batch
-        })
-        .then(function (result) {
-            res.send(JSON.stringify(result));
-        })
-        .catch(err => {
-            console.error("An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch);
-            console.error(err);
-        })
 })
 
 router.post('/AddFeedback', function (req, res) {
@@ -89,4 +103,15 @@ router.post('/AddFeedback', function (req, res) {
     }
 });
 
+router.get('/Analyze', function (req, res) {
+    DB.Find('Faculty_Feedback', 'Feedback', req.body)
+    .then(function (classFeedback) {
+        analyze.Feedback(JSON.stringify(classFeedback));
+    })
+    .catch(err => {
+        console.error("Error Occoured getting the Class Room :" + err);
+
+    })
+
+})
 module.exports = router;

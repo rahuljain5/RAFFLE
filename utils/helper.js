@@ -4,6 +4,8 @@ var padder = require('zpad');
 
 const ResultJsonParser = (tables, sems) => {
   var Results = {};
+  var Regular = {};
+  var Backlog = {};
   for (var i = 0; i < tables.length - 1; i++) {
     var tablerows = tables[i].getElementsByClassName("divTableRow");
     var tableheaders = tablerows[0];
@@ -16,8 +18,16 @@ const ResultJsonParser = (tables, sems) => {
         subResult[headers[k].innerHTML] = rowcells[k].innerHTML;
       semResult[j] = subResult;
     }
-    Results["Sem" + sems[i]] = semResult;
+
+    if(i==0){
+      Regular["Sem" + sems[i]] = semResult;
+      Results["CurrentSem"] = Regular;
+    }
+    else
+      Backlog["Sem" + sems[i]] = semResult;
   }
+  if(Backlog!=null)
+  Results["Backlogs"] = Backlog;
   return Results;
 }
 
