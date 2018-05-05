@@ -16,5 +16,11 @@ module.exports = {
     redis_url : process.env.REDIS_URL
   },
   result_url: 'http://results.vtu.ac.in/vitaviresultcbcs/resultpage.php',
+<<<<<<< HEAD
   result_ttl : 14*24*60*60// 14 Days
+=======
+
+  result_ttl : 14*24*60*60// 14 Days
+
+>>>>>>> PromiseResolve
 };
