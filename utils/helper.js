@@ -18,6 +18,7 @@ const ResultJsonParser = (tables, sems) => {
         subResult[headers[k].innerHTML] = rowcells[k].innerHTML;
       semResult[j] = subResult;
     }
+
     if(i==0){
       Regular["Sem" + sems[i]] = semResult;
       Results["CurrentSem"] = Regular;

@@ -38,6 +38,7 @@ const extract = (usn) => {
                 resolve(failresponse);
               } else {
                 var str, sems = [];
+
                 var responseData = {};
                 var parser = new JSDOM(str);
                 var tables = parser.window.document.getElementsByClassName("divTable");
