@@ -13,7 +13,6 @@ var file_handler = require('./utils/FileHandler.js');
 var RangeResult = require('./routes/RangeResult.js');
 var Result = require('./routes/Result.js');
 
-const initmiddleware = (app) =>{
 // var Feedback = require('./routes/Feedback.js');
 var upload;
 const initmiddleware = (app) =>{
