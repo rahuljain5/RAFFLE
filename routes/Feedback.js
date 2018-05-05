@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var DB = require('../utils/Database_Operations.js');
+var analyze = require('../utils/analyze.js');
 var config = require('../config/config.js');
 const redis = require("../services/redis.js");
 
@@ -70,6 +71,7 @@ router.post('/ClassDetail', function (req, res) {
                     })
                     .catch(err => {
                         console.error("An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch);
+                        res.send("An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch);
                         console.error(err);
                     })
             } else {
@@ -101,4 +103,15 @@ router.post('/AddFeedback', function (req, res) {
     }
 });
 
+router.get('/Analyze', function (req, res) {
+    DB.Find('Faculty_Feedback', 'Feedback', req.body)
+    .then(function (classFeedback) {
+        analyze.Feedback(JSON.stringify(classFeedback));
+    })
+    .catch(err => {
+        console.error("Error Occoured getting the Class Room :" + err);
+
+    })
+
+})
 module.exports = router;
