@@ -37,7 +37,7 @@ router.post('/ClassRooms', function (req, res) {
 
 router.post('/NewClassRoom', function (req, res) {
     if (req.headers["content-type"] == 'application/json') {
-        DB.InsertOne('Faculty_Feedback', 'ClassRooms', req.body )
+        DB.InsertOne('Faculty_Feedback', 'ClassRooms', req.body)
             .then(function (result) {
                 console.log(`New ClassRoom : ${req.body.classroom} Created at ${new Date().toLocaleString()}`);
                 res.send(JSON.stringify({
@@ -104,16 +104,28 @@ router.post('/AddFeedback', function (req, res) {
 
 router.post('/Analyze', function (req, res) {
     // console.log(req);
-
-   Promise.all(analyze.Feedback(req.query.classroom, req.query.batch))
-   .then(function(values){
-       analyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function(count){
-        values.push(count);
-        res.send(JSON.stringify(values));
-       })  
-   })
-   .catch(err=>{
-       console.error(err);
-   })
+    redis.get("Analyze" + req.query.classroom + req.query.batch, (err, cachedData) => {
+        if (!err) {
+            if (cachedData == null || cachedData == undefined) {
+                Promise.all(analyze.Feedback(req.query.classroom, req.query.batch))
+                    .then(function (values) {
+                        analyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function (count) {
+                            values.push(count);
+                            console.log("Setting Value in Redis");
+                            redis.setex("Analyze" + req.query.classroom + req.query.batch, JSON.stringify(values), config.result_ttl);
+                            res.send(JSON.stringify(values));
+                        })
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            } else {
+                console.log("Getting Value from Redis");
+                res.send(cachedData);
+            }
+        } else {
+            console.error(err);
+        }
+    })
 })
 module.exports = router;
