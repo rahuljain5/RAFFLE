@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var DB = require('../utils/Database_Operations.js');
-var analyze = require('../utils/analyze.js');
+var FeedbackAnalyze = require('../utils/FeedbackAnalyze');
 var config = require('../config/config.js');
 const redis = require("../services/redis.js");
 
@@ -106,7 +106,7 @@ router.post('/Analyze', function (req, res) {
     redis.get("Analyze" + req.query.classroom + req.query.batch, (err, cachedData) => {
         if (!err) {
             if (cachedData == null || cachedData == undefined) {
-                Promise.all(analyze.Feedback(req.query.classroom, req.query.batch))
+                Promise.all(FeedbackAnalyze.Feedback(req.query.classroom, req.query.batch))
                     .then(function (values) {
                         analyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function (count) {
                             values.push(count);
