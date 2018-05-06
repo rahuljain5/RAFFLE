@@ -44,7 +44,7 @@ const initroutes = (app) => {
 
   app.use("/Result", Result);
 
-//   app.use("/Feedback", Feedback);
+  app.use("/Feedback", Feedback);
 
   app.post('/CSVResult', upload.single('filetoupload'), function (req, res) {
     console.log("File Saved At:" + req.file.path);
