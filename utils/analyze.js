@@ -69,7 +69,8 @@ const getTotalFeedbacksCount = (classroom, batch, cb) =>{
     }]; 
     DB.Aggregate('Faculty_Feedback', 'Feedback', Query)
     .then(function (result) {
-        cb(result);
+        result["_id"] = classroom+batch;
+        cb(result); 
 })
 .catch(err =>{
     console.error(err);
