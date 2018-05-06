@@ -4,7 +4,6 @@ var DB = require('../utils/Database_Operations.js');
 var analyze = require('../utils/analyze.js');
 var config = require('../config/config.js');
 const redis = require("../services/redis.js");
-
 // DB.CreateDBCollection('Faculty_Feedback', 'ClassRooms');
 
 router.all('/', function (req, res) {
@@ -38,7 +37,7 @@ router.post('/ClassRooms', function (req, res) {
 
 router.post('/NewClassRoom', function (req, res) {
     if (req.headers["content-type"] == 'application/json') {
-        DB.InsertOne('Faculty_Feedback', 'ClassRooms', req.body)
+        DB.InsertOne('Faculty_Feedback', 'ClassRooms', req.body )
             .then(function (result) {
                 console.log(`New ClassRoom : ${req.body.classroom} Created at ${new Date().toLocaleString()}`);
                 res.send(JSON.stringify({
@@ -85,7 +84,7 @@ router.post('/ClassDetail', function (req, res) {
 
 router.post('/AddFeedback', function (req, res) {
     if (req.headers["content-type"] == 'application/json') {
-        DB.InsertOne('Faculty_Feedback', 'Feedback', JSON.stringify(req.body))
+        DB.InsertOne('Faculty_Feedback', 'Feedback', req.body)
             .then(function (result) {
                 console.log(`New FeedBack Recorded at: ${new Date().toLocaleString()}`);
                 res.send(JSON.stringify({
@@ -111,8 +110,7 @@ router.post('/Analyze', function (req, res) {
        analyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function(count){
         values.push(count);
         res.send(JSON.stringify(values));
-       })
-       
+       })  
    })
    .catch(err=>{
        console.error(err);
