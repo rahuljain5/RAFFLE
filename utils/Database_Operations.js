@@ -33,7 +33,7 @@ const InsertOne = (DBName, CollectionName, DataObject) => {
             if (err) reject(err);
             var dbo = db.db(DBName);
             dbo.collection(CollectionName).insertOne(DataObject, function (err, res) {
-                if (err) reject(err);
+                if (err) console.error(err);
                 else {
                     console.log(`1 document inserted into DB: ${DBName}, Collection: ${CollectionName} at ${new Date().toLocaleString()}`);
                     resolve(res);
@@ -106,6 +106,22 @@ const Query = (DBName, CollectionName, Query) => {
         });
     });
 }
+
+const Aggregate = (DBName, CollectionName, Query) => {
+    return new Promise((resolve, reject) => {
+        MongoClient.connect(url, function (err, db) {
+            if (err) reject(err);
+            var dbo = db.db(DBName);
+            dbo.collection(CollectionName).aggregate(Query).toArray(function (err, result) {
+                if (err) reject(err);
+                console.log(result);
+                resolve(result);
+                db.close();
+            });
+        });
+    });
+}
+
 
 const DeleteOne = (DBName, CollectionName, DeleteQuery) => {
     return new Promise((resolve, reject) => {
@@ -201,3 +217,4 @@ exports.DeleteMany = DeleteMany;
 exports.Sort = Sort;
 exports.UpdateMany = UpdateMany;
 exports.UpdateOne = UpdateOne;
+exports.Aggregate = Aggregate;
