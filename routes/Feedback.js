@@ -105,12 +105,12 @@ router.post('/AddFeedback', function (req, res) {
 
 router.post('/Analyze', function (req, res) {
     // console.log(req);
+
    Promise.all(analyze.Feedback(req.query.classroom, req.query.batch))
    .then(function(values){
        analyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function(count){
-        res.header("content-type:application/json")
-        res.write(JSON.stringify(count))
-        res.end(JSON.stringify(values));
+        values.push(count);
+        res.send(JSON.stringify(values));
        })
        
    })
