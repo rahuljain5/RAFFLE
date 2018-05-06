@@ -24,34 +24,22 @@ const Querymaker = (classroom, batch) =>{
         }];
         Query.push(DBQuery);
     }
-    // console.log(Query);
-    
     return Query;
 }
+
 const ScoreAggregator = (Query) => {
     return new Promise((resolve, reject) => {
-        // var FeedbackStats = {
-        //     "_id": req.query.batch + req.query.classroom
-        // };
-        // console.log(Query);
         var AnalyzedFeedbackJson = {};
             DB.Aggregate('Faculty_Feedback', 'Feedback', Query)
             .then(function (result) {
-                // console.log("Got Result From DataBase");
-                // redis.setex(req.query.classroom + req.query.batch, JSON.stringify(result), config.result_ttl);
-                // console.log(JSON.stringify(result));
                 AnalyzedFeedbackJson= {a : result.totala, b: result.totalb, total: result.totala+result.totalb};
                 resolve(AnalyzedFeedbackJson);
-                // console.log(JSON.stringify(AnalyzedFeedbackJson));
-                // console.log(result);
-                
             })
             .catch(err => {
                 console.error(err);
                 reject(err);
             })
     } )
-    // });
 }
 
 const getTotalFeedbacksCount = (classroom, batch, cb) =>{

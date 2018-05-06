@@ -4,7 +4,7 @@ var DB = require('../utils/Database_Operations.js');
 var analyze = require('../utils/analyze.js');
 var config = require('../config/config.js');
 const redis = require("../services/redis.js");
-// DB.CreateDBCollection('Faculty_Feedback', 'ClassRooms');
+
 
 router.all('/', function (req, res) {
     res.send("<h1>Welcome to Faculty Feedback</h1>")
@@ -103,7 +103,6 @@ router.post('/AddFeedback', function (req, res) {
 });
 
 router.post('/Analyze', function (req, res) {
-    // console.log(req);
     redis.get("Analyze" + req.query.classroom + req.query.batch, (err, cachedData) => {
         if (!err) {
             if (cachedData == null || cachedData == undefined) {
