@@ -114,8 +114,8 @@ const Aggregate = (DBName, CollectionName, Query) => {
             var dbo = db.db(DBName);
             dbo.collection(CollectionName).aggregate(Query).toArray(function (err, result) {
                 if (err) reject(err);
-                console.log(result);
-                resolve(result);
+                // console.log(result);
+                resolve(result[0]);
                 db.close();
             });
         });
