@@ -104,16 +104,18 @@ router.post('/AddFeedback', function (req, res) {
 });
 
 router.post('/Analyze', function (req, res) {
-    DB.Query('Faculty_Feedback', 'Feedback', {
-            classroom: req.query.classroom,
-            batch: req.query.batch
-        }).then(function (query_result) {
-            
-            res.send(query_result);
-        })
-        .catch(err => {
-            console.error("Error Occoured getting the Class Room :" + err);
-        })
-
+    // console.log(req);
+   Promise.all(analyze.Feedback(req.query.classroom, req.query.batch))
+   .then(function(values){
+       analyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function(count){
+        res.header("content-type:application/json")
+        res.write(JSON.stringify(count))
+        res.end(JSON.stringify(values));
+       })
+       
+   })
+   .catch(err=>{
+       console.error(err);
+   })
 })
 module.exports = router;
