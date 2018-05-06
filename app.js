@@ -12,11 +12,13 @@ var ClassResult = require('./routes/ClassResult.js');
 var file_handler = require('./utils/FileHandler.js');
 var RangeResult = require('./routes/RangeResult.js');
 var Result = require('./routes/Result.js');
-var upload = multer({
-  dest: 'tmp/'
-});
 
+// var Feedback = require('./routes/Feedback.js');
+var upload;
 const initmiddleware = (app) =>{
+upload = multer({ dest: 'tmp/' });
+var app = express();
+  
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -42,6 +44,8 @@ const initroutes = (app) => {
   app.use('/RangeResult', RangeResult);
 
   app.use("/Result", Result);
+
+//   app.use("/Feedback", Feedback);
 
   app.post('/CSVResult', upload.single('filetoupload'), function (req, res) {
     console.log("File Saved At:" + req.file.path);
