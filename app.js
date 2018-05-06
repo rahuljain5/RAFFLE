@@ -14,7 +14,8 @@ var RangeResult = require('./routes/RangeResult.js');
 var Result = require('./routes/Result.js');
 var Feedback = require('./routes/Feedback.js');
 var upload;
-const initmiddleware = (app) =>{
+var app = express();
+
 upload = multer({ dest: 'tmp/' });
 var app = express();
   
@@ -31,7 +32,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-}
+
 
 const initroutes = (app) => {
   app.use('/', index);
@@ -92,9 +93,8 @@ if(cluster.isMaster) {
         cluster.fork();
     });
 } else {
-  var app = express();
   app.all('/pid', function(req, res) {res.send('process ' + process.pid + ' says hello!').end();})//can be removed
-  initmiddleware(app);
+
   initroutes(app);
   startserver(app);
   module.exports = app;
