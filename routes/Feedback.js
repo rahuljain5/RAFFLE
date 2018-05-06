@@ -85,7 +85,7 @@ router.post('/ClassDetail', function (req, res) {
 
 router.post('/AddFeedback', function (req, res) {
     if (req.headers["content-type"] == 'application/json') {
-        DB.InsertOne('Faculty_Feedback', 'Feedback', req.body)
+        DB.InsertOne('Faculty_Feedback', 'Feedback', JSON.stringify(req.body))
             .then(function (result) {
                 console.log(`New FeedBack Recorded at: ${new Date().toLocaleString()}`);
                 res.send(JSON.stringify({
@@ -103,15 +103,17 @@ router.post('/AddFeedback', function (req, res) {
     }
 });
 
-router.get('/Analyze', function (req, res) {
-    DB.Find('Faculty_Feedback', 'Feedback', req.body)
-    .then(function (classFeedback) {
-        analyze.Feedback(JSON.stringify(classFeedback));
-    })
-    .catch(err => {
-        console.error("Error Occoured getting the Class Room :" + err);
-
-    })
+router.post('/Analyze', function (req, res) {
+    DB.Query('Faculty_Feedback', 'Feedback', {
+            classroom: req.query.classroom,
+            batch: req.query.batch
+        }).then(function (query_result) {
+            
+            res.send(query_result);
+        })
+        .catch(err => {
+            console.error("Error Occoured getting the Class Room :" + err);
+        })
 
 })
 module.exports = router;
