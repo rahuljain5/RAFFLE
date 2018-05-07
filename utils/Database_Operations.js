@@ -33,7 +33,7 @@ const InsertOne = (DBName, CollectionName, DataObject) => {
             if (err) reject(err);
             var dbo = db.db(DBName);
             dbo.collection(CollectionName).insertOne(DataObject, function (err, res) {
-                if (err) console.error(err);
+                if (err) reject(err);
                 else {
                     console.log(`1 document inserted into DB: ${DBName}, Collection: ${CollectionName} at ${new Date().toLocaleString()}`);
                     resolve(res);
@@ -121,7 +121,6 @@ const Aggregate = (DBName, CollectionName, Query) => {
         });
     });
 }
-
 
 const DeleteOne = (DBName, CollectionName, DeleteQuery) => {
     return new Promise((resolve, reject) => {
@@ -218,3 +217,4 @@ exports.Sort = Sort;
 exports.UpdateMany = UpdateMany;
 exports.UpdateOne = UpdateOne;
 exports.Aggregate = Aggregate;
+
