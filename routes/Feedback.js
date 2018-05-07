@@ -5,7 +5,6 @@ var FeedbackAnalyze = require('../utils/FeedbackAnalyze');
 var config = require('../config/config.js');
 const redis = require("../services/redis.js");
 
-
 router.all('/', function (req, res) {
     res.send("<h1>Welcome to Faculty Feedback</h1>")
 });
