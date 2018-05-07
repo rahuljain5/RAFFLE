@@ -108,11 +108,11 @@ router.post('/Analyze', function (req, res) {
             if (cachedData == null || cachedData == undefined) {
                 Promise.all(FeedbackAnalyze.Feedback(req.query.classroom, req.query.batch))
                     .then(function (values) {
-                        analyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function (count) {
-                            values.push(count);
+                        FeedbackAnalyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function (count) {
+                            var fbjson = FeedbackAnalyze.toFeedbackJson(values, count);
                             console.log("Setting Value in Redis");
                             redis.setex("Analyze" + req.query.classroom + req.query.batch, JSON.stringify(values), config.result_ttl);
-                            res.send(JSON.stringify(values));
+                            res.send(JSON.stringify(fbjson));
                         })
                     })
                     .catch(err => {
