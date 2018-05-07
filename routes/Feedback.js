@@ -18,7 +18,13 @@ router.get('/:id', function (req, res) {
         })
         .catch(err => {
             console.error("An Error Occoured getting the Class" + req.params.id);
+            let failresponse = {
+                error: true,
+                errorMessage: err,
+                userMessage: "An Error Occoured getting the Class" + req.params.id
+            }
             console.error(err);
+            res.send(failresponse);
         })
 });
 
@@ -30,7 +36,13 @@ router.post('/ClassRooms', function (req, res) {
         })
         .catch(err => {
             console.error("Error Occoured getting the Class Room :" + err);
-
+            let failresponse = {
+                error: true,
+                errorMessage: err,
+                userMessage: "Error Occoured getting the Class Room :" + err
+            }
+            console.error(err);
+            res.send(JSON.stringify(failresponse));
         })
 });
 
@@ -45,6 +57,13 @@ router.post('/NewClassRoom', function (req, res) {
             })
             .catch(err => {
                 console.error("Error Occured Creating New ClassRoom");
+                let failresponse = {
+                    error: true,
+                    errorMessage: err,
+                    userMessage: "Error Occured Creating New ClassRoom"
+                }
+                console.error(err);
+                res.send(JSON.stringify(failresponse));
             })
     } else {
         res.send(JSON.stringify({
@@ -69,7 +88,13 @@ router.post('/ClassDetail', function (req, res) {
                     })
                     .catch(err => {
                         console.error("An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch);
-                        res.send("An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch);
+                        let failresponse = {
+                            error: true,
+                            errorMessage: err,
+                            userMessage: "An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch
+                        }
+                        console.error(err);
+                        console.log(JSON.stringify(failresponse))
                         console.error(err);
                     })
             } else {
@@ -91,7 +116,13 @@ router.post('/AddFeedback', function (req, res) {
                 }));
             })
             .catch(err => {
-                console.error("Error Occured Creating New ClassRoom");
+                let failresponse = {
+                    error: true,
+                    errorMessage: err,
+                    userMessage: "An Error Occoured recording the Feedback"
+                }
+                console.error(err);
+                console.log(JSON.stringify(failresponse))
             })
     } else {
         res.send(JSON.stringify({
@@ -115,6 +146,11 @@ router.post('/Analyze', function (req, res) {
                         })
                     })
                     .catch(err => {
+                        res.send(JSON.stringify({
+                            error: true,
+                            message: err,
+                            userMessage: "Improper Content Type; JSON Expected."
+                        }));
                         console.error(err);
                     })
             } else {

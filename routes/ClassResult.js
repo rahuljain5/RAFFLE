@@ -15,7 +15,13 @@ router.all('/', function (req, res) {
       res.send(values);
     })
       .catch(err => {
+        let failresponse = {
+          error: true,
+          errorMessage: err,
+          userMessage: "Something Went wrong"
+        }
         console.error(err);
+        res.send(failresponse);
       });
   } catch (error) {
     throw (error);
