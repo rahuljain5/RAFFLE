@@ -1,11 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var DB = require('../utils/Database_Operations.js');
-var analyze = require('../utils/analyze.js');
+var FeedbackAnalyze = require('../utils/FeedbackAnalyze');
 var config = require('../config/config.js');
 const redis = require("../services/redis.js");
-
-// DB.CreateDBCollection('Faculty_Feedback', 'ClassRooms');
 
 router.all('/', function (req, res) {
     res.send("<h1>Welcome to Faculty Feedback</h1>")
@@ -103,15 +101,29 @@ router.post('/AddFeedback', function (req, res) {
     }
 });
 
-router.get('/Analyze', function (req, res) {
-    DB.Find('Faculty_Feedback', 'Feedback', req.body)
-    .then(function (classFeedback) {
-        analyze.Feedback(JSON.stringify(classFeedback));
+router.post('/Analyze', function (req, res) {
+    redis.get("Analyze" + req.query.classroom + req.query.batch, (err, cachedData) => {
+        if (!err) {
+            if (cachedData == null || cachedData == undefined) {
+                Promise.all(FeedbackAnalyze.Feedback(req.query.classroom, req.query.batch))
+                    .then(function (values) {
+                        FeedbackAnalyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function (count) {
+                            var fbjson = FeedbackAnalyze.toFeedbackJson(values, count);
+                            console.log("Setting Value in Redis");
+                            redis.setex("Analyze" + req.query.classroom + req.query.batch, JSON.stringify(values), config.result_ttl);
+                            res.send(JSON.stringify(fbjson));
+                        })
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            } else {
+                console.log("Getting Value from Redis");
+                res.send(cachedData);
+            }
+        } else {
+            console.error(err);
+        }
     })
-    .catch(err => {
-        console.error("Error Occoured getting the Class Room :" + err);
-
-    })
-
 })
 module.exports = router;

@@ -10,7 +10,6 @@ const redis = require("../services/redis");
 const {
   JSDOM
 } = jsdom;
-//Function that scrapes results from VTU
 
 const extract = (usn) => {
   return new Promise((resolve, reject) => {
@@ -75,7 +74,6 @@ const extract = (usn) => {
       }
     })
   });
-
 }
 
 const scrape = (USNs) => {
