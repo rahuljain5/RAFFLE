@@ -20,11 +20,14 @@ const ResultJsonParser = (tables, sems) => {
     }
 
     if(i==0){
-      Regular["Sem" + sems[i]] = semResult;
-      Results["CurrentSem"] = Regular;
+      Regular["Semester"] =  sems[i];
+      Regular["Result"] = semResult;
+      Results["Current"] = Regular;
     }
-    else
-      Backlog["Sem" + sems[i]] = semResult;
+    else{
+      semResult["Semester"] = sems[i];
+      Backlog[i] = semResult;
+    }
   }
   if(Backlog!=null)
   Results["Backlogs"] = Backlog;
