@@ -1,6 +1,6 @@
 var fs = require('fs');
 var csvReader = require('csvreader');
-var ResultFetch = require('./Result_Fetch.js');
+var ResultFetch = require('../services/Result_Fetch.js');
 
 const UsnFromCSV = (csv_filename, callback) => {
   function recordHandler(data) {
