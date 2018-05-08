@@ -12,8 +12,9 @@ router.post('/Analyze', function (req, res) {
             if (cachedData == null || cachedData == undefined) {
                 Promise.all(ResultAnalyzer.Results(req.query.year, req.query.semester))
                     .then(function (values) {
-                        ResultAnalyzer.getTotalResultsCount(function (count) {
-                            var AnalysisReport = ResultAnalyzer.toAnalyzedJson(values, count[0].total);
+                        ResultAnalyzer.getTotalResultsCount(req.query.year, req.query.semester, function (count, totalPassed) {
+                            var AnalysisReport = ResultAnalyzer.toAnalyzedJson(values, count[0]);
+                            AnalysisReport["TotalPassed"]=totalPassed
                             res.send(JSON.stringify(AnalysisReport));
                             console.log("Setting Value in Redis");
                             redis.setex("Analyzed" + req.query.semester + "." + req.query.year, JSON.stringify(AnalysisReport), config.result_ttl);
