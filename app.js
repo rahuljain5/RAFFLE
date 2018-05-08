@@ -12,7 +12,7 @@ var ClassResult = require('./routes/ClassResult.js');
 var file_handler = require('./utils/FileHandler.js');
 var RangeResult = require('./routes/RangeResult.js');
 var Result = require('./routes/Result.js');
-
+var DB = require('./utils/Database_Operations');
 var Feedback = require('./routes/Feedback.js');
 var upload;
 var app = express();
@@ -52,6 +52,9 @@ const initroutes = (app) => {
     file_handler.CSVResultFetch(req.file.path, res);
   });
 
+  app.post("/DBinit", function(req, res){
+    DB.DBinit();
+  })
   // catch 404 and forward to error handler
   app.use(function (req, res, next) {
     var err = new Error('Not Found');
