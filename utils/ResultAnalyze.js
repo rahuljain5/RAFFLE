@@ -26,17 +26,14 @@ const Querymaker = (year, semester) => {
         ]
         Query.push(DBQuery);
     }
-    // console.log(Query);
     return Query;
 }
 
 const getResultStats = (Query) => {
     return new Promise((resolve, reject) => {
-        // console.log(Query);
         var AnalyzedFeedbackJson = {};
         DB.Aggregate('Result_analyzer', 'Results', Query)
             .then(function (result) {
-                // console.log(result);
                 resolve(result);
             })
             .catch(err => {
@@ -46,45 +43,38 @@ const getResultStats = (Query) => {
     })
 }
 
-const OverallResults = (year, semester, cb) =>{
+const OverallResults = (year, semester, cb) => {
     var Querys = []
-    // var OverallGrades = {"A":[], "P": [], "F": [] }
-    // for (i = 1; i < 9; i++) {
-        // f3.push("Results.Current.Result."+i+".Result");
-    var DBQuery=[{
-        $match: {
-            "Yearstamp": year,
-            "Results.Current.Semester": semester,
-             "Results.Current.Result.1.Result" : "P",
-             "Results.Current.Result.2.Result" : "P",
-             "Results.Current.Result.3.Result" : "P",
-             "Results.Current.Result.4.Result" : "P",
-             "Results.Current.Result.5.Result" : "P",
-             "Results.Current.Result.6.Result" : "P",
-             "Results.Current.Result.7.Result" : "P",
-             "Results.Current.Result.8.Result" : "P"    
+    var DBQuery = [{
+            $match: {
+                "Yearstamp": year,
+                "Results.Current.Semester": semester,
+                "Results.Current.Result.1.Result": "P",
+                "Results.Current.Result.2.Result": "P",
+                "Results.Current.Result.3.Result": "P",
+                "Results.Current.Result.4.Result": "P",
+                "Results.Current.Result.5.Result": "P",
+                "Results.Current.Result.6.Result": "P",
+                "Results.Current.Result.7.Result": "P",
+                "Results.Current.Result.8.Result": "P"
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                total: {
+                    $sum: 1
+                },
+            }
         }
-    },
-    {
-        $group: {
-            _id: null ,
-            total: {
-                $sum: 1
-            },
-        }
-    }
-]
-// Querys.push(DBQuery);
-    // } 
-    // Querys.forEach(Query => {
-        DB.Aggregate('Result_analyzer', 'Results', DBQuery)
+    ]
+    DB.Aggregate('Result_analyzer', 'Results', DBQuery)
         .then(function (result) {
             cb(result[0]["total"])
         })
-        .catch(err=>{
-            console.error(err);  
-        })    
-    // });    
+        .catch(err => {
+            console.error(err);
+        })
 }
 
 const getTotalResultsCount = (year, semester, cb) => {
@@ -106,7 +96,7 @@ const getTotalResultsCount = (year, semester, cb) => {
     DB.Aggregate('Result_analyzer', 'Results', Query)
         .then(function (result) {
             // result["_id"] = classroom + batch;
-            OverallResults(year, semester, function(totalpassed){
+            OverallResults(year, semester, function (totalpassed) {
                 cb(result, totalpassed);
             });
         })
@@ -124,7 +114,6 @@ const toAnalyzedJson = (ResultStatsArray, Count) => {
     var SubjectJson = {};
     ResultStatsArray.forEach(SubArray => {
         SubArray.forEach(Res => {
-            // console.log(Res)
             SubjectJson[Res._id.subCode] = {
                 "SubName": Res._id.subName,
                 "Status": {
@@ -133,10 +122,8 @@ const toAnalyzedJson = (ResultStatsArray, Count) => {
                     "A": []
                 }
             };
-            // SubjectJson[Res._id.subCode.Status] = {"P":[], "F":[], "A":[]}
         })
     });
-    // var x;
     ResultStatsArray.forEach(SubArray => {
         SubArray.forEach(Res => {
             var a = Res._id.subCode
