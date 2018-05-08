@@ -46,11 +46,52 @@ const getResultStats = (Query) => {
     })
 }
 
-const getTotalResultsCount = (cb) => {
+const OverallResults = (year, semester, cb) =>{
+    var Querys = []
+    // var OverallGrades = {"A":[], "P": [], "F": [] }
+    // for (i = 1; i < 9; i++) {
+        // f3.push("Results.Current.Result."+i+".Result");
+    var DBQuery=[{
+        $match: {
+            "Yearstamp": year,
+            "Results.Current.Semester": semester,
+             "Results.Current.Result.1.Result" : "P",
+             "Results.Current.Result.2.Result" : "P",
+             "Results.Current.Result.3.Result" : "P",
+             "Results.Current.Result.4.Result" : "P",
+             "Results.Current.Result.5.Result" : "P",
+             "Results.Current.Result.6.Result" : "P",
+             "Results.Current.Result.7.Result" : "P",
+             "Results.Current.Result.8.Result" : "P"    
+        }
+    },
+    {
+        $group: {
+            _id: null ,
+            total: {
+                $sum: 1
+            },
+        }
+    }
+]
+// Querys.push(DBQuery);
+    // } 
+    // Querys.forEach(Query => {
+        DB.Aggregate('Result_analyzer', 'Results', DBQuery)
+        .then(function (result) {
+            cb(result[0]["total"])
+        })
+        .catch(err=>{
+            console.error(err);  
+        })    
+    // });    
+}
+
+const getTotalResultsCount = (year, semester, cb) => {
     var Query = [{
             $match: {
-                "Yearstamp": "2018",
-                "Results.Current.Semester": "5"
+                "Yearstamp": year,
+                "Results.Current.Semester": semester
             }
         },
         {
@@ -65,7 +106,9 @@ const getTotalResultsCount = (cb) => {
     DB.Aggregate('Result_analyzer', 'Results', Query)
         .then(function (result) {
             // result["_id"] = classroom + batch;
-            cb(result);
+            OverallResults(year, semester, function(totalpassed){
+                cb(result, totalpassed);
+            });
         })
         .catch(err => {
             console.error(err);
@@ -107,8 +150,7 @@ const toAnalyzedJson = (ResultStatsArray, Count) => {
 
         }
     }
-    console.log(Count);
-    SubjectJson["TotalStudents"] = Count;
+    SubjectJson["TotalStudents"] = Count["total"];
     // console.log(JSON.stringify(SubjectJson));
     return SubjectJson;
 }
@@ -119,3 +161,4 @@ exports.Querymaker = Querymaker;
 exports.getResultStats = getResultStats;
 exports.getTotalResultsCount = getTotalResultsCount
 exports.toAnalyzedJson = toAnalyzedJson
+exports.OverallResults = OverallResults
