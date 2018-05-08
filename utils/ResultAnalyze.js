@@ -2,28 +2,29 @@ var Helper = require('./helper.js');
 var config = require('../config/config.js');
 var DB = require('../utils/Database_Operations.js');
 
-const Querymaker = () => {
+
+const Querymaker = (year, semester) => {
     var Query = [];
-    for (i = 1; i < 10; i++) {
+    for (i = 1; i < 9; i++) {
         var DBQuery = [{
-            $match: {
-                "Yearstamp": "2018",
-                "Results.Current.Semester" : "5"
+                $match: {
+                    "Yearstamp": year,
+                    "Results.Current.Semester": semester
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        subCode: "$Results.Current.Result." + i + ".Subject Code",
+                        subName: "$Results.Current.Result." + i + ".Subject Name",
+                        Result: "$Results.Current.Result." + i + ".Result",
+                    },
+                    total: {
+                        $sum: 1
+                    },
+                }
             }
-        },
-        {
-            $group: {
-                _id: {
-        subCode:"$Results.Current.Result."+i+".Subject Code",
-        subName:"$Results.Current.Result."+i+".Subject Name",
-        Result: "$Results.Current.Result."+i+".Result",
-    },
-                total: {
-                    $sum: 1
-                },
-            }
-        }
-    ]
+        ]
         Query.push(DBQuery);
     }
     // console.log(Query);
@@ -50,7 +51,7 @@ const getTotalResultsCount = (cb) => {
     var Query = [{
             $match: {
                 "Yearstamp": "2018",
-                "Results.Current.Semester" : "5"
+                "Results.Current.Semester": "5"
             }
         },
         {
@@ -72,20 +73,50 @@ const getTotalResultsCount = (cb) => {
         })
 }
 
-const Results = () => {
-    DB.UpdatetoInt();
-    var Querys = Querymaker();
+const Results = (year, semester) => {
+    var Querys = Querymaker(year, semester);
     return Querys.map(getResultStats);
 }
 
-const toAnalyzedJson = (FeedbackArray, classroomAndTotalFb) => {
-    var FeedbackJson = {};
-    FeedbackJson["_id"] = classroomAndTotalFb._id;
-    FeedbackJson["FbCount"] = classroomAndTotalFb.total;
-    for (i = 0; i < FeedbackArray.length - 1; i++) {
-        FeedbackJson[i + 1] = FeedbackArray[i];
+const toAnalyzedJson = (ResultStatsArray, Count) => {
+    var SubjectJson = {};
+    var grades = {
+        P: [],
+        F: [],
+        A: []
     }
-    return FeedbackJson;
+    ResultStatsArray.forEach(SubArray => {
+        SubArray.forEach(Res => {
+            // console.log(Res)
+            SubjectJson[Res._id.subCode] = {
+                "SubName": Res._id.subName,
+                "Status": {
+                    "P": [],
+                    "F": [],
+                    "A": []
+                }
+            };
+            // SubjectJson[Res._id.subCode.Status] = {"P":[], "F":[], "A":[]}
+        })
+    });
+    // var x;
+    ResultStatsArray.forEach(SubArray => {
+        SubArray.forEach(Res => {
+            var a = Res._id.subCode
+            var x = Res._id.Result;
+            SubjectJson[a]["Status"][x].push(Res.total)
+        })
+    });
+    for (x in SubjectJson) {
+        for (y in SubjectJson[x]["Status"]) {
+            SubjectJson[x]["Status"][y] = eval(SubjectJson[x]["Status"][y].join('+'));
+
+        }
+    }
+    console.log(Count);
+    SubjectJson["TotalStudents"] = Count;
+    // console.log(JSON.stringify(SubjectJson));
+    return SubjectJson;
 }
 
 
