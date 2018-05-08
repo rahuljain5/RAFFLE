@@ -21,11 +21,7 @@ router.post('/Analyze', function (req, res) {
                         })
                     })
                     .catch(err => {
-                        res.send(JSON.stringify({
-                            error: true,
-                            message: err,
-                            userMessage: "Improper Content Type; JSON Expected."
-                        }));
+                        res.send(JSON.stringify(err));
                         console.error(err);
                     })
             } else {

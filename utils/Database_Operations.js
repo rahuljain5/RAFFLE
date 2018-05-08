@@ -156,8 +156,14 @@ const Aggregate = (DbName, CollectionName, Query) => {
             var dbo = db.db(DBName);
             dbo.collection(CollectionName).aggregate(Query).toArray(function (err, result) {
                 if (err) reject(err);
-                // console.log(result);
+                if(result == null || result == undefined || result.length == 0){
+                    var err = {Usermessage: "Query Returned Nothing", Message: "No Matching Records Found", error: true}
+                    reject(err);
+                }
+                else
                 resolve(result);
+                // console.log(result);
+                
                 db.close();
             });
         });
