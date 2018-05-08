@@ -2,7 +2,6 @@ var Helper = require('./helper.js');
 var config = require('../config/config.js');
 var DB = require('../utils/Database_Operations.js');
 
-
 const Querymaker = (year, semester) => {
     var Query = [];
     for (i = 1; i < 9; i++) {
@@ -80,11 +79,6 @@ const Results = (year, semester) => {
 
 const toAnalyzedJson = (ResultStatsArray, Count) => {
     var SubjectJson = {};
-    var grades = {
-        P: [],
-        F: [],
-        A: []
-    }
     ResultStatsArray.forEach(SubArray => {
         SubArray.forEach(Res => {
             // console.log(Res)
