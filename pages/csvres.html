@@ -379,14 +379,16 @@
                                     Find Class Result 
                                 </div>
                                 <div class="panel-body">        
-                        <form role="form" action = "http://process.raffle.cf/CSVResult" method = "POST">
+                        <form role="form"  method = "POST" id="myform">
                             <div class="form-group">
                                 <h3>Upload the .CSV File with all USN in single Column.</h3>
                                     <label>File input</label>
-                                    <input type="file">
+                                    <input type="file" name="filetoupload">
                             </div>
                             <button type="submit" class="btn btn-default">Submit Button</button>
                             <button type="reset" class="btn btn-default">Reset Button</button>
+                        </form>
+                        <div id="server-results"><!-- For server results --></div>
                         </form>
                     </div>
                     </div>
@@ -402,9 +404,32 @@
 
     </div>
     <!-- /#wrapper -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+<script>
+    $("#myform").submit(function(event){
+    
+    event.preventDefault(); //prevent default action
+    var post_url =  "https://raffle-uat.herokuapp.com/CSVResult"//get form action url
+    var request_method = "POST"; //get form GET/POST method
+    var form_data = new FormData(this); //Creates new FormData object
+    console.log(form_data)
+    $.ajax({
+        url : post_url,
+        type: request_method,
+        data : form_data,
+        contentType: false,
+        cache: false,
+        processData:false
+    }).done(function(response){ //
+        // $("#server-results").html(response);
+        console.log(response);
+    });
+});
+   
+   </script>
 
     <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
+    
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
