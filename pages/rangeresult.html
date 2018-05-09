@@ -383,7 +383,7 @@
                                     Find Range-Wise Result
                                 </div>
                                 <div class="panel-body">
-                        <form role="form" action = "javascript:register()" method = "POST">
+                        <form role="form" action = "https://raffle-uat.herokuapp.com/RangeResult" method = "GET" id="myform">
                             <div class="form-group">
                                 <label>Enter the First 7 digits of the USN here:</label>
                                 <input class="form-control" name="baseusn" id="baseusn" placeholder="Enter 7 Digits of USN" pattern = "[1-4][a-z A-Z]{2}[0-9]{2}[a-z A-Z]{2}" required >
@@ -415,7 +415,9 @@
 
     </div>
     <!-- /#wrapper -->
-    <script>
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+<script>
             var rangeSlider = document.getElementById('slider');
            noUiSlider.create(slider, {
                start: [01, 20],
@@ -434,48 +436,39 @@ document.getElementById('value-upper')
 ];
 var formval = [document.getElementById('startusn'), document.getElementById('endusn')]
 var sliderval = slider.noUiSlider.get();
-formval[0] = sliderval[0];
-formval[1] = sliderval[1];
+formval[0] = parseInt(sliderval[0]);
+formval[1] = parseInt(sliderval[1]);
 
 rangeSlider.noUiSlider.on('update', function( values, handle ) {
 snapValues[handle].innerHTML = parseInt(values[handle]);
-formval[handle].value = parseInt(values[handle]);
-console.log(formval);
+formval[handle].innerHTML = parseInt(values[handle]);
+// console.log(formval);
 
 });
-function register() {
-        var baseusn =document.getElementById("baseusn").value;
-        var startusn =parseInt(document.getElementById('value-lower').innerHTML);
-        var endusn =parseInt(document.getElementById('value-upper').innerHTML);
-
-        var xhttp = new XMLHttpRequest();
-        var url = "https://raffle-uat.herokuapp.com/RangeResult/";
-        var origin = "https://raffle.cf"    
-        xhttp.open("GET", url, true);
-        console.log(url+startusn+endusn);
-        xhttp.onreadystatechange = function() {
-     if (this.readyState == 4 && this.status == 200) {
-           //Wait for Backend Response
-         if(this.responseText != undefined || this.responseText != null)
-           {
-//             console.log(`${url}baseusn=${baseusn}&startusn=${startusn}&endusn=${endusn}`);
-            //    changeContent(JSON.parse(this.responseText))
-               console.log(this.responseText);
-           }
-           else
-               alert("Sorry But Something Went Wrong while we tried to fetch results for you");
-       }
-   };
-     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-       xhttp.setRequestHeader("Origin",origin);
-     xhttp.setRequestHeader("Access-Control-Allow-Origin","*");
-       xhttp.send("baseusn="+baseusn+"&startusn="+startusn+"&endusn="+endusn);
-   }		
+$("#myform").submit(function(event){
+    var formval = [document.getElementById('startusn'), document.getElementById('endusn')]
+    var sliderval = slider.noUiSlider.get();
+    formval[0].value = parseInt(sliderval[0]);
+    formval[1].value = parseInt(sliderval[1]);
+    event.preventDefault(); //prevent default action
+    var post_url = $(this).attr("action"); //get form action url
+    var request_method = $(this).attr("method"); //get form GET/POST method
+    var form_data = $(this).serialize(); //Encode form elements for submission
+   
+    $.ajax({
+        url : post_url,
+        type: request_method,
+        data : form_data
+    }).done(function(response){ //
+        // $("#server-results").html(response);
+        console.log(response);
+        
+    });
+});
    
 </script>
 
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
+
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
