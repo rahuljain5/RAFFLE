@@ -4,10 +4,10 @@ var ResultFetch = require('../services/Result_Fetch.js');
 var config = require('../config/config.js')
 var router = express.Router();
 
-router.post('/', function (req, res) {
-  try {
-    console.log("Received Request For USN:"+req.params.baseusn+" Range :"+req.params.startusn+"-"+req.params.endusn)
-    Helper.RangeUsnGenerator(req.params.baseusn, req.params.startusn, req.params.endusn, function (USNs) {
+router.get('/', function (req, res) {
+  try {    
+    console.log("Received Request For USN:"+req.query.baseusn+" Range :"+req.query.startusn+"-"+req.query.endusn)
+    Helper.RangeUsnGenerator(req.query.baseusn, req.query.startusn, req.query.endusn, function (USNs) {
 //       res.setHeader('Content-Type', 'application/json');
 //       console.log(USNs);
       //Scrape and get Results
