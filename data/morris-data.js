@@ -65,14 +65,17 @@ $(function() {
         element: 'morris-donut-chart',
         data: [{
             label: "Download Sales",
-            value: 12
+            value: 88       
         }, {
             label: "In-Store Sales",
-            value: 30
+            value: 1
         }, {
             label: "Mail-Order Sales",
-            value: 20
+            value: 0
         }],
+        colors: [
+            '#12d400', '#990000', '#0077b5'
+            ],
         resize: true
     });
 
