@@ -7,8 +7,8 @@ var router = express.Router();
 router.get('/', function (req, res) {
   try {    
     console.log(JSON.stringify(req.params)+"\n"+JSON.stringify(req.query))
-    console.log("Received Request For USN:"+req.query.baseusn+" Range :"+req.params.startusn+"-"+req.params.endusn)
-    Helper.RangeUsnGenerator(req.params.baseusn, req.params.startusn, req.params.endusn, function (USNs) {
+    console.log("Received Request For USN:"+req.query.baseusn+" Range :"+req.query.startusn+"-"+req.query.endusn)
+    Helper.RangeUsnGenerator(req.query.baseusn, req.query.startusn, req.query.endusn, function (USNs) {
 //       res.setHeader('Content-Type', 'application/json');
 //       console.log(USNs);
       //Scrape and get Results
