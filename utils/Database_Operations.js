@@ -1,7 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var Config = require('../config/config.js')
 var url = Config.test.connection_url;
-var DBName = "RAFFLE";
+var DBName = process.env.DBname;
 const CreateDBCollection = (DbName, CollectionName) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
