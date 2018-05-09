@@ -1,6 +1,6 @@
 module.exports = {
   development: {
-    connection_url: process.env.DATABASE_URL,
+    connection_url: process.env.MONGODB_URI,
     api_key: "",
     DBNAme: process.env.DBname,
     redis_url : process.env.REDIS_URL || "redis://localhost:6379"
