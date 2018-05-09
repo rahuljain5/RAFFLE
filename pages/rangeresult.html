@@ -451,19 +451,19 @@ function register() {
         var xhttp = new XMLHttpRequest();
         var url = "https://raffle-uat.herokuapp.com/RangeResult/";
         var origin = "https://raffle.cf"    
-        xhttp.open("POST", url, true);
+        xhttp.open("GET", url, true);
         console.log(url+startusn+endusn);
         xhttp.onreadystatechange = function() {
      if (this.readyState == 4 && this.status == 200) {
            //Wait for Backend Response
          if(this.responseText != undefined || this.responseText != null)
            {
-            console.log(`${url}baseusn=${baseusn}&startusn=${startusn}&endusn=${endusn}`);
+//             console.log(`${url}baseusn=${baseusn}&startusn=${startusn}&endusn=${endusn}`);
             //    changeContent(JSON.parse(this.responseText))
                console.log(this.responseText);
            }
            else
-               alert("Sorry But Something Went Wrong while we tried to register you");
+               alert("Sorry But Something Went Wrong while we tried to fetch results for you");
        }
    };
      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
