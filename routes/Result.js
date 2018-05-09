@@ -40,7 +40,7 @@ router.get('/:id', function (req, res) {
     ResultFetch.scrape([req.params.id])[0].then(function (Result_Json) {
             res.setHeader('Content-Type', 'application/json');
             console.log('Result Fetched and Converted');
-        redis.setex("Analyzed" + req.query.semester + "." + req.query.year, JSON.stringify(AnalysisReport), config.result_ttl);
+        redis.setex(req.params.id, JSON.stringify(Result_Json), config.result_ttl);
             res.send(JSON.stringify(Result_Json));
         })
         .catch(err => {
