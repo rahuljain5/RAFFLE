@@ -34,14 +34,25 @@ router.post('/Analyze', function (req, res) {
 })
 
 router.get('/:id', function (req, res) {
+      redis.get(req.params.id, (err, cachedData) => {
+        if (!err) {
+            if (cachedData == null || cachedData == undefined) {
     ResultFetch.scrape([req.params.id])[0].then(function (Result_Json) {
             res.setHeader('Content-Type', 'application/json');
             console.log('Result Fetched and Converted');
+        redis.setex("Analyzed" + req.query.semester + "." + req.query.year, JSON.stringify(AnalysisReport), config.result_ttl);
             res.send(JSON.stringify(Result_Json));
         })
         .catch(err => {
             console.error(err);
         });
+                } else {
+                console.log("Getting Value from Redis");
+                res.send(cachedData);
+            }
+        } else
+            console.error(err);
+    })
 });
 
 
