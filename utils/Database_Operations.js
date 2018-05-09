@@ -1,8 +1,7 @@
 const env = process.env.NODE_ENV || "development";
 var MongoClient = require('mongodb').MongoClient;
 var Config = require('../config/config.js')
-console.log(Config.env.connection_url);
-var url = Config.env.connection_url;
+var url = process.env.MONGODB_URI;
 var DBName = process.env.DBname;
 const CreateDBCollection = (DbName, CollectionName) => {
     return new Promise((resolve, reject) => {
