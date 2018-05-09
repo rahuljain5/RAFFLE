@@ -5,7 +5,7 @@ module.exports = {
     redis_url : process.env.REDIS_URL || "redis://localhost:6379"
   },
   test: {
-    connection_url: "mongodb://localhost:27017/",
+    connection_url: "mongodb://localhost:27017/RAFFLE",
     api_key: "",
     usn: "1ox15cs",
     redis_url : process.env.REDIS_URL

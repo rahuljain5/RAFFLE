@@ -1,9 +1,8 @@
 var MongoClient = require('mongodb').MongoClient;
 var Config = require('../config/config.js')
 var url = Config.test.connection_url;
-
-const CreateDBCollection = (DBName, CollectionName) => {
-    url = url + DBName;
+var DBName = "RAFFLE";
+const CreateDBCollection = (DbName, CollectionName) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
@@ -27,7 +26,50 @@ const CreateDBCollection = (DBName, CollectionName) => {
     });
 }
 
-const InsertOne = (DBName, CollectionName, DataObject) => {
+const DBinit = () => {
+    var Collections = ["Results", "Feedback", "ClassRooms"]
+    MongoClient.connect(url , function (err, db) {
+        if (err) console.error(err);
+        var dbo = db.db(DBName);
+        Collections.forEach(collection => {
+            dbo.createCollection(collection, function (err, res) {
+                if (err) console.error(err);
+                console.log(`Collection  ${collection} created: at ${new Date().toLocaleString()}`);
+            });
+        })
+        dbo.collection("ClassRooms").createIndex({
+            "classroom": 1,
+            "batch": 1
+        }, {
+            unique: true
+        }, function (err, res) {
+            if (err) console.log(err);
+            console.log("ClassRooms Index Created!");
+        });
+        dbo.collection("Feedback").createIndex({
+            "usn": 1,
+            "classroom": 1,
+            "batch": 1
+        }, {
+            unique: true
+        }, function (err, res) {
+            if (err) console.log(err);
+            console.log("Feedback Index Created!");
+        });
+        dbo.collection("Results").createIndex({
+            "University Seat Number ": 1,
+            "Yearstamp": 1,
+            "Results.Current.Semester": 1
+        }, {
+            unique: true
+        }, function (err, res) {
+            if (err) console.log(err);
+            console.log("Results Index Created!");
+        });
+    })
+}
+
+const InsertOne = (DbName, CollectionName, DataObject) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
@@ -44,7 +86,7 @@ const InsertOne = (DBName, CollectionName, DataObject) => {
     });
 }
 
-const InsertMany = (DBName, CollectionName, DataObject) => {
+const InsertMany = (DbName, CollectionName, DataObject) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
@@ -61,7 +103,7 @@ const InsertMany = (DBName, CollectionName, DataObject) => {
     });
 }
 
-const Find = (DBName, CollectionName) => {
+const Find = (DbName, CollectionName) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) console.log(err);
@@ -77,7 +119,7 @@ const Find = (DBName, CollectionName) => {
     })
 }
 
-const FindOne = (DBName, CollectionName) => {
+const FindOne = (DbName, CollectionName) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
@@ -92,7 +134,7 @@ const FindOne = (DBName, CollectionName) => {
     })
 }
 
-const Query = (DBName, CollectionName, Query) => {
+const Query = (DbName, CollectionName, Query) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
@@ -107,22 +149,28 @@ const Query = (DBName, CollectionName, Query) => {
     });
 }
 
-const Aggregate = (DBName, CollectionName, Query) => {
+const Aggregate = (DbName, CollectionName, Query) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
             var dbo = db.db(DBName);
             dbo.collection(CollectionName).aggregate(Query).toArray(function (err, result) {
                 if (err) reject(err);
+                if(result == null || result == undefined || result.length == 0){
+                    var err = {Usermessage: "Query Returned Nothing", Message: "No Matching Records Found", error: true}
+                    reject(err);
+                }
+                else
+                resolve(result);
                 // console.log(result);
-                resolve(result[0]);
+                
                 db.close();
             });
         });
     });
 }
 
-const DeleteOne = (DBName, CollectionName, DeleteQuery) => {
+const DeleteOne = (DbName, CollectionName, DeleteQuery) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
@@ -137,7 +185,7 @@ const DeleteOne = (DBName, CollectionName, DeleteQuery) => {
     })
 }
 
-const DeleteMany = (DBName, CollectionName, DeleteQuery) => {
+const DeleteMany = (DbName, CollectionName, DeleteQuery) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
@@ -151,7 +199,7 @@ const DeleteMany = (DBName, CollectionName, DeleteQuery) => {
     })
 }
 
-const Sort = (DBName, CollectionName, SortQuery) => {
+const Sort = (DbName, CollectionName, SortQuery) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
@@ -166,7 +214,7 @@ const Sort = (DBName, CollectionName, SortQuery) => {
     })
 }
 
-const UpdateOne = (DBName, CollectionName, Query, UpdateValues) => {
+const UpdateOne = (DbName, CollectionName, Query, UpdateValues) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
@@ -183,7 +231,7 @@ const UpdateOne = (DBName, CollectionName, Query, UpdateValues) => {
         });
     })
 }
-const UpdateMany = (DBName, CollectionName, Query, UpdateValues) => {
+const UpdateMany = (DbName, CollectionName, Query, UpdateValues) => {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) reject(err);
@@ -200,6 +248,17 @@ const UpdateMany = (DBName, CollectionName, Query, UpdateValues) => {
     })
 }
 
+const UpdatetoInt = () => {
+    MongoClient.connect(url, function (err, db) {
+        if (err) reject(err);
+        var dbo = db.db("Result_analyzer");
+        dbo.collection("Results").find().forEach(function (x) {
+            for (var i = 1; i < 9; i++)
+                x["Results.Current.Result." + i + ".Total"] = parseInt(x["Results.Current.Result." + i + ".Total"]);
+            dbo.collection("Results").save(x);
+        });
+    })
+}
 
 // DB.CreateDBCollection('Result_analyzer', 'Results');
 // DB.InsertOne('Result_analyzer', 'Results', Json);
@@ -217,3 +276,4 @@ exports.Sort = Sort;
 exports.UpdateMany = UpdateMany;
 exports.UpdateOne = UpdateOne;
 exports.Aggregate = Aggregate;
+exports.DBinit = DBinit;

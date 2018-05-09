@@ -34,9 +34,9 @@ const ScoreAggregator = (Query) => {
         DB.Aggregate('Faculty_Feedback', 'Feedback', Query)
             .then(function (result) {
                 AnalyzedFeedbackJson = {
-                    a: result.totala,
-                    b: result.totalb,
-                    total: result.totala + result.totalb
+                    a: result[0].totala,
+                    b: result[0].totalb,
+                    total: result[0].totala + result[0].totalb
                 };
                 resolve(AnalyzedFeedbackJson);
             })
@@ -65,8 +65,8 @@ const getTotalFeedbacksCount = (classroom, batch, cb) => {
     ];
     DB.Aggregate('Faculty_Feedback', 'Feedback', Query)
         .then(function (result) {
-            result["_id"] = classroom + batch;
-            cb(result);
+            result[0]["_id"] = classroom + batch;
+            cb(result[0]);
         })
         .catch(err => {
             console.error(err);
