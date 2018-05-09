@@ -7,7 +7,7 @@ var router = express.Router();
 router.get('/', function (req, res) {
   try {
     // Generate USNs for class results
-    var USNs = vtu.UsnGenerator(req.params.baseusn);
+    var USNs = vtu.UsnGenerator(req.query.baseusn);
     //Scrape and get Results
     Promise.all(ResultFetch.scrape(USNs)).then(function(values) {
       // console.log(values);
