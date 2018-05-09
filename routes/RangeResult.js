@@ -6,7 +6,7 @@ var router = express.Router();
 
 router.get('/', function (req, res) {
   try {    
-//     console.log(req)
+    console.log(req.params+"\n"+req.query)
     console.log("Received Request For USN:"+req.params.baseusn+" Range :"+req.params.startusn+"-"+req.params.endusn)
     Helper.RangeUsnGenerator(req.params.baseusn, req.params.startusn, req.params.endusn, function (USNs) {
 //       res.setHeader('Content-Type', 'application/json');
