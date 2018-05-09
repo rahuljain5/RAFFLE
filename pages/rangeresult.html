@@ -469,7 +469,7 @@ function register() {
      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
        xhttp.setRequestHeader("Origin",origin);
      xhttp.setRequestHeader("Access-Control-Allow-Origin","*");
-       xhttp.send(`baseusn=${baseusn}&startusn=${startusn}&endusn=${endusn}`);
+       xhttp.send("baseusn="+baseusn+"&startusn="+startusn+"&endusn="+endusn);
    }		
    
 </script>
