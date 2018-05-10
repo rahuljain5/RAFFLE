@@ -61,17 +61,17 @@ function Area(){
         resize: true
     });
 }
-function donut(elementid, Values){
+function donut(elementid, Values, totalstuds){
     Morris.Donut({
         element: elementid,
         data: [{
-            label: "Passed",
-            value: Values["Passed"]       
+            label: `Passed\n(${(Values["Passed"]/(totalstuds/100)).toFixed(2)}%)`,
+            value: Values["Passed"]
         }, {
-            label: "Failed",
+            label: `Failed\n(${(Values["Failed"]/(totalstuds/100)).toFixed(2)}%)`,
             value: Values["Failed"]
         }, {
-            label: "Absent",
+            label: `Absent\n(${(Values["Absent"]/(totalstuds/100)).toFixed(2)}%)`,
             value: Values["Absent"]
         }],
         colors: [
