@@ -446,16 +446,17 @@
         var graph = document.createElement('div');
         graph.id = sub
         var values = {"Passed": 0, "Failed": 0, "Absent": 0}
-        var totalstudents = values[0] + values[1] + values[2];
-        console.log(totalstudents);
+        
         
         values["Passed"]=(res[sub]["Status"]["P"]==undefined)?0:res[sub]["Status"]["P"]
         values["Failed"]=(res[sub]["Status"]["F"]==undefined)?0:res[sub]["Status"]["F"]
         values["Absent"]=(res[sub]["Status"]["A"]==undefined)?0:res[sub]["Status"]["A"]
+        var totalstudents = values["Passed"] + values["Absent"] + values["Failed"];
+        console.log(totalstudents);
         // graph.innerHTML = res[sub]["SubName"] + JSON.stringify(values);
         graphdiv.appendChild(graph)
         parentdiv.appendChild(graphdiv);
-        donut(sub, values)
+        donut(sub, values, totalstudents)
     }
 }
 }
