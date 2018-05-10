@@ -399,7 +399,7 @@
             </div>
             <br>
                 <div class="row">
-                    <div class="panel panel-default" id="form-panel" style="overflow: auto;">
+                    <div class="panel panel-default" id="graphs" style="overflow: auto;">
 
                     </div>
                 </div>
@@ -427,10 +427,38 @@
         type: request_method
     }).done(function(response){ //
         console.log(response);
+        drawgraph(response)
         
     });
 });
-   
+    function drawgraph(res)
+    {
+        res=JSON.parse(res)
+        for (sub in res){
+            if(sub == "TotalStudents" || sub == "TotalPassed")
+                continue;
+        else{
+            var parentdiv = document.getElementById('graphs');
+            var Heading = document.createElement('h3')
+            Heading.innerHTML = res[sub]["SubName"];
+        var graphdiv = document.createElement('div');
+        graphdiv.appendChild(Heading);
+        var graph = document.createElement('div');
+        graph.id = sub
+        var values = {"Passed": 0, "Failed": 0, "Absent": 0}
+        var totalstudents = values[0] + values[1] + values[2];
+        console.log(totalstudents);
+        
+        values["Passed"]=(res[sub]["Status"]["P"]==undefined)?0:res[sub]["Status"]["P"]
+        values["Failed"]=(res[sub]["Status"]["F"]==undefined)?0:res[sub]["Status"]["F"]
+        values["Absent"]=(res[sub]["Status"]["A"]==undefined)?0:res[sub]["Status"]["A"]
+        // graph.innerHTML = res[sub]["SubName"] + JSON.stringify(values);
+        graphdiv.appendChild(graph)
+        parentdiv.appendChild(graphdiv);
+        donut(sub, values)
+    }
+}
+}
    </script>
       
     
@@ -440,7 +468,7 @@
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-
+   <script src="../data/morris-data.js"></script>
     <script src="../vendor/raphael/raphael.min.js"></script>
     <script src="../vendor/morrisjs/morris.min.js"></script>
     <!-- Custom Theme JavaScript -->
