@@ -2,11 +2,11 @@
                 
                 if (content["error"] == true) {
                     console.log(content.errorMessage);
-                    return(`<h1 align='center'>${content.userMessage}</h1>`)
+                    return(`<h3 align='center'>${content.userMessage}</h3>`)
                 } else {
                     var str =
-                        `<h3>University Seat Number: ${content['University Seat Number ']}</h3><hr/><h3>Student Name: ${content['Student Name ']}</h3><hr/>`
-                    str += `<h3>Semester: ${content["Results"]["Current"]["Semester"]}</h3><hr/>`
+                        `<h3>University Seat Number: ${content['University Seat Number ']}</h3><h3>Student Name: ${content['Student Name ']}</h3>`
+                    str += `<h3>Semester: ${content["Results"]["Current"]["Semester"]}</h3>`
                     var table =
                         "<table class='table'><tr><th>Subject Code</th><th>Subject Name</th><th>Total Marks</th><th>Result</th></tr>"
                     var current = content["Results"]["Current"]["Result"]
