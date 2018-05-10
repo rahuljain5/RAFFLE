@@ -14,13 +14,13 @@ router.get('/', function (req, res) {
       //Scrape and get Results
       Promise.all(ResultFetch.scrape(USNs)).then(function(values) {
         console.log(values);
-        res.send(values);
+        res.send(JSON.stringify(values));
         console.log('Range Result Fetched and Converted');
         // console.log(Result_Json);  
         // res.write(JSON.stringify(Result_Json));  
       })
       .catch(err =>{
-        res.send(err);
+        res.send(JSON.stringify(err));
         console.error(err);
       }); 
     });
