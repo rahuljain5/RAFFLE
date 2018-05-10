@@ -1,11 +1,18 @@
- function changeContent(content) {
+function titleCase(str) {
+    str = str.toLowerCase().split(' ');
+    for (var i = 0; i < str.length; i++) {
+      str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+    }
+    return str.join(' ');
+  }
+function changeContent(content) {
                 
                 if (content["error"] == true) {
                     console.log(content.errorMessage);
                     return(`<h3 align='center'>${content.userMessage}</h3>`)
                 } else {
                     var str =
-                        `<h3>University Seat Number: ${content['University Seat Number ']}</h3><h3>Student Name: ${content['Student Name ']}</h3>`
+                        `<h3>University Seat Number: ${content['University Seat Number ']}</h3><h3>Student Name: ${titleCase(content['Student Name '])}</h3>`
                     str += `<h3>Semester: ${content["Results"]["Current"]["Semester"]}</h3>`
                     var table =
                         "<table class='table'><tr><th>Subject Code</th><th>Subject Name</th><th>Total Marks</th><th>Result</th></tr>"
@@ -37,3 +44,4 @@
                     return(str);
                 }
             }
+            
