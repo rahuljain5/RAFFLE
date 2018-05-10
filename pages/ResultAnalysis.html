@@ -9,17 +9,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>RAFFLE &middot; Range Results</title>
+    <title>Result Analysis &middot; RAFFLE</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-
-<!-- NoUISlider Css And Js -->
-<link href="./nouislider.min.css" rel="stylesheet">
-<script src="../js/nouislider.min.js"></script>
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
@@ -55,10 +51,10 @@
 
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
-                    <!-- <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a> -->
-                    <!-- <ul class="dropdown-menu dropdown-messages">
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
                         <li>
                             <a href="#">
                                 <div>
@@ -101,11 +97,11 @@
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </li>
-                    </ul> -->
+                    </ul>
                     <!-- /.dropdown-messages -->
-                <!-- </li> -->
+                </li>
                 <!-- /.dropdown -->
-                <!-- <li class="dropdown">
+                <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
@@ -180,11 +176,11 @@
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </li>
-                    </ul> -->
+                    </ul>
                     <!-- /.dropdown-tasks -->
-                <!-- </li> -->
+                </li>
                 <!-- /.dropdown -->
-                <!-- <li class="dropdown">
+                <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
@@ -240,7 +236,7 @@
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </li>
-                    </ul> -->
+                    </ul>
                     <!-- /.dropdown-alerts -->
                 </li>
                 <!-- /.dropdown -->
@@ -380,26 +376,18 @@
                     <div class="col-lg-8">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Find Range-Wise Result
+                                    Find Class Result 
                                 </div>
-                                <div class="panel-body">
-                        <form role="form" action = "https://raffle-uat.herokuapp.com/RangeResult" method = "GET" id="myform">
+                                <div class="panel-body">        
+                        <form role="form" action = "https://raffle-uat.herokuapp.com/Result/Analyze?" method = "POST" id="myform">
                             <div class="form-group">
-                                <label>Enter the First 7 digits of the USN here:</label>
-                                <input class="form-control" name="baseusn" id="baseusn" placeholder="Enter 7 Digits of USN" pattern = "[1-4][a-z A-Z]{2}[0-9]{2}[a-z A-Z]{2}" required >
-                                <label>Set the Range here:</label>
-                                <div class="form-group">
-                                        <label>Start USN</label>
-                                        <input type="hidden" name="startusn" id="startusn">
-                                        <input type="hidden" name="endusn" id="endusn">
-                                        <div id="slider">
-                                        </div>
-                                        <h4 id = "value-lower" style="display:inline-table;float: left;"></h4>
-                                        <h4 id = "value-upper" style="display:inline-table;float:right;"></h4>
-                                    </div>
-                        </div><br>
-                            <button type="submit" class="btn btn-default" >Submit</button>
-                            <button type="reset" class="btn btn-default">Reset</button>
+                                    <label>Enter the Year:</label>
+                                    <input class="form-control" id="year" name="year" placeholder="Enter Year" required >
+                                <label>Enter the Semester:</label>
+                                <input class="form-control" id="semester" name="semester" placeholder="Enter Semester" pattern = "[1-8]" required >
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit Button</button>
+                            <button type="reset" class="btn btn-default">Reset Button</button>
                         </form>
                     </div>
                     </div>
@@ -409,88 +397,79 @@
                 
                 <!-- /.row -->
             </div>
-            <div class="row">
-                    <div class="panel panel-default" id="form-panel" style="overflow: auto;">
+            <br>
+                <div class="row">
+                    <div class="panel panel-default" id="graphs" style="overflow: auto;">
 
                     </div>
+                </div>
             <!-- /.container-fluid -->
         </div>
         <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
-    <!-- jQuery -->
     <script src="../js/ChangeContent.js"></script>
+    <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
-<script>
-            var rangeSlider = document.getElementById('slider');
-           noUiSlider.create(slider, {
-               start: [01, 20],
-               step: 1,
-               connect: true,
-               range: {
-                   'min': 0,
-                   'max': 150
-               }
-           });
-
-
-var snapValues = [
-document.getElementById('value-lower'),
-document.getElementById('value-upper')
-];
-var formval = [document.getElementById('startusn'), document.getElementById('endusn')]
-var sliderval = slider.noUiSlider.get();
-formval[0] = parseInt(sliderval[0]);
-formval[1] = parseInt(sliderval[1]);
-
-rangeSlider.noUiSlider.on('update', function( values, handle ) {
-snapValues[handle].innerHTML = parseInt(values[handle]);
-formval[handle].innerHTML = parseInt(values[handle]);
-// console.log(formval);
-
-});
-var Results = "";
-var placeholder = document.getElementById('form-panel');
-placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
-$("#myform").submit(function(event){
-    var formval = [document.getElementById('startusn'), document.getElementById('endusn')]
-    var sliderval = slider.noUiSlider.get();
-    formval[0].value = parseInt(sliderval[0]);
-    formval[1].value = parseInt(sliderval[1]);
+   <script>
+    var Results = "";
+    // var placeholder = document.getElementById('form-panel');
+    // placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
+    $("#myform").submit(function(event){
     event.preventDefault(); //prevent default action
-    var post_url = $(this).attr("action"); //get form action url
+    
     var request_method = $(this).attr("method"); //get form GET/POST method
     var form_data = $(this).serialize(); //Encode form elements for submission
-   console.log(form_data);
-   
+    var post_url = $(this).attr("action") + form_data; //get form action url
     $.ajax({
         url : post_url,
-        type: request_method,
-        data : form_data
+        type: request_method
     }).done(function(response){ //
-        response = JSON.parse(response)
-        // $("#server-results").html(response);
-        response.forEach(ResultJson => {
-            console.log(ResultJson);
-            // if(ResultJson["error"]!=true)
-            // placeholder.innerHTML += changeContent(JSON.parse(ResultJson))
-            placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
-        });
+        console.log(response);
+        drawgraph(response)
         
     });
 });
-   
-</script>
-
-
+    function drawgraph(res)
+    {
+        res=JSON.parse(res)
+        for (sub in res){
+            if(sub == "TotalStudents" || sub == "TotalPassed")
+                continue;
+        else{
+            var parentdiv = document.getElementById('graphs');
+            var Heading = document.createElement('h4')
+            Heading.align  = "center"
+            Heading.innerHTML = res[sub]["SubName"];
+        var graphdiv = document.createElement('div');
+        graphdiv.appendChild(Heading);
+        var graph = document.createElement('div');
+        graph.id = sub
+        var values = {"Passed": 0, "Failed": 0, "Absent": 0}
+        values["Passed"]=(res[sub]["Status"]["P"]==undefined)?0:res[sub]["Status"]["P"]
+        values["Failed"]=(res[sub]["Status"]["F"]==undefined)?0:res[sub]["Status"]["F"]
+        values["Absent"]=(res[sub]["Status"]["A"]==undefined)?0:res[sub]["Status"]["A"]
+        var totalstudents = values["Passed"] + values["Absent"] + values["Failed"];
+        console.log(totalstudents);
+        graphdiv.appendChild(graph)
+        parentdiv.appendChild(graphdiv);
+        donut(sub, values, totalstudents)
+    }
+}
+}
+   </script>
+      
+    
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-
+   <script src="../data/morris-data.js"></script>
+    <script src="../vendor/raphael/raphael.min.js"></script>
+    <script src="../vendor/morrisjs/morris.min.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
 
