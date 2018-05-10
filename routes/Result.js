@@ -7,8 +7,6 @@ var ResultAnalyzer = require('../utils/ResultAnalyze');
 var router = express.Router();
 
 router.post('/Analyze', function (req, res) {
-    response.setHeader('Content-Type', 'application/json')
-    res.setHeader("Access-Control-Allow-Origin", "*")
     console.log(`Received Request for Sem: ${req.query.semester} and Year: ${req.query.year}`);
     redis.get("Analyzed" + req.query.semester + "." + req.query.year, (err, cachedData) => {
         if (!err) {
