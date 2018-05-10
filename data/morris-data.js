@@ -1,5 +1,5 @@
-$(function() {
 
+function Area(){
     Morris.Area({
         element: 'morris-area-chart',
         data: [{
@@ -60,25 +60,28 @@ $(function() {
         hideHover: 'auto',
         resize: true
     });
-
+}
+function donut(elementid, Values){
     Morris.Donut({
-        element: 'morris-donut-chart',
+        element: elementid,
         data: [{
-            label: "Download Sales",
-            value: 88       
+            label: "Passed",
+            value: Values["Passed"]       
         }, {
-            label: "In-Store Sales",
-            value: 1
+            label: "Failed",
+            value: Values["Failed"]
         }, {
-            label: "Mail-Order Sales",
-            value: 0
+            label: "Absent",
+            value: Values["Absent"]
         }],
         colors: [
             '#12d400', '#990000', '#0077b5'
             ],
         resize: true
     });
-
+}
+    
+function Bar() {
     Morris.Bar({
         element: 'morris-bar-chart',
         data: [{
@@ -117,4 +120,4 @@ $(function() {
         resize: true
     });
     
-});
+}
