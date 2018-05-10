@@ -439,21 +439,19 @@
                 continue;
         else{
             var parentdiv = document.getElementById('graphs');
-            var Heading = document.createElement('h3')
+            var Heading = document.createElement('h4')
+            Heading.align  = "center"
             Heading.innerHTML = res[sub]["SubName"];
         var graphdiv = document.createElement('div');
         graphdiv.appendChild(Heading);
         var graph = document.createElement('div');
         graph.id = sub
         var values = {"Passed": 0, "Failed": 0, "Absent": 0}
-        
-        
         values["Passed"]=(res[sub]["Status"]["P"]==undefined)?0:res[sub]["Status"]["P"]
         values["Failed"]=(res[sub]["Status"]["F"]==undefined)?0:res[sub]["Status"]["F"]
         values["Absent"]=(res[sub]["Status"]["A"]==undefined)?0:res[sub]["Status"]["A"]
         var totalstudents = values["Passed"] + values["Absent"] + values["Failed"];
         console.log(totalstudents);
-        // graph.innerHTML = res[sub]["SubName"] + JSON.stringify(values);
         graphdiv.appendChild(graph)
         parentdiv.appendChild(graphdiv);
         donut(sub, values, totalstudents)
