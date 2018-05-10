@@ -406,9 +406,13 @@
                     <!-- /.col-lg-12 -->
                     <div class="col-lg-2"></div>
                 </div>
-
+                
                 <!-- /.row -->
             </div>
+            <div class="row">
+                    <div class="panel panel-default" id="form-panel" style="overflow: auto;">
+
+                    </div>
             <!-- /.container-fluid -->
         </div>
         <!-- /#page-wrapper -->
@@ -416,6 +420,7 @@
     </div>
     <!-- /#wrapper -->
     <!-- jQuery -->
+    <script src="../js/ChangeContent.js"></script>
     <script src="../vendor/jquery/jquery.min.js"></script>
 <script>
             var rangeSlider = document.getElementById('slider');
@@ -445,6 +450,9 @@ formval[handle].innerHTML = parseInt(values[handle]);
 // console.log(formval);
 
 });
+var Results = "";
+var placeholder = document.getElementById('form-panel');
+placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
 $("#myform").submit(function(event){
     var formval = [document.getElementById('startusn'), document.getElementById('endusn')]
     var sliderval = slider.noUiSlider.get();
@@ -454,14 +462,21 @@ $("#myform").submit(function(event){
     var post_url = $(this).attr("action"); //get form action url
     var request_method = $(this).attr("method"); //get form GET/POST method
     var form_data = $(this).serialize(); //Encode form elements for submission
+   console.log(form_data);
    
     $.ajax({
         url : post_url,
         type: request_method,
         data : form_data
     }).done(function(response){ //
+        response = JSON.parse(response)
         // $("#server-results").html(response);
-        console.log(response);
+        response.forEach(ResultJson => {
+            console.log(ResultJson);
+            // if(ResultJson["error"]!=true)
+            // placeholder.innerHTML += changeContent(JSON.parse(ResultJson))
+            placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
+        });
         
     });
 });
