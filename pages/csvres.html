@@ -398,21 +398,30 @@
                 
                 <!-- /.row -->
             </div>
+            <br>
+                <div class="row">
+                    <div class="panel panel-default" id="form-panel" style="overflow: auto;">
+
+                    </div>
+                </div>
             <!-- /.container-fluid -->
         </div>
         <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
+    <script src="../js/ChangeContent.js"></script>
     <script src="../vendor/jquery/jquery.min.js"></script>
 <script>
+
     $("#myform").submit(function(event){
-    
+    var Results = "";
+    var placeholder = document.getElementById('form-panel');
+    placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
     event.preventDefault(); //prevent default action
     var post_url =  "https://raffle-uat.herokuapp.com/CSVResult"//get form action url
     var request_method = "POST"; //get form GET/POST method
     var form_data = new FormData(this); //Creates new FormData object
-    console.log(form_data)
     $.ajax({
         url : post_url,
         type: request_method,
@@ -421,11 +430,12 @@
         cache: false,
         processData:false
     }).done(function(response){ //
-        // $("#server-results").html(response);
-        console.log(response);
+        response.forEach(ResultJson => {
+            console.log(ResultJson);
+            placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
     });
 });
-   
+}) 
    </script>
 
     <!-- jQuery -->
