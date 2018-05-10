@@ -7,7 +7,7 @@ var ResultAnalyzer = require('../utils/ResultAnalyze');
 var router = express.Router();
 
 router.post('/Analyze', function (req, res) {
-    console.log(JSON.stringify(req.query)+","+JSON.stringify(req.params))
+    console.log(JSON.stringify(req))
     console.log(`Received Request for Sem: ${req.query.semester} and Year: ${req.query.year}`);
     redis.get("Analyzed" + req.query.semester + "." + req.query.year, (err, cachedData) => {
         if (!err) {
