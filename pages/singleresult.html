@@ -443,6 +443,7 @@
            
             function register() {
                 var placeholder = document.getElementById('form-panel');
+                placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
                 var usn = document.getElementById("usn").value;
                 console.log(usn)
                 var xhttp = new XMLHttpRequest();
@@ -454,7 +455,7 @@
                     if (this.readyState == 4 && this.status == 200) {
                         //Wait for Backend Response
                         if (this.responseText != undefined || this.responseText != null) {
-                            placeholder.innerHTML= changeContent(JSON.parse(this.responseText))
+                            placeholder.innerHTML += changeContent(JSON.parse(this.responseText))
                                console.log(this.responseText);
                         } else
                             alert("Sorry But Something Went Wrong while we tried to register you");
