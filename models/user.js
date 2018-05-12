@@ -19,15 +19,15 @@ module.exports = (sequelize, Sequelize) => {
         },
         college :{
             type: Sequelize.STRING,
-            allowNull: true
+            defaultValue: "N/A",
         },
         branch :{
             type: Sequelize.STRING,
-            allowNull: true
+            efaultValue: "N/A",
         },
         RefrenceId: {
-            type: Sequelize.UUID,
-            allowNull: true
+            type: Sequelize.STRING,
+            efaultValue: "N/A",
         },
         token: {
             type: Sequelize.STRING,
