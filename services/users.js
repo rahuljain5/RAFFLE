@@ -40,9 +40,10 @@ const register = (state, callback) => {
     models.User.create(state).then((val) => {
         var res = response["REGISTERED"];
         val.dataValues["rememberme"] = false;
-        val.dataValues["session"] = val.dataValues.userkey;
+        val.dataValues["session"] = helper.getuuid();
+        console.log("RegisterRedis : = "+ val.dataValues.session+" "+ val.dataValues.id+" " +loginTtl)
         redis.setex(val.dataValues.session, val.dataValues.id,loginTtl);
-        val.dataValues = helper.clean(val.dataValues, ["createdAt", "id", "totpsecret", "updatedAt", "password", "userkey", "token"]);
+        val.dataValues = helper.clean(val.dataValues, ["createdAt", "id", "totpsecret", "updatedAt", "password", "token"]);
         res.SESSION_KEY = jwt.sign(val.dataValues, config.jwtKey, { expiresIn: config.loginTtl })
         callback(res)
     }).catch((err) => {
@@ -66,11 +67,11 @@ const login = (state, callback) => {
         state.password = crypto.gethash(state.password + "|" + val.dataValues.id);
         if (state.password === val.dataValues.password) {
             val.dataValues["rememberme"] = state.rememberme;
-            val.dataValues["session"] = val.dataValues.userkey;
+            val.dataValues["session"] = helper.getuuid();
             redis.setex(val.dataValues.session, val.dataValues.id,loginTtl);
             if (val.dataValues.isotpenabled)
                 redis.setex(val.dataValues.session + "_totpsecret", val.dataValues.totpsecret,loginTtl);
-            val.dataValues = helper.clean(val.dataValues, ["createdAt", "id", "totpsecret", "updatedAt", "password", "userkey", "token"]);
+            val.dataValues = helper.clean(val.dataValues, ["createdAt", "id", "totpsecret", "updatedAt", "password", "token"]);
             if (state.rememberme)
                 res.SESSION_KEY = jwt.sign(val.dataValues, config.jwtKey);
             else
@@ -101,7 +102,6 @@ const logout = (sessionkey, callback) => {
                 callback(response.E05);
             }
         });
-        callback(response["LOGOUT"]);
     }
     catch (err) {
         console.error("Erorr:" + err);
