@@ -38,6 +38,7 @@
     "pug": "2.0.0-beta11",
     "qr-image": "^3.2.0",
     "qs": "latest",
+    "ramda": "^0.25.0",
     "redis": "^2.8.0",
     "sequelize": "^4.37.7",
     "serve-favicon": "~2.4.5",

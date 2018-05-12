@@ -11,6 +11,7 @@ const loginTtl = config.loginTtl
 const forgotpasswordcontent = require("../utils/constants").forgotpasswordcontent
 const response = require("../utils/constants").responses
 var jwt = require("jsonwebtoken");
+const R = require ("ramda")
 
 const senduserdetails = (req, callback) => {
     const session = req.get("X-SESSION-KEY");
@@ -48,9 +49,9 @@ const register = (state, callback) => {
         res.is2FAEnable = val.dataValues["isotpenabled"];
         callback(res)
     }).catch((err) => {
-        if (err.errors[0].path == "username")
+        if (R.path(["errors", 0, path],err) == "username")
             callback(response["E03"]);
-        else if (err.errors[0].path == "email")
+        else if (R.path(["errors", 0, path], err) == "email")
             callback(response["E04"]);
         else
             callback(response.E05);
