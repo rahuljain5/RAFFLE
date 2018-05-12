@@ -6,6 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
+const models = require("./models");
 var index = require('./routes/index.js');
 var users = require('./routes/users.js');
 var ClassResult = require('./routes/ClassResult.js');
@@ -14,11 +15,12 @@ var RangeResult = require('./routes/RangeResult.js');
 var Result = require('./routes/Result.js');
 var DB = require('./utils/Database_Operations');
 var Feedback = require('./routes/Feedback.js');
-var upload;
-var app = express();
-upload = multer({ dest: 'tmp/' });
-var app = express();
+var upload = multer({ dest: 'tmp/' });
+var env = process.env.NODE_ENV || "development";
+var config = require("./config/config.js")[env];
   
+
+const  initmiddleware  = (app) =>{
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -38,7 +40,7 @@ app.use(function(req, res, next) {
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+}
 
 const initroutes = (app) => {
   app.use(function(req, res, next) {
@@ -91,12 +93,17 @@ const startserver = (app) => {
 
 if(cluster.isMaster) {
     var numWorkers = require('os').cpus().length;
-
+  models.sequelize.sync({
+    force: config.resetdb
+  }).then(()=>{
     console.log('Master cluster setting up ' + numWorkers + ' workers...');
 
     for(var i = 0; i < numWorkers; i++) {
         cluster.fork();
-    }
+    }})
+    .catch((err) =>{
+      console.error("Erorr: "+err)
+    })
 
     cluster.on('online', function(worker) {
         console.log('Worker ' + worker.process.pid + ' is online');
@@ -108,10 +115,11 @@ if(cluster.isMaster) {
         cluster.fork();
     });
 } else {
+  var app = express();
   app.all('/pid', function(req, res) {res.send('process ' + process.pid + ' says hello!').end();})//can be removed
-
-  initroutes(app);
-  startserver(app);
+    initmiddleware(app);
+    initroutes(app);
+    startserver(app);
   module.exports = app;
 }
 
