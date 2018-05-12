@@ -13,6 +13,7 @@ var ClassResult = require('./routes/ClassResult.js');
 var file_handler = require('./utils/FileHandler.js');
 var RangeResult = require('./routes/RangeResult.js');
 var Result = require('./routes/Result.js');
+const sessionAuth = require("./middleware/sessionAuth.js")
 var DB = require('./utils/Database_Operations');
 var Feedback = require('./routes/Feedback.js');
 var upload = multer({ dest: 'tmp/' });
@@ -40,6 +41,7 @@ app.use(function(req, res, next) {
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/users/otp', sessionAuth);
 }
 
 const initroutes = (app) => {
