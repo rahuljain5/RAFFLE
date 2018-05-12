@@ -45,6 +45,7 @@ const register = (state, callback) => {
         redis.setex(val.dataValues.session, val.dataValues.id,loginTtl);
         val.dataValues = helper.clean(val.dataValues, ["createdAt", "id", "totpsecret", "updatedAt", "password", "token"]);
         res.SESSION_KEY = jwt.sign(val.dataValues, config.jwtKey, { expiresIn: config.loginTtl })
+        res.is2FAEnable = val.dataValues["isotpenabled"];
         callback(res)
     }).catch((err) => {
         if (err.errors[0].path == "username")
@@ -72,6 +73,7 @@ const login = (state, callback) => {
             if (val.dataValues.isotpenabled)
                 redis.setex(val.dataValues.session + "_totpsecret", val.dataValues.totpsecret,loginTtl);
             val.dataValues = helper.clean(val.dataValues, ["createdAt", "id", "totpsecret", "updatedAt", "password", "token"]);
+            res.is2FAEnable = val.dataValues["isotpenabled"];
             if (state.rememberme)
                 res.SESSION_KEY = jwt.sign(val.dataValues, config.jwtKey);
             else
