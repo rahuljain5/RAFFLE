@@ -49,9 +49,9 @@ const register = (state, callback) => {
         res.is2FAEnable = val.dataValues["isotpenabled"];
         callback(res)
     }).catch((err) => {
-        if (R.path(["errors", "0", path],err) == "username")
+        if (R.path(["errors", "0", "path"],err) == "username")
             callback(response["E03"]);
-        else if (R.path(["errors", "0", path], err) == "email")
+        else if (R.path(["errors", "0", "path"], err) == "email")
             callback(response["E04"]);
         else
             callback(response.E05);
