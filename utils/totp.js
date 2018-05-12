@@ -1,6 +1,7 @@
 var speakeasy = require("speakeasy");
 var qr = require("qr-image");
-
+const env = process.env.NODE_ENV || "development";
+const config = require("../config/config")[env]
 const verify = (secret, token) => {
     return speakeasy.totp.verify({
         secret: secret,
@@ -10,7 +11,7 @@ const verify = (secret, token) => {
 }
 const genrateSecret = () => {
     var secretObj = speakeasy.generateSecret();
-    var url = speakeasy.otpauthURL({ secret: secretObj.ascii, label: 'MyDiary' });
+    var url = speakeasy.otpauthURL({ secret: secretObj.ascii, label: config.totpLable });
     return {
         secret: secretObj.base32,
         otpauthUrl: url

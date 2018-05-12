@@ -13,7 +13,8 @@ module.exports = {
     mailer_host: "smtp.sendgrid.net",
     mailer_port: "587",
     mailer_username: "apikey",
-    mailer_password: process.env.MAILER_PASSWORD
+    mailer_password: process.env.MAILER_PASSWORD,
+    totpLable : "RAFFLE-DEVELOPMENT"
   },
   test: {
     connection_url: "mongodb://localhost:27017/RAFFLE",
@@ -29,7 +30,8 @@ module.exports = {
     mailer_host: "smtp.sendgrid.net",
     mailer_port: "587",
     mailer_username: "apikey",
-    mailer_password: process.env.MAILER_PASSWORD
+    mailer_password: process.env.MAILER_PASSWORD,
+    totpLable: "RAFFLE-UAT"
   },
   production: {
     connection_url: process.env.MONGODB_URI,
@@ -46,7 +48,8 @@ module.exports = {
     mailer_host: "smtp.sendgrid.net",
     mailer_port: "587",
     mailer_username: "apikey",
-    mailer_password: process.env.MAILER_PASSWORD
+    mailer_password: process.env.MAILER_PASSWORD,
+    totpLable: "RAFFLE"
   },
   result_url: 'http://results.vtu.ac.in/vitaviresultcbcs/resultpage.php',
 
