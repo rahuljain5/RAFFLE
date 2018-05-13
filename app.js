@@ -43,6 +43,7 @@ app.use(function(req, res, next) {
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users/otp', sessionAuth);
+app.use('/ClassResult', sessionAuth);
 }
 
 const initroutes = (app) => {
