@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "access-control-allow-origin");
+  res.header("Access-Control-Allow-Headers", "access-control-allow-origin,X-SESSION-KEY");
   next();
  });
 
