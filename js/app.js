@@ -11,9 +11,9 @@ $("#logout").click(function(){
         },
         type: "GET",
     }).done((response)=>{
+
         NProgress.done();
-        console.log(JSON.stringify(repsonse));
-        localStorage.setItem("session",null);
+        localStorage.removeItem("session");
         NProgress.remove();
         window.location="login.html"
     })
@@ -22,7 +22,6 @@ $("#logout").click(function(){
 function getFormData($form) {
     var unindexed_array = $form.serializeArray();
     var indexed_array = {};
-
     $.map(unindexed_array, function (n, i) {
         indexed_array[n['name']] = n['value'];
     });
