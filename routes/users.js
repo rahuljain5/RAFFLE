@@ -43,18 +43,8 @@ router.post("/register", function (req, res) {
 })
 
 router.post("/login", function (req, res) {
-  const uservalid = validate(req.body.username, /^[a-z][a-z0-9]+$/i, 4)
   const passwordvalid = validate(req.body.password, null, 6);
-  if (uservalid == -1) {
-    err.message = "USERNAME MUST BE MORE THAN 4 CHARACTER";
-    res.send(err);
-    return;
-  }
-  if (uservalid == -2) {
-    err.message = "USERNAME CAN CONTAIN ONLY LETTER AND NUMBERS";
-    res.send(err);
-    return;
-  }
+
   if (passwordvalid == -1) {
     err.message = "PASSWORD MUST BE MORE THAN 6 CHARACTER";
     res.send(err);
