@@ -61,13 +61,17 @@ const register = (state, callback) => {
 const login = (state, callback) => {
     models.User.findOne({
         where: {
-            username: state.username,
              $or:[{
             email: 
             {
                 $eq: state.email
             }
-        }]
+        },
+        {
+            username:{
+                  $eq:  state.username,
+                  }
+           }]
         }
     }).then((val) => {
 
