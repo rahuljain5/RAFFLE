@@ -36,6 +36,7 @@ $("#loginForm").submit(function (event) {
     var post_url = $(this).attr("action"); //get form action url
     var request_method = $(this).attr("method"); //get form GET/POST method
     var form_data = getFormData($(this)) //Encode form elements for submission
+    form_data["email"]=form_data.username
     if (form_data.rememberme) {
         form_data.rememberme = true;
     }
