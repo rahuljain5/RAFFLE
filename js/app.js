@@ -53,7 +53,7 @@ $("#loginForm").submit(function (event) {
     }).done(function (response) { //
         console.log("LOGIN -> RESPONSE" + JSON.stringify(response))
 //         NProgress.done();
-        Pace.done();
+//         Pace.done();
         if (response.error) {
             console.log("In Error Case")
             // if($("#errorHint").length >0)
@@ -65,6 +65,7 @@ $("#loginForm").submit(function (event) {
             localStorage.setItem("session", response["SESSION_KEY"])
             window.location = "index.html"
         }
+           Pace.stop();
 //         NProgress.remove();
     });
 });
