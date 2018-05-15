@@ -1,7 +1,8 @@
 $("#logout").click(function(){
     console.log("Inside Logout  Handler");
-    NProgress.configure({ showSpinner: false });
-    NProgress.start();
+//     NProgress.configure({ showSpinner: false });
+//     NProgress.start();
+    Pace.start();
     const session = localStorage.getItem("session");
     const url = "https://raffle-promise-test.herokuapp.com/users/logout"
     $.ajax({
@@ -11,10 +12,10 @@ $("#logout").click(function(){
         },
         type: "GET",
     }).done((response)=>{
-
-        NProgress.done();
+           Pace.done();
+//         NProgress.done();
         localStorage.removeItem("session");
-        NProgress.remove();
+//         NProgress.remove();
         window.location="login.html"
     })
 })
