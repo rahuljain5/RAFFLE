@@ -1,8 +1,8 @@
 $("#logout").click(function(){
     console.log("Inside Logout  Handler");
-//     NProgress.configure({ showSpinner: false });
-//     NProgress.start();
-    Pace.start();
+    NProgress.configure({ showSpinner: false });
+    NProgress.start();
+
     const session = localStorage.getItem("session");
     const url = "https://raffle-promise-test.herokuapp.com/users/logout"
     $.ajax({
@@ -12,8 +12,8 @@ $("#logout").click(function(){
         },
         type: "GET",
     }).done((response)=>{
-           Pace.done();
-//         NProgress.done();
+//            Pace.done();
+        NProgress.done();
         localStorage.removeItem("session");
 //         NProgress.remove();
         window.location="login.html"
@@ -31,8 +31,9 @@ function getFormData($form) {
 }
 $("#loginForm").submit(function (event) {
     console.log("In This Function")
-    NProgress.configure({ showSpinner: false });
-    NProgress.start();
+//     NProgress.configure({ showSpinner: false });
+//     NProgress.start();
+        Pace.start();
     event.preventDefault(); //prevent default action
     var post_url = $(this).attr("action"); //get form action url
     var request_method = $(this).attr("method"); //get form GET/POST method
@@ -51,7 +52,8 @@ $("#loginForm").submit(function (event) {
         dataType: "json"
     }).done(function (response) { //
         console.log("LOGIN -> RESPONSE" + JSON.stringify(response))
-        NProgress.done();
+//         NProgress.done();
+        Pace.done();
         if (response.error) {
             console.log("In Error Case")
             // if($("#errorHint").length >0)
@@ -63,7 +65,7 @@ $("#loginForm").submit(function (event) {
             localStorage.setItem("session", response["SESSION_KEY"])
             window.location = "index.html"
         }
-        NProgress.remove();
+//         NProgress.remove();
     });
 });
 
