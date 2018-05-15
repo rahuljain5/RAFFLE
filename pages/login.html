@@ -14,6 +14,10 @@
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+    <script src="/pace/pace.min.js"></script>
+    <link href="/pace/themes/pace-theme-loading-bar.css" rel="stylesheet" />
+
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 
@@ -29,7 +33,10 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+<script>
+     if(localStorage.getItem("session") !=null)
+     window.location="index.html"
+    </script>
 </head>
 
 <body>
@@ -42,41 +49,46 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        <form role="form" action="https://raffle-promise-test.herokuapp.com/users/login" method="POST" id="loginForm">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="User Name" name="username" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                        <input name="rememberme" type="checkbox" value="Remember Me">Remember Me
                                     </label>
                                 </div>
+                                <div class="form-group" id="LoginerrorHint" style="color: red"></div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a>
+                                 <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+                                <!-- <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a> -->
                                   <a href="signup.html" class="btn btn-lg btn-success btn-block">Sign Up</a>
                             </fieldset>
+                           
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
-
+    <script src="../js/app.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+  
+ 
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+
 
 </body>
 
