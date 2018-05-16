@@ -13,12 +13,12 @@ function changeContent(content) {
                 } else {
                     var str =
                         `<h3>University Seat Number: ${content['University Seat Number ']}</h3><h3>Student Name: ${titleCase(content['Student Name '])}</h3>`
-                    str += `<h3>Semester: ${content["Results"]["CurrentSem"]["Semester"]}</h3>`
+                    str += `<h3>Semester: ${content["Results"]["Current"]["Semester"]}</h3>`
                     var table =
                         "<table class='table'><tr><th>Subject Code</th><th>Subject Name</th><th>Total Marks</th><th>Result</th></tr>"
-                    var current = content["Results"]["CurrentSem"]["Result"]
+                    var current = content["Results"]["Current"]["Result"]
                     for (subject in current) {
-                        console.log(content["Results"]["CurrentSem"]["Result"]["Semester"]);
+                        console.log(content["Results"]["Current"]["Result"]["Semester"]);
 
                         table +=
                             `<tr><td>${current[subject]['Subject Code']}</td><td>${current[subject]['Subject Name']}</td><td>${current[subject]['Total']}</td><td>${current[subject]['Result']}</td></tr>`
