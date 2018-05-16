@@ -107,7 +107,7 @@ if(cluster.isMaster) {
     .catch((err) =>{
       console.error("Erorr: "+err)
     })
-  }
+  });
     cluster.on('online', function(worker) {
         console.log('Worker ' + worker.process.pid + ' is online');
     });
