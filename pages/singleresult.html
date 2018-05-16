@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>Single Result &middot; RAFFLE</title>
-
+    <link href = "https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"  rel="stylesheet">
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -121,9 +121,6 @@
                             alert("Sorry But Something Went Wrong while we tried to register you");
                     }
                 };
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.setRequestHeader("Origin", origin);
-                xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
                 xhttp.setRequestHeader("X-SESSION-KEY", session);
                 xhttp.send();
             }
