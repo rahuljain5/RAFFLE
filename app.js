@@ -21,7 +21,7 @@ var env = process.env.NODE_ENV || "development";
 var config = require("./config/config.js")[env];
   
 
-// const  initmiddleware  = (app) =>{
+const  initmiddleware  = (app) =>{
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -44,7 +44,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users/otp', sessionAuth);
 app.use('/ClassResult', sessionAuth);
-// }
+}
 
 const initroutes = (app) => {
 
@@ -116,7 +116,7 @@ if(cluster.isMaster) {
 } else {
   var app = express();
   app.all('/pid', function(req, res) {res.send('process ' + process.pid + ' says hello!').end();})//can be removed
-//     initmiddleware(app);
+    initmiddleware(app);
     initroutes(app);
     startserver(app);
   module.exports = app;
