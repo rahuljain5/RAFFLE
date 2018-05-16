@@ -41,6 +41,7 @@
     <div id="wrapper">
 
         <!-- Navigation -->
+
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" id="Navigation-Bar">
             <script src="../js/navbar.js"></script>            
             <!-- /.navbar-static-side -->
@@ -108,7 +109,6 @@
         },
         data : form_data
     }).done(function(response){ //
-        
         NProgress.done();
         if(response.error != undefined && response.error==true){
             localStorage.removeItem("session");//Clear the Invalid Key if exist 
