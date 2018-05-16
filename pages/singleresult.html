@@ -33,7 +33,7 @@
         if (localStorage.getItem("session") === null)
             window.location = "login.html"
     </script>
-    
+
 </head>
 
 <body>
@@ -42,7 +42,7 @@
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" id="Navigation-Bar">
-            <script src="../js/navbar.js"></script>            
+            <script src="../js/navbar.js"></script>
             <!-- /.navbar-static-side -->
         </nav>
 
@@ -89,9 +89,10 @@
 
         <script src="../js/ChangeContent.js"></script>
         <script>
-           
             function register() {
-                NProgress.configure({ showSpinner: false });
+                NProgress.configure({
+                    showSpinner: false
+                });
                 NProgress.start();
                 var placeholder = document.getElementById('form-panel');
                 placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
@@ -102,19 +103,20 @@
                 var origin = "https://raffle.cf"
                 xhttp.open("GET", url, true);
                 console.log(url);
+                const session = localStorage.getItem("session")
                 xhttp.onreadystatechange = function () {
 
                     if (this.readyState == 4 && this.status == 200) {
-                        if(response.error != undefined && response.error==true){
-            localStorage.removeItem("session");//Clear the Invalid Key if exist 
-            window.location="login.html"
-        }
+                        if (response.error != undefined && response.error == true) {
+                            localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                            window.location = "login.html"
+                        }
                         //Wait for Backend Response
                         NProgress.done();
                         if (this.responseText != undefined || this.responseText != null) {
                             placeholder.innerHTML += changeContent(JSON.parse(this.responseText))
-                               console.log(this.responseText);
-                               NProgress.remove();
+                            console.log(this.responseText);
+                            NProgress.remove();
                         } else
                             alert("Sorry But Something Went Wrong while we tried to register you");
                     }
@@ -122,14 +124,14 @@
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.setRequestHeader("Origin", origin);
                 xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
-                request.setRequestHeader("X-SESSION-KEY", session);
+                xhttp.setRequestHeader("X-SESSION-KEY", session);
                 xhttp.send();
             }
         </script>
 
         <!-- jQuery -->
         <script src="../vendor/jquery/jquery.min.js"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
         <!-- Bootstrap Core JavaScript -->
         <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
