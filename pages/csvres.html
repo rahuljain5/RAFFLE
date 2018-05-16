@@ -20,6 +20,7 @@
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -29,6 +30,10 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+        if (localStorage.getItem("session") === null)
+            window.location = "login.html"
+    </script>
 
 </head>
 
@@ -46,84 +51,99 @@
             <br/>
             <div class="container-fluid">
                 <div class="row">
-                        <div class="col-lg-2"></div>
-                    <div class="col-lg-8">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Find Class Result 
-                                </div>
-                                <div class="panel-body">        
-                        <form role="form"  method = "POST" id="myform">
-                            <div class="form-group">
-                                <h3>Upload the .CSV File with all USN in single Column.</h3>
-                                    <label>File input</label>
-                                    <input type="file" name="filetoupload">
-                            </div>
-                            <button type="submit" class="btn btn-default">Submit Button</button>
-                            <button type="reset" class="btn btn-default">Reset Button</button>
-                        </form>
-                        <div id="server-results"><!-- For server results --></div>
-                        </form>
-                    </div>
-                    </div>
-                    <!-- /.col-lg-12 -->
                     <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Find Class Result
+                            </div>
+                            <div class="panel-body">
+                                <form role="form" method="POST" id="myform">
+                                    <div class="form-group">
+                                        <h3>Upload the .CSV File with all USN in single Column.</h3>
+                                        <label>File input</label>
+                                        <input type="file" name="filetoupload">
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Submit Button</button>
+                                    <button type="reset" class="btn btn-default">Reset Button</button>
+                                </form>
+                                <div id="server-results">
+                                    <!-- For server results -->
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                        <div class="col-lg-2"></div>
+                    </div>
+
+                    <!-- /.row -->
                 </div>
-                
-                <!-- /.row -->
-            </div>
-            <br>
+                <br>
                 <div class="row">
                     <div class="panel panel-default" id="form-panel" style="overflow: auto;">
 
                     </div>
                 </div>
-            <!-- /.container-fluid -->
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /#page-wrapper -->
+
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /#wrapper -->
+        <script src="../js/ChangeContent.js"></script>
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script>
+            $("#myform").submit(function (event) {
+                NProgress.configure({
+                    showSpinner: false
+                });
+                NProgress.start();
+                var Results = "";
+                var placeholder = document.getElementById('form-panel');
+                placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
+                event.preventDefault(); //prevent default action
+                var post_url = "https://raffle-uat.herokuapp.com/CSVResult" //get form action url
+                var request_method = "POST"; //get form GET/POST method
+                const session = localStorage.getItem("session")
+                var form_data = new FormData(this); //Creates new FormData object
+                $.ajax({
+                    url: post_url,
+                    type: request_method,
+                    data: form_data,
+                    headers: {
+                        "X-SESSION-KEY": session
+                    },
+                    contentType: false,
+                    cache: false,
+                    processData: false
+                }).done(function (response) { //
+                    if (response.error != undefined && response.error == true) {
+                        localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                        window.location = "login.html"
+                    }
+                    NProgress.done();
+                    response.forEach(ResultJson => {
+                        console.log(ResultJson);
+                        placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
+                        NProgress.remove();
+                    });
+                });
+            })
+        </script>
 
-    </div>
-    <!-- /#wrapper -->
-    <script src="../js/ChangeContent.js"></script>
-    <script src="../vendor/jquery/jquery.min.js"></script>
-<script>
+        <!-- jQuery -->
 
-    $("#myform").submit(function(event){
-    var Results = "";
-    var placeholder = document.getElementById('form-panel');
-    placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
-    event.preventDefault(); //prevent default action
-    var post_url =  "https://raffle-uat.herokuapp.com/CSVResult"//get form action url
-    var request_method = "POST"; //get form GET/POST method
-    var form_data = new FormData(this); //Creates new FormData object
-    $.ajax({
-        url : post_url,
-        type: request_method,
-        data : form_data,
-        contentType: false,
-        cache: false,
-        processData:false
-    }).done(function(response){ //
-        response.forEach(ResultJson => {
-            console.log(ResultJson);
-            placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
-    });
-});
-}) 
-   </script>
 
-    <!-- jQuery -->
-    
+        <!-- Bootstrap Core JavaScript -->
+        <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
-
+        <!-- Custom Theme JavaScript -->
+        <script src="../dist/js/sb-admin-2.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
 </body>
 
 </html>
