@@ -433,6 +433,8 @@
         type: request_method,
         beforeSend: function (request) {
             request.setRequestHeader("X-SESSION-KEY", session);
+            request.setRequestHeader("Access-Control-Allow-Origin", "*");
+            request.setRequestHeader("Access-Control-Allow-Headers", "access-control-allow-origin");
         },
         data : form_data
     }).done(function(response){ //
