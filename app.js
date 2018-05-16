@@ -92,7 +92,11 @@ const startserver = (app) => {
 
 if(cluster.isMaster) {
     var numWorkers = require('os').cpus().length;
-  models.sequelize.sync({
+  models
+    .sequelize
+    .query('SET FOREIGN_KEY_CHECKS = 0', {raw: true})
+    .then(function(results) {
+    models.sequelize.sync({
     force: config.resetdb
   }).then(()=>{
     console.log('Master cluster setting up ' + numWorkers + ' workers...');
@@ -103,7 +107,7 @@ if(cluster.isMaster) {
     .catch((err) =>{
       console.error("Erorr: "+err)
     })
-
+  }
     cluster.on('online', function(worker) {
         console.log('Worker ' + worker.process.pid + ' is online');
     });
