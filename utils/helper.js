@@ -1,6 +1,26 @@
 var S = require('string');
 var fs = require('fs');
 var padder = require('zpad');
+const uuidv4 = require("uuid/v4");
+const getuuid = () => {
+  return uuidv4();
+}
+
+const cleanrecord = (rec, cleankeys) => {
+  for (var i of cleankeys)
+    delete rec[i];
+  return rec;
+}
+
+const InputValidator = (input, regex, length) => {
+  if (!input)
+    return -1;
+  if (input.length < length)
+    return -1;
+  if (regex != null && !regex.test(input))
+    return -2;
+  return 0;
+}
 
 const ResultJsonParser = (tables, sems) => {
   var Results = {};
@@ -73,3 +93,6 @@ exports.getNameUsn = getNameUsn;
 exports.getSemesters = getSemesters;
 exports.UsnGenerator = UsnGenerator;
 exports.RangeUsnGenerator = RangeUsnGenerator;
+exports.getuuid = getuuid;
+exports.clean = cleanrecord;
+exports.validate = InputValidator;

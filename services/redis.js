@@ -14,10 +14,15 @@ const get = function(key,callback) {
  client.get(key,callback);
   
 }
+const del = function (key,callback){
+  client.del(key,callback)
+}
+
 
 
 
 exports.set = set;
 exports.setex = setex;
 exports.get = get;
+exports.del = del;
 
