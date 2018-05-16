@@ -417,10 +417,10 @@
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
    <script>
+    $("#myform").submit(function(event){
     var Results = "";
     var placeholder = document.getElementById('form-panel');
     placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
-    $("#myform").submit(function(event){
     NProgress.configure({ showSpinner: false });
     NProgress.start();
     event.preventDefault(); //prevent default action
@@ -436,6 +436,7 @@
         },
         data : form_data
     }).done(function(response){ //
+        
         NProgress.done();
         if(response.error != undefined && response.error==true){
             localStorage.removeItem("session");//Clear the Invalid Key if exist 
