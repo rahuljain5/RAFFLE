@@ -107,7 +107,7 @@
                 xhttp.onreadystatechange = function () {
 
                     if (this.readyState == 4 && this.status == 200) {
-                        if (response.error != undefined && response.error == true) {
+                        if (this.error != undefined && this.error == true) {
                             localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                             window.location = "login.html"
                         }
