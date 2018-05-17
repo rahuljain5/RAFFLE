@@ -37,8 +37,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/users/otp', sessionAuth);
-app.use('/ClassResult', sessionAuth);
+
 }
 
 const initroutes = (app) => {
@@ -48,6 +47,8 @@ app.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Headers", "X-SESSION-KEY");
   next();
  });
+app.use('/users/otp', sessionAuth);
+app.use('/ClassResult', sessionAuth);
   app.use('/', index);
 
   app.use('/users', users);
