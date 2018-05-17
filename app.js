@@ -43,9 +43,9 @@ app.use('/ClassResult', sessionAuth);
 
 const initroutes = (app) => {
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "access-control-allow-origin");
-  res.header("Access-Control-Allow-Headers", "X-SESSION-KEY");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "access-control-allow-origin");
+  res.setHeader("Access-Control-Allow-Headers", "X-SESSION-KEY");
   next();
  });
   app.use('/', index);
