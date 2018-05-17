@@ -93,9 +93,9 @@ const startserver = (app) => {
 
 if(cluster.isMaster) {
     var numWorkers = require('os').cpus().length;
-  models.sync({{
+  models.sequelize.sync({
     force: config.resetdb
-  }}).then(()=>{
+  }).then(()=>{
      console.log('Master cluster setting up ' + numWorkers + ' workers...');
 
     for(var i = 0; i < numWorkers; i++) {
