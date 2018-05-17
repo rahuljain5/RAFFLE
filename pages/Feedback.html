@@ -32,7 +32,7 @@
 
 </head>
 
-<body>
+<body onload="showClassrooms()">
 
     <div id="wrapper">
         <!-- Navigation -->
@@ -40,7 +40,6 @@
             <script src="../js/navbar.js"></script>            
             <!-- /.navbar-static-side -->
         </nav>
-
         <!-- Page Content -->
         <div id="page-wrapper">
             <br/>
@@ -66,7 +65,7 @@
                                 <input class="form-control" id="className" name="className" placeholder="Enter Name" required >
                                 <label>Enter Batch(Year):</label>
                                 <input class="form-control" id="batch" name="batch" placeholder="Enter Year" required >
-                                <label>Enter    :</label>
+                                <label>Enter Faculty Names Below :</label>
                                 <input class="form-control" id="batch" name="batch" placeholder="Enter Year" required >
                             </div>
                             <button type="submit" class="btn btn-default">Submit Button</button>
@@ -81,7 +80,7 @@
             </div>
             <br>
                 <div class="row">
-                    <div class="panel panel-default" id="form-panel" style="overflow: auto;">
+                    <div class="col-lg-6">
 
                     </div>
                 </div>
@@ -125,15 +124,16 @@
         {
             // console.log(ClassRooms.find( Class => Class["_id"] === classroom ));
             const result = ClassRooms.find( Class => Class["_id"] === classroom );
-            var  details = "<h3>Class: "+result["classroom"]+"</h3>"
+            var  details = "<h4 onclick='showClassrooms()' style='cursor:pointer;'><i class='fa-arrow-left'></i>Back</h4><h3>Class: "+result["classroom"]+"</h3>"
             details+= "<h3>Batch: "+result["batch"]+"</h3>";
             details+= "<h3>Faculty</h3><ul>";
             for(teacher in result["Faculty"]){
                 details+= "<li>"+result["Faculty"][teacher]+"</li>"
             }
+            details+="</ul><br/><button class=\"btn btn-success\">Submit Button</button>"
             $("#classroom-list").html(details);
         }
-$(document).ready(function(){ 
+function showClassrooms(){
     $.ajax({
         url : "https://raffle-uat.herokuapp.com/Feedback/ClassRooms",
         type: "POST",
@@ -151,7 +151,7 @@ $(document).ready(function(){
             console.log(displaystring);
             $("#classroom-list").html(displaystring) 
         });
-});
+}
 
 </script>
       
