@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Class Result &middot; RAFFLE</title>
+    <title>Faculty Feedback &middot; RAFFLE</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -37,7 +37,7 @@
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" id="Navigation-Bar">
-            <script src="../js/navbar.js"></script>            
+            <script src="../js/navbar.js"></script>
             <!-- /.navbar-static-side -->
         </nav>
         <!-- Page Content -->
@@ -45,126 +45,131 @@
             <br/>
             <div class="container-fluid">
                 <div class="row">
-                        <div class="col-lg-6"><div class="panel panel-default">
-                                <div class="panel-heading">
-                                    View ClassRooms 
-                                </div>
-                                <div class="panel-body">        
-                        <div id='classroom-list'>Fetching List of ClassRooms....</div>
-                    </div>
-                    </div></div>
                     <div class="col-lg-6">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Create Classroom
-                                </div>
-                                <div class="panel-body">        
-                        <form role="form" action = "https://raffle-uat.herokuapp.com/Feedback/NewClassRoom" method = "GET" id="myform">
-                            <div class="form-group">
-                                <label>Enter Name of the Class:</label>
-                                <input class="form-control" id="className" name="className" placeholder="Enter Name" required >
-                                <label>Enter Batch(Year):</label>
-                                <input class="form-control" id="batch" name="batch" placeholder="Enter Year" required >
-                                <label>Enter Faculty Names Below :</label>
-                                <input class="form-control" id="batch" name="batch" placeholder="Enter Year" required >
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                View ClassRooms
                             </div>
-                            <button type="submit" class="btn btn-default">Submit Button</button>
-                            <button type="reset" class="btn btn-default">Reset Button</button>
-                        </form>
+                            <div class="panel-body">
+                                <div id='classroom-list'></div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Create Classroom
+                            </div>
+                            <div class="panel-body">
+                                <form role="form" action="https://raffle-uat.herokuapp.com/Feedback/NewClassRoom" method="GET" id="myform">
+                                    <div class="form-group">
+                                        <label>Enter Name of the Class:</label>
+                                        <input class="form-control" id="className" name="className" placeholder="Enter Name" required>
+                                        <label>Enter Batch(Year):</label>
+                                        <input class="form-control" id="batch" name="batch" placeholder="Enter Year" required>
+                                        <label>Enter Faculty Names Below :</label>
+                                        <input class="form-control" id="batch" name="batch" placeholder="Enter Year" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Submit Button</button>
+                                    <button type="reset" class="btn btn-default">Reset Button</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
                     </div>
-                    <!-- /.col-lg-12 -->
+
+                    <!-- /.row -->
                 </div>
-                
-                <!-- /.row -->
-            </div>
-            <br>
+                <br>
                 <div class="row">
                     <div class="col-lg-6">
 
                     </div>
                 </div>
-            <!-- /.container-fluid -->
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /#page-wrapper -->
+
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /#wrapper -->
+        <script src="../js/ChangeContent.js"></script>
+        <!-- jQuery -->
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script>
+            //     $("#myform").submit(function(event){
+            //     event.preventDefault(); //prevent default action
+            //     var Results = "";
+            //     var placeholder = document.getElementById('form-panel');
+            //     placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
+            //     var post_url = $(this).attr("action"); //get form action url
+            //     var request_method = $(this).attr("method"); //get form GET/POST method
+            //     var form_data = $(this).serialize(); //Encode form elements for submission
 
-    </div>
-    <!-- /#wrapper -->
-    <script src="../js/ChangeContent.js"></script>
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-   <script>
-    
-//     $("#myform").submit(function(event){
-//     event.preventDefault(); //prevent default action
-//     var Results = "";
-//     var placeholder = document.getElementById('form-panel');
-//     placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
-//     var post_url = $(this).attr("action"); //get form action url
-//     var request_method = $(this).attr("method"); //get form GET/POST method
-//     var form_data = $(this).serialize(); //Encode form elements for submission
-   
-//     $.ajax({
-//         url : post_url,
-//         type: request_method,
-//         data : form_data
-//     }).done(function(response){ //
-//         // $("#server-results").html(response);
-//         response.forEach(ResultJson => {
-//             console.log(ResultJson);
-//             // if(ResultJson["error"]!=true)
-//             // placeholder.innerHTML += changeContent(JSON.parse(ResultJson))
-//             placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
-//         });
-        
-//     });
-// });
-   var ClassRooms=[];
-   function classDetail(classroom)
-        {
-            // console.log(ClassRooms.find( Class => Class["_id"] === classroom ));
-            const result = ClassRooms.find( Class => Class["_id"] === classroom );
-            var  details = "<h4 onclick='showClassrooms()' style='cursor:pointer;'><i class='fa-arrow-left'></i>Back</h4><h3>Class: "+result["classroom"]+"</h3>"
-            details+= "<h3>Batch: "+result["batch"]+"</h3>";
-            details+= "<h3>Faculty</h3><ul>";
-            for(teacher in result["Faculty"]){
-                details+= "<li>"+result["Faculty"][teacher]+"</li>"
+            //     $.ajax({
+            //         url : post_url,
+            //         type: request_method,
+            //         data : form_data
+            //     }).done(function(response){ //
+            //         // $("#server-results").html(response);
+            //         response.forEach(ResultJson => {
+            //             console.log(ResultJson);
+            //             // if(ResultJson["error"]!=true)
+            //             // placeholder.innerHTML += changeContent(JSON.parse(ResultJson))
+            //             placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
+            //         });
+
+            //     });
+            // });
+            var ClassRooms = [];
+
+            function classDetail(classroom) {
+                // console.log(ClassRooms.find( Class => Class["_id"] === classroom ));
+                const result = ClassRooms.find(Class => Class["_id"] === classroom);
+                var details =
+                    "<h4 onclick='showClassrooms()' style='cursor:pointer;'><i class='fa-arrow-left'></i>Back</h4><h3>Class: " +
+                    result["classroom"] + "</h3>"
+                details += "<h3>Batch: " + result["batch"] + "</h3>";
+                details += "<h3>Faculty</h3><ul>";
+                for (teacher in result["Faculty"]) {
+                    details += "<li>" + result["Faculty"][teacher] + "</li>"
+                }
+                details += "</ul><br/><button class=\"btn btn-success\">Add Feedback</button>"
+                $("#classroom-list").html(details);
             }
-            details+="</ul><br/><button class=\"btn btn-success\">Submit Button</button>"
-            $("#classroom-list").html(details);
-        }
-function showClassrooms(){
-    $.ajax({
-        url : "https://raffle-uat.herokuapp.com/Feedback/ClassRooms",
-        type: "POST",
-        data: ""
-    }).done(function(response){
-        // $("#server-results").html(response);
-            var displaystring="<ul>";
-            console.log(response);
-            response=JSON.parse(response);
-            ClassRooms = response;
-            response.forEach(Classroom => {
-                displaystring +="<li onclick='classDetail(\""+Classroom["_id"]+"\")'>"+Classroom["classroom"]+"</li>";
-            });
-            displaystring+="</ul>"
-            console.log(displaystring);
-            $("#classroom-list").html(displaystring) 
-        });
-}
 
-</script>
-      
-    
+            function showClassrooms() {
+                $("#classroom-list").html("Fetching List of ClassRooms....");
+                $.ajax({
+                    url: "https://raffle-uat.herokuapp.com/Feedback/ClassRooms",
+                    type: "POST",
+                    data: ""
+                }).done(function (response) {
+                    // $("#server-results").html(response);
+                    var displaystring = "<ul>";
+                    console.log(response);
+                    response = JSON.parse(response);
+                    ClassRooms = response;
+                    response.forEach(Classroom => {
+                        displaystring += "<li onclick='classDetail(\"" + Classroom["_id"] + "\")'>" +
+                            Classroom["classroom"] + "</li>";
+                    });
+                    displaystring += "</ul>"
+                    console.log(displaystring);
+                    $("#classroom-list").html(displaystring)
+                });
+            }
+        </script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="../dist/js/sb-admin-2.js"></script>
 
 </body>
 
