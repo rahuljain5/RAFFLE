@@ -98,17 +98,28 @@
     // placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
     $("#myform").submit(function(event){
     event.preventDefault(); //prevent default action
-    
+    NProgress.configure({
+                    showSpinner: false
+                });
+    NProgress.start();
     var request_method = $(this).attr("method"); //get form GET/POST method
     var form_data = $(this).serialize(); //Encode form elements for submission
     var post_url = $(this).attr("action") + form_data; //get form action url
+    const session = localStorage.getItem("session")
     $.ajax({
         url : post_url,
-        type: request_method
+        type: request_method,
+        headers: {
+                        "X-SESSION-KEY": session
+                    }
     }).done(function(response){ //
+        if (response.error != undefined && response.error == true) {
+                        localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                        window.location = "login.html"
+                    }
         console.log(response);
         drawgraph(response)
-        
+        NProgress.remove();    
     });
 });
     function drawgraph(res)
