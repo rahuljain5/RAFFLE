@@ -114,7 +114,7 @@ if(cluster.isMaster) {
   else {
       models.sequelize.sync({
     force: config.resetdb
-    , logging :: false
+    , logging : false
   }).then(()=>{
      console.log('Master cluster setting up ' + numWorkers + ' workers...');
 
