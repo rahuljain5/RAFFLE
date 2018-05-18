@@ -11,7 +11,7 @@ router.all('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
     DB.Query('Faculty_Feedback', 'ClassRooms', {
-            classroom: req.params.id
+            _id: req.params.id
         })
         .then(function (result) {
             res.send(JSON.stringify(result));
