@@ -15,22 +15,22 @@ const Querymaker = (classroom, batch) => {
                 $group: {
                     _id: null,
                     Punctual: {
-                        $sum: "$feedback." + i + ".Punctual"
+                        $sum: "$feedback[" + i + "][Punctual]"
                     },
                     CourseCompletion: {
-                        $sum: "$feedback." + i + ".CourseCompletion"
+                        $sum: "$feedback[" + i + "][CourseCompletion]"
                     },
                     DoubtClearance:{
-                        $sum: "$feedback." + i + ".DoubtClearance"
+                        $sum: "$feedback[" + i + "][DoubtClearance]"
                     },
                     Interaction:{
-                        $sum: "$feedback." + i + ".Interaction"
+                        $sum: "$feedback[" + i + "][Interaction]"
                     },
                     Communication:{
-                        $sum: "$feedback." + i + ".Communication"
+                        $sum: "$feedback[" + i + "][Communication]"
                     },
                     Overall:{
-                        $sum: "$feedback." + i + ".Overall"
+                        $sum: "$feedback[" + i + "][Overall]"
                     }
                 }
             }
