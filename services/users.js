@@ -39,6 +39,7 @@ const register = (state, callback) => {
     state["id"] = helper.getuuid();
     state.password = crypto.gethash(state.password + "|" + state.id);
     models.User.create(state).then((val) => {
+        console.log("Insert Query Response :"+JSON.stringify(val));
         var res = response["REGISTERED"];
         val.dataValues["rememberme"] = false;
         val.dataValues["session"] = helper.getuuid();
@@ -47,6 +48,7 @@ const register = (state, callback) => {
         val.dataValues = helper.clean(val.dataValues, ["createdAt", "id", "totpsecret", "updatedAt", "password", "token"]);
         res.SESSION_KEY = jwt.sign(val.dataValues, config.jwtKey, { expiresIn: config.loginTtl })
         res.is2FAEnable = val.dataValues["isotpenabled"];
+        console.log("SENT RESPONSE:"+JSON.stringify(res));
         callback(res)
     }).catch((err) => {
         if (R.path(["errors", "0", "path"],err) == "username")
@@ -74,7 +76,7 @@ const login = (state, callback) => {
            }]
         }
     }).then((val) => {
-
+        console.log("Select Query Response :"+JSON.stringify(val));
         var res = response["LOGIN"];
         state.password = crypto.gethash(state.password + "|" + val.dataValues.id);
         if (state.password === val.dataValues.password) {
@@ -89,6 +91,7 @@ const login = (state, callback) => {
                 res.SESSION_KEY = jwt.sign(val.dataValues, config.jwtKey);
             else
                 res.SESSION_KEY = jwt.sign(val.dataValues, config.jwtKey, { expiresIn: config.loginTtl });
+            console.log("SENT RESPONSE:"+JSON.stringify(res));
             callback(res)
         }
         else {
