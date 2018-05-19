@@ -186,7 +186,7 @@
                 var requestJson = {};
                 requestJson["_id"] = document.getElementById('classroom').value +  document.getElementById('batch').value;
                 requestJson["classroom"] = document.getElementById('classroom').value
-                requestJson["batch"] = document.getElementById('classroom').value
+                requestJson["batch"] = document.getElementById('batch').value
                 requestJson["Faculty"] = {};
                 for(var j=1; j<i; j++){
                     if(document.getElementById("Faculty"+j).value)
@@ -195,8 +195,7 @@
                 $.ajax({
         url : "https://raffle-uat.herokuapp.com/Feedback/NewClassRoom",
         type: "POST",
-        // headers: {"content-type": "application/json"},
-        data : JSON.stringify(requestJson) 
+        data : requestJson 
     }).done(function(response){ //
         // NProgress.done();
         // if(response.error != undefined && response.error==true){
@@ -206,6 +205,8 @@
     // }
         
     })
+    console.log(JSON.stringify(requestJson));
+    
             }
         </script>
 
