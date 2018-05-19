@@ -14,12 +14,24 @@ const Querymaker = (classroom, batch) => {
             {
                 $group: {
                     _id: null,
-                    totala: {
-                        $sum: "$feedback." + i + ".a"
+                    Punctual: {
+                        $sum: "$feedback." + i + ".Punctual"
                     },
-                    totalb: {
-                        $sum: "$feedback." + i + ".b"
+                    CourseCompletion: {
+                        $sum: "$feedback." + i + ".CourseCompletion"
                     },
+                    DoubtClearance:{
+                        $sum: "$feedback." + i + ".DoubtClearance"
+                    },
+                    Interaction:{
+                        $sum: "$feedback." + i + ".Interaction"
+                    },
+                    Communication:{
+                        $sum: "$feedback." + i + ".Communication"
+                    },
+                    Overall:{
+                        $sum: "$feedback." + i + ".Overall"
+                    }
                 }
             }
         ];
@@ -34,9 +46,13 @@ const ScoreAggregator = (Query) => {
         DB.Aggregate('Faculty_Feedback', 'Feedback', Query)
             .then(function (result) {
                 AnalyzedFeedbackJson = {
-                    a: result[0].totala,
-                    b: result[0].totalb,
-                    total: result[0].totala + result[0].totalb
+                    Punctual: result[0].Punctual,
+                    CourseCompletion: result[0].CourseCompletion,
+                    DoubtClearance: result[0].DoubtClearance,
+                    Interaction: result[0].Interaction,
+                    Communication: result[0].Communication,
+                    Overall: result[0].Overall,
+                    total: result[0].Punctual + result[0].CourseCompletion + result[0].DoubtClearance + result[0].Interaction + result[0].Communication + result[0].Overall
                 };
                 resolve(AnalyzedFeedbackJson);
             })
