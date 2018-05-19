@@ -72,7 +72,7 @@
                                         <input class="form-control" id="Faculty1" name="Faculty1" placeholder="Enter Faculty Name" required onfocus="addFacultyField()">
                                     </div>
                                     <button type="submit" class="btn btn-default">Submit Button</button>
-                                    <button type="reset" class="btn btn-default">Reset Button</button>
+                                    <button type="reset" class="btn btn-default" id="resetbutton">Reset Button</button>
                                 </form>
                             </div>
                         </div>
@@ -201,7 +201,11 @@
         // if(response.error != undefined && response.error==true){
         //     localStorage.removeItem("session");//Clear the Invalid Key if exist 
         //     window.location="login.html"
-        console.log(response);    
+        if(response["status"] == "success"){
+            alert("Classroom was created successfully!")
+            document.getElementById('resetbutton').click();
+        }
+        else alert("There was an error creating the classroom. Please try again!");
     // }
         
     })
