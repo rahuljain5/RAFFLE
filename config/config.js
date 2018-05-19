@@ -4,12 +4,11 @@ module.exports = {
     api_key: "",
     DBNAme: process.env.DBname,
     redis_url : process.env.REDIS_URL || "redis://localhost:6379",
-    userdb_url: "mysql://dummyuser:dummy123@db4free.net:3307/dummymysql",
+    userdb_url: process.env.DATABASE_URL || "mysql://dummyuser:dummy123@db4free.net:3307/dummymysql",
     loginTtl: 10.00 * 60.00, //mins
     forgotexpiry : 10.00 * 60.00 * 24 ,// 1 day
     jwtKey: process.env.JWT_KEY || "secret",
     salt: process.env.COMMON_SALT || "13b7654d-fd16-488b-9e25-2113f478ccbf",
-    resetdb :true,
     mailer_host: "smtp.sendgrid.net",
     mailer_port: "587",
     mailer_username: "apikey",
@@ -26,7 +25,6 @@ module.exports = {
     forgotexpiry: 10.00 * 60.00 * 24,// 1 day
     jwtKey: process.env.JWT_KEY || "secret",
     salt: process.env.COMMON_SALT || "13b7654d-fd16-488b-9e25-2113f478ccbf",
-    resetdb: false,
     mailer_host: "smtp.sendgrid.net",
     mailer_port: "587",
     mailer_username: "apikey",
@@ -44,7 +42,6 @@ module.exports = {
     forgotexpiry: 10.00 * 60.00 * 24,// 1 day
     jwtKey: process.env.JWT_KEY,
     salt: process.env.COMMON_SALT,
-    resetdb: false,
     mailer_host: "smtp.sendgrid.net",
     mailer_port: "587",
     mailer_username: "apikey",
