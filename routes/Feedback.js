@@ -109,7 +109,8 @@ router.post('/ClassDetail', function (req, res) {
 })
 
 router.post('/AddFeedback', function (req, res) {
-    var  Feedback = JSON.parse(req.body);
+    var  Feedback = JSON.parse(req.body); // This is not needed As it is Parsed by body parser
+    console.log("feedBack: "+JSON.stringify(req.body));
     if (Feedback) {
         DB.InsertOne('Faculty_Feedback', 'Feedback', Feedback)
             .then(function (result) {
