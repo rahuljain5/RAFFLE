@@ -36,7 +36,7 @@
     </script>
     <style>
             .stars {
-                display: inline-block;
+                display: block;
             }
             
             .stars input {
@@ -46,8 +46,8 @@
             .stars label {
                 float: right;
                 padding: 6px;
-                font-size: 14px;
-                color: #444;
+                font-size: 16px;
+                color: #000000;
                 transition: all .2s;
             }
             
@@ -61,7 +61,7 @@
             }
             
             .stars label:hover {
-                transform: scale(1.5);
+                transform: scale(1.4);
             }
             
             </style>
@@ -143,29 +143,29 @@
             "Communication" : "Is the  teacher able to communicate his/her thoughts clearly to the students?",
             "Overall" : "How would you rate the teacher?"
         };
-        var qform;
+        var qform = ` <form role="form" action = "javascript:ConvertandSend()" method = "POST">`;
+            qform+= `<label>Enter USN</label><input class="form-control" id="usn" name="usn" placeholder="Enter USN Here" /> <input class="form-control" value="${window.location.href.split("#")[1]}" disabled>`
         for(teacher in response[0]["Faculty"]){
-            qform+=` <h2>${response[0]["Faculty"][teacher]}</h2>`
+            qform+=`<hr/><h3 align="center" style="color:green"><b>${response[0]["Faculty"][teacher]}</b></h3><hr/>`
         for(question in Questions){
-          qform+=`<div class="stars" id="${response[0]["_id"]+teacher}"><form action="javascript:ConverttoJson("${teacher}")">
-        <h4>${Questions[question]}</h4>
-        <input id="star-5" type="radio" name="${response[0][teacher]+question}" value=1 />
-        <label for="star-5">Excellent</label>
-        <input id="star-4" type="radio" name="${response[0][teacher]+question}"  value=2 />
-        <label for="star-4">good</label>
-        <input id="star-3" type="radio" name="${response[0][teacher]+question}" value=3 />
-        <label for="star-3">avg</label>
-        <input id="star-2" type="radio" name="${response[0][teacher]+question}" value=4 />
-        <label for="star-2">not bad</label>
-        <input id="star-1" type="radio" name="${response[0][teacher]+question}" value=5 />
-        <label for="star-1">horrible</label>`;
+          qform+=`<div class="stars" >
+        <h4 style="display:inline-block">${Questions[question]}</h4>
+        <input id="star-5${teacher+question}" type="radio" name="${teacher+question}" value=5 />
+        <label for="star-5${teacher+question}">Excellent</label>
+        <input id="star-4${teacher+question}" type="radio" name="${teacher+question}"  value=4 />
+        <label for="star-4${teacher+question}">good</label>
+        <input id="star-3${teacher+question}" type="radio" name="${teacher+question}" value=3 />
+        <label for="star-3${teacher+question}">avg</label>
+        <input id="star-2${teacher+question}" type="radio" name="${teacher+question}" value=2 />
+        <label for="star-2${teacher+question}">not bad</label>
+        <input id="star-1${teacher+question}" type="radio" name="${teacher+question}" value=1 />
+        <label for="star-1${teacher+question}">horrible</label></div><br/>`;
         }
     }
 
-        qform+=`<button type="submit">submit</button>
-      </form>
-    </div>`
-    console.log(qform);
+        qform+=`<button  type="submit" class="btn btn-default" align="center">submit</button>
+      </form>`
+    // console.log(qform);
     
     document.getElementById('form-panel').innerHTML=qform
     }
