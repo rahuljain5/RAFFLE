@@ -96,7 +96,9 @@ if(cluster.isMaster) {
   models.sequelize.sync()
   .then(()=>{
      console.log('Master cluster setting up ' + numWorkers + ' workers...');
-
+    if(env === "development")
+        cluster.fork();
+      else
     for(var i = 0; i < numWorkers; i++) {
         cluster.fork();
     }})
