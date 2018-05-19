@@ -47,8 +47,8 @@ router.post('/ClassRooms', function (req, res) {
 });
 
 router.post('/NewClassRoom', function (req, res) {
-    if (req.headers["content-type"] == 'application/json') {
-        DB.InsertOne('Faculty_Feedback', 'ClassRooms', req.body)
+        var Classroom = JSON.parse(req.body);
+        DB.InsertOne('Faculty_Feedback', 'ClassRooms', Classroom)
             .then(function (result) {
                 console.log(`New ClassRoom : ${req.body.classroom} Created at ${new Date().toLocaleString()}`);
                 res.send(JSON.stringify({
@@ -65,12 +65,6 @@ router.post('/NewClassRoom', function (req, res) {
                 console.error(err);
                 res.send(JSON.stringify(failresponse));
             })
-    } else {
-        res.send(JSON.stringify({
-            status: "Failed",
-            message: "Improper Content Type; JSON Expected."
-        }));
-    }
 });
 
 router.post('/ClassDetail', function (req, res) {
