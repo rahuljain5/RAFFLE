@@ -48,7 +48,7 @@ router.post('/ClassRooms', function (req, res) {
 
 router.post('/NewClassRoom', function (req, res) {
         var Classroom = req.body;
-        console.log(req);
+        if(req.body){
         DB.InsertOne('Faculty_Feedback', 'ClassRooms', Classroom)
             .then(function (result) {
                 console.log(`New ClassRoom : ${Classroom.classroom} Created at ${new Date().toLocaleString()}`);
@@ -66,6 +66,13 @@ router.post('/NewClassRoom', function (req, res) {
                 console.error(err);
                 res.send(JSON.stringify(failresponse));
             })
+        }
+    else 
+    {
+    res.send({
+    status: "Failed",
+    message: "Invalid Content Type"});
+    }
 });
 
 router.post('/ClassDetail', function (req, res) {
