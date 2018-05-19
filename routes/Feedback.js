@@ -109,8 +109,9 @@ router.post('/ClassDetail', function (req, res) {
 })
 
 router.post('/AddFeedback', function (req, res) {
-    if (req.body) {
-        DB.InsertOne('Faculty_Feedback', 'Feedback', req.body)
+    var  Feedback = JSON.parse(req.body);
+    if (Feedback) {
+        DB.InsertOne('Faculty_Feedback', 'Feedback', Feedback)
             .then(function (result) {
                 console.log(`New FeedBack Recorded at: ${new Date().toLocaleString()}`);
                 res.send(JSON.stringify({
