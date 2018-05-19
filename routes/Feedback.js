@@ -109,7 +109,7 @@ router.post('/ClassDetail', function (req, res) {
 })
 
 router.post('/AddFeedback', function (req, res) {
-    if (req.headers["content-type"] == 'application/json') {
+    if (req.body) {
         DB.InsertOne('Faculty_Feedback', 'Feedback', req.body)
             .then(function (result) {
                 console.log(`New FeedBack Recorded at: ${new Date().toLocaleString()}`);
