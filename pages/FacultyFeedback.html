@@ -35,37 +35,36 @@
             window.location = "login.html";
     </script>
     <style>
-            .stars {
-                display: block;
-            }
-            
-            .stars input {
-                display: none;
-            }
-            
-            .stars label {
-                float: right;
-                padding: 6px;
-                font-size: 16px;
-                color: #000000;
-                transition: all .2s;
-            }
-            
-            .stars label:before {
-                content: '\2605';
-            }
-            
-            .stars input:checked ~ label:before {
-                color: gold;
-                transition: all .25s;
-            }
-            
-            .stars label:hover {
-                transform: scale(1.4);
-            }
-            
-            </style>
-            
+        .stars {
+            display: block;
+        }
+
+        .stars input {
+            display: none;
+        }
+
+        .stars label {
+            float: right;
+            padding: 6px;
+            font-size: 16px;
+            color: #000000;
+            transition: all .2s;
+        }
+
+        .stars label:before {
+            content: '\2605';
+        }
+
+        .stars input:checked~label:before {
+            color: gold;
+            transition: all .25s;
+        }
+
+        .stars label:hover {
+            transform: scale(1.4);
+        }
+    </style>
+
 </head>
 
 <body>
@@ -134,23 +133,29 @@
             FormMaker(JSON.parse(response));
             // NProgress.remove();
         })
-        function FormMaker(response){
-       var Questions = {
-            "Punctual" : "How punctual is the teacher?",
-            "CourseCompletion" : "Does the teacher complete the syllabus according to the plan?",
-            "DoubtClearance" : "Does the Teacher clear doubts asked by the students",
-            "Interaction" : "Does the teacher interact well with the students?",
-            "Communication" : "Is the  teacher able to communicate his/her thoughts clearly to the students?",
-            "Overall" : "How would you rate the teacher?"
+        var Questions = {
+            "Punctual": "How punctual is the teacher?",
+            "CourseCompletion": "Does the teacher complete the syllabus according to the plan?",
+            "DoubtClearance": "Does the Teacher clear doubts asked by the students",
+            "Interaction": "Does the teacher interact well with the students?",
+            "Communication": "Is the  teacher able to communicate his/her thoughts clearly to the students?",
+            "Overall": "How would you rate the teacher?"
         };
-        var qform = ` <form role="form" action = "javascript:ConvertandSend()" method = "POST">`;
-            qform+= `<label>Enter USN</label><input class="form-control" id="usn" name="usn" placeholder="Enter USN Here" /> <input class="form-control" value="${window.location.href.split("#")[1]}" disabled>`
-        for(teacher in response[0]["Faculty"]){
-            qform+=`<hr/><h3 align="center" style="color:green"><b>${response[0]["Faculty"][teacher]}</b></h3><hr/>`
-        for(question in Questions){
-          qform+=`<div class="stars" >
+        var classDetails;
+
+        function FormMaker(response) {
+            classDetails = response[0];
+            var qform = ` <form role="form" action = "javascript:ConvertandSend()" method = "POST" id="feedbackform">`;
+            qform +=
+                `<label>Enter USN</label><input class="form-control" id="usn" name="usn" placeholder="Enter USN Here" required/> <input class="form-control" value="${response[0]["classroom"]}" disabled><input class="form-control" value="${response[0]["batch"]}"  disabled>`
+            for (teacher in response[0]["Faculty"]) {
+                qform +=
+                    `<hr/><h3 align="center" style="color:green"><b>${response[0]["Faculty"][teacher]}</b></h3><hr/>`
+                for (question in Questions) {
+                    qform +=
+                        `<div class="stars" >
         <h4 style="display:inline-block">${Questions[question]}</h4>
-        <input id="star-5${teacher+question}" type="radio" name="${teacher+question}" value=5 />
+        <input id="star-5${teacher+question}" type="radio" name="${teacher+question}" value=5 required/>
         <label for="star-5${teacher+question}">Excellent</label>
         <input id="star-4${teacher+question}" type="radio" name="${teacher+question}"  value=4 />
         <label for="star-4${teacher+question}">good</label>
@@ -160,15 +165,50 @@
         <label for="star-2${teacher+question}">not bad</label>
         <input id="star-1${teacher+question}" type="radio" name="${teacher+question}" value=1 />
         <label for="star-1${teacher+question}">horrible</label></div><br/>`;
-        }
-    }
+                }
+            }
 
-        qform+=`<button  type="submit" class="btn btn-default" align="center">submit</button>
+            qform += `<button  type="submit" class="btn btn-default" align="center">submit</button>
       </form>`
-    // console.log(qform);
-    
-    document.getElementById('form-panel').innerHTML=qform
-    }
+            // console.log(qform);
+
+            document.getElementById('form-panel').innerHTML = qform
+        }
+
+        function ConvertandSend() {
+            var Feedback = {};
+            Feedback["_id"] = classDetails['classroom'] + document.getElementById('usn').value;
+            Feedback["usn"] = document.getElementById('usn').value
+            Feedback["batch"] = classDetails['batch'];
+            Feedback["feedback"] = {};
+            Feedback["classroom"] =classDetails['classroom'];
+            for (teacher in classDetails["Faculty"]) {
+                Feedback["feedback"][teacher] = {};
+                for (question in Questions) {
+                    var selected = $(`input[name="${teacher+question}"]:checked`, '#feedbackform');
+                    if (selected.length == 0) {
+                        // None is selected
+                    } else {
+                        var rating = selected.val();
+                        Feedback["feedback"][teacher][question] = rating;
+                    }
+                }
+            }
+            $.ajax({
+        url : "https://raffle-uat.herokuapp.com/Feedback/AddFeedback",
+        type: "POST",
+        data : Feedback 
+    }).done(function(response){ //
+        // NProgress.done();
+        // if(response.error != undefined && response.error==true){
+        //     localStorage.removeItem("session");//Clear the Invalid Key if exist 
+        //     window.location="login.html"
+    // }
+        if(response["status"] == "success"){
+            alert("Feedback was recorded successfully!")
+        }
+    })  
+        }
     </script>
 
 
