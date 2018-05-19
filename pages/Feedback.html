@@ -196,7 +196,7 @@
         url : "https://raffle-uat.herokuapp.com/Feedback/NewClassRoom",
         type: "POST",
         // headers: {"content-type": "application/json"},
-        data : requestJson
+        data : JSON.stringify(requestJson) 
     }).done(function(response){ //
         // NProgress.done();
         // if(response.error != undefined && response.error==true){
