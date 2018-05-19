@@ -61,14 +61,15 @@
                                 Create Classroom
                             </div>
                             <div class="panel-body">
-                                <form role="form" action="https://raffle-uat.herokuapp.com/Feedback/NewClassRoom" method="GET" id="myform">
-                                    <div class="form-group">
+                                <form role="form" action="javascript:NewClassConvert()" method="GET" id="myform">
+                                    <div class="form-group" id="newclassform">
                                         <label>Enter Name of the Class:</label>
-                                        <input class="form-control" id="className" name="className" placeholder="Enter Name" required>
+                                        <input class="form-control" id="classroom" name="className" placeholder="Enter Name" required>
                                         <label>Enter Batch(Year):</label>
-                                        <input class="form-control" id="batch" name="batch" placeholder="Enter Year" required>
+                                        <input class="form-control" id="batch" name="batch" placeholder="Enter Batch Year" required>
                                         <label>Enter Faculty Names Below :</label>
-                                        <input class="form-control" id="batch" name="batch" placeholder="Enter Year" required>
+                                        <label for="">Faculty 1</label>
+                                        <input class="form-control" id="Faculty1" name="Faculty1" placeholder="Enter Faculty Name" required onfocus="addFacultyField()">
                                     </div>
                                     <button type="submit" class="btn btn-default">Submit Button</button>
                                     <button type="reset" class="btn btn-default">Reset Button</button>
@@ -126,14 +127,16 @@
                 // console.log(ClassRooms.find( Class => Class["_id"] === classroom ));
                 const result = ClassRooms.find(Class => Class["_id"] === classroom);
                 var details =
-                    "<h4 onclick='showClassrooms()' style='cursor:pointer;'><i class='fa-arrow-left'></i>Back</h4><h3>Class: " +
+                    "<h4 onclick='showClassrooms()' style='cursor:pointer;'><u>Back</u></h4><h3>Class: " +
                     result["classroom"] + "</h3>"
                 details += "<h3>Batch: " + result["batch"] + "</h3>";
                 details += "<h3>Faculty</h3><ul>";
                 for (teacher in result["Faculty"]) {
                     details += "<li>" + result["Faculty"][teacher] + "</li>"
                 }
-                details += "</ul><br/><button class=\"btn btn-success\">Add Feedback</button>"
+                details +=
+                    "</ul><br/><button class=\"btn btn-success\" onclick=\"window.location='./FacultyFeedback.html#" +
+                    result["_id"] + "'\">Add Feedback</button>"
                 $("#classroom-list").html(details);
             }
 
@@ -157,6 +160,52 @@
                     console.log(displaystring);
                     $("#classroom-list").html(displaystring)
                 });
+            }
+            var i = 2;
+
+            function addFacultyField() {
+                if (i <= 8) {
+                    var label = document.createElement("label");
+                    var newField = document.createElement("input");
+                    label.innerText = "Faculty " + i;
+                    newField.id = "Faculty" + i;
+                    newField.name = "Faculty" + i;
+                    newField.className = "form-control";
+                    newField.placeholder = "Enter Faculty Name";
+                    newField.value = null;
+                    newField.onfocus = function (event) {
+                        addFacultyField()
+                    }
+                    document.getElementById("newclassform").appendChild(label);
+                    document.getElementById("newclassform").appendChild(newField);
+                    i++;
+                }
+            }
+
+            function NewClassConvert() {
+                var requestJson = {};
+                requestJson["_id"] = document.getElementById('classroom').value +  document.getElementById('batch').value;
+                requestJson["classroom"] = document.getElementById('classroom').value
+                requestJson["batch"] = document.getElementById('classroom').value
+                requestJson["Faculty"] = {};
+                for(var j=1; j<i; j++){
+                    if(document.getElementById("Faculty"+j).value)
+                    requestJson["Faculty"][j] = document.getElementById("Faculty"+j).value
+                }
+                $.ajax({
+        url : "https://raffle-uat.herokuapp.com/Feedback/NewClassRoom",
+        type: "POST",
+        // headers: {"content-type": "application/json"},
+        data : requestJson
+    }).done(function(response){ //
+        // NProgress.done();
+        // if(response.error != undefined && response.error==true){
+        //     localStorage.removeItem("session");//Clear the Invalid Key if exist 
+        //     window.location="login.html"
+        console.log(response);    
+    // }
+        
+    })
             }
         </script>
 

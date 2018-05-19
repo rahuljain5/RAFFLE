@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+
+    <title>Faculty Feedback &middot; RAFFLE</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        if (localStorage.getItem("session") === null)
+            window.location = "login.html";
+    </script>
+    <style>
+            .stars {
+                display: inline-block;
+            }
+            
+            .stars input {
+                display: none;
+            }
+            
+            .stars label {
+                float: right;
+                padding: 6px;
+                font-size: 14px;
+                color: #444;
+                transition: all .2s;
+            }
+            
+            .stars label:before {
+                content: '\2605';
+            }
+            
+            .stars input:checked ~ label:before {
+                color: gold;
+                transition: all .25s;
+            }
+            
+            .stars label:hover {
+                transform: scale(1.5);
+            }
+            
+            </style>
+            
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" id="Navigation-Bar">
+            <script src="../js/navbar.js"></script>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <br/>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Find Class Result 
+                                </div>
+                                <div class="panel-body">        
+                        <form role="form" action = "https://raffle-uat.herokuapp.com/ClassResult" method = "GET" id="myform">
+                            <div class="form-group">
+                                <label>Enter the First 7 digits of the USN here:</label>
+                                <input class="form-control" id="baseusn" name="baseusn" placeholder="Enter 7 Digits of USN" pattern = "[1-4][a-z A-Z]{2}[0-9]{2}[a-z A-Z]{2}" required >
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit Button</button>
+                            <button type="reset" class="btn btn-default">Reset Button</button>
+                        </form>
+                    </div>
+                    </div>
+                    /.col-lg-12
+                    <div class="col-lg-2"></div> -->
+                </div>
+
+                <!-- /.row -->
+            </div>
+            <br>
+            <div class="row">
+                <div class="panel panel-default" id="form-panel" style="overflow: auto;">
+
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+    <script src="../js/ChangeContent.js"></script>
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script>
+        // NProgress.configure({
+        //     showSpinner: false
+        // });
+        // NProgress.start();
+        $.ajax({
+            url: "https://raffle-uat.herokuapp.com/Feedback/" + window.location.href.split("#")[1],
+            type: "GET"
+        }).done(function (response) { //
+            console.log(response);
+            FormMaker(JSON.parse(response));
+            // NProgress.remove();
+        })
+        function FormMaker(response){
+       var Questions = {
+            "Punctual" : "How punctual is the teacher?",
+            "CourseCompletion" : "Does the teacher complete the syllabus according to the plan?",
+            "DoubtClearance" : "Does the Teacher clear doubts asked by the students",
+            "Interaction" : "Does the teacher interact well with the students?",
+            "Communication" : "Is the  teacher able to communicate his/her thoughts clearly to the students?",
+            "Overall" : "How would you rate the teacher?"
+        };
+        var qform;
+        for(teacher in response[0]["Faculty"]){
+            qform+=` <h2>${response[0]["Faculty"][teacher]}</h2>`
+        for(question in Questions){
+          qform+=`<div class="stars" id="${response[0]["_id"]+teacher}"><form action="javascript:ConverttoJson("${teacher}")">
+        <h4>${Questions[question]}</h4>
+        <input id="star-5" type="radio" name="${response[0][teacher]+question}" value=1 />
+        <label for="star-5">Excellent</label>
+        <input id="star-4" type="radio" name="${response[0][teacher]+question}"  value=2 />
+        <label for="star-4">good</label>
+        <input id="star-3" type="radio" name="${response[0][teacher]+question}" value=3 />
+        <label for="star-3">avg</label>
+        <input id="star-2" type="radio" name="${response[0][teacher]+question}" value=4 />
+        <label for="star-2">not bad</label>
+        <input id="star-1" type="radio" name="${response[0][teacher]+question}" value=5 />
+        <label for="star-1">horrible</label>`;
+        }
+    }
+
+        qform+=`<button type="submit">submit</button>
+      </form>
+    </div>`
+    console.log(qform);
+    
+    document.getElementById('form-panel').innerHTML=qform
+    }
+    </script>
+
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+    <script src="../js/app.js"></script>
+
+</body>
+
+</html>
