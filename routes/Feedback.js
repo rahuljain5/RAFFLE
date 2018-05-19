@@ -48,9 +48,10 @@ router.post('/ClassRooms', function (req, res) {
 
 router.post('/NewClassRoom', function (req, res) {
         var Classroom = JSON.parse(req.body);
+        console.log(Classroom);
         DB.InsertOne('Faculty_Feedback', 'ClassRooms', Classroom)
             .then(function (result) {
-                console.log(`New ClassRoom : ${req.body.classroom} Created at ${new Date().toLocaleString()}`);
+                console.log(`New ClassRoom : ${Classroom.classroom} Created at ${new Date().toLocaleString()}`);
                 res.send(JSON.stringify({
                     status: "success"
                 }));
