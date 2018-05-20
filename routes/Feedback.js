@@ -14,7 +14,7 @@ router.get('/:id', function (req, res) {
             _id: req.params.id
         })
         .then(function (result) {
-            res.send(JSON.stringify(result));
+            res.send(result);
         })
         .catch(err => {
             console.error("An Error Occoured getting the Class" + req.params.id);
@@ -32,7 +32,7 @@ router.post('/ClassRooms', function (req, res) {
     DB.Find('Faculty_Feedback', 'ClassRooms')
         .then(function (classrooms) {
             console.log(`ClassRooms Query: ${classrooms} `)
-            res.send(JSON.stringify(classrooms));
+            res.send(classrooms);
         })
         .catch(err => {
             console.error("Error Occoured getting the Class Room :" + err);
@@ -42,7 +42,7 @@ router.post('/ClassRooms', function (req, res) {
                 userMessage: "Error Occoured getting the Class Room :" + err
             }
             console.error(err);
-            res.send(JSON.stringify(failresponse));
+            res.send(failresponse);
         })
 });
 
@@ -52,9 +52,9 @@ router.post('/NewClassRoom', function (req, res) {
         DB.InsertOne('Faculty_Feedback', 'ClassRooms', Classroom)
             .then(function (result) {
                 console.log(`New ClassRoom : ${Classroom.classroom} Created at ${new Date().toLocaleString()}`);
-                res.send(JSON.stringify({
+                res.send({
                     status: "success"
-                }));
+                });
             })
             .catch(err => {
                 console.error("Error Occured Creating New ClassRoom");
@@ -64,7 +64,7 @@ router.post('/NewClassRoom', function (req, res) {
                     userMessage: "Error Occured Creating New ClassRoom"
                 }
                 console.error(err);
-                res.send(JSON.stringify(failresponse));
+                res.send(failresponse);
             })
         }
     else 
@@ -86,7 +86,7 @@ router.post('/ClassDetail', function (req, res) {
                     .then(function (result) {
                         console.log("Got Result From DataBase");
                         redis.setex(req.query.classroom + req.query.batch, JSON.stringify(result), config.result_ttl);
-                        res.send(JSON.stringify(result));
+                        res.send(result);
                     })
                     .catch(err => {
                         console.error("An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch);
@@ -96,8 +96,7 @@ router.post('/ClassDetail', function (req, res) {
                             userMessage: "An Error Occoured getting the Class" + req.params.classroom + ", Batch" + req.params.batch
                         }
                         console.error(err);
-                        console.log(JSON.stringify(failresponse))
-                        console.error(err);
+                        console.log(JSON.stringify(failresponse));
                     })
             } else {
                 console.log("Got Result From Redis");
@@ -119,9 +118,9 @@ router.post('/AddFeedback', function (req, res) {
         DB.InsertOne('Faculty_Feedback', 'Feedback', Feedback)
             .then(function (result) {
                 console.log(`New FeedBack Recorded at: ${new Date().toLocaleString()}`);
-                res.send(JSON.stringify({
+                res.send({
                     status: "success"
-                }));
+                });
             })
             .catch(err => {
                 let failresponse = {
@@ -130,13 +129,13 @@ router.post('/AddFeedback', function (req, res) {
                     userMessage: "An Error Occoured recording the Feedback"
                 }
                 console.error(err);
-                console.log(JSON.stringify(failresponse))
+                console.log(failresponse)
             })
     } else {
-        res.send(JSON.stringify({
+        res.send({
             status: "Failed",
             message: "Improper Content Type; JSON Expected."
-        }));
+        });
     }
 });
 
@@ -150,16 +149,17 @@ router.post('/Analyze', function (req, res) {
                             var fbjson = FeedbackAnalyze.toFeedbackJson(values, count);
                             console.log("Setting Value in Redis");
                             redis.setex("Analyze" + req.query.classroom + req.query.batch, JSON.stringify(values), config.result_ttl);
-                            res.send(JSON.stringify(fbjson));
+                            res.send(fbjson);
                         })
                     })
                     .catch(err => {
-                        res.send(JSON.stringify({
+                    console.error(err);    
+                    res.send({
                             error: true,
                             message: err,
                             userMessage: "Improper Content Type; JSON Expected."
-                        }));
-                        console.error(err);
+                        });
+                        
                     })
             } else {
                 console.log("Getting Value from Redis");
