@@ -28,7 +28,7 @@ router.get('/:id', function (req, res) {
         })
 });
 
-router.get('/ClassRooms', function (req, res) {
+router.post('/ClassRooms', function (req, res) {
     DB.Find('Faculty_Feedback', 'ClassRooms')
         .then(function (classrooms) {
             console.log(`ClassRooms Query: JSON.stringify(${classrooms}) `)
