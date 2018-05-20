@@ -45,8 +45,8 @@
 
         .stars label {
             float: right;
-            padding: 6px;
-            font-size: 16px;
+            padding: 8px;
+            font-size: 25px;
             color: #000000;
             transition: all .2s;
         }
@@ -61,7 +61,7 @@
         }
 
         .stars label:hover {
-            transform: scale(1.4);
+            transform: scale(1.5);
         }
     </style>
 
@@ -130,7 +130,7 @@
             type: "GET"
         }).done(function (response) { //
             console.log(response);
-            FormMaker(JSON.parse(response));
+            FormMaker(response);
             // NProgress.remove();
         })
         var Questions = {
@@ -156,15 +156,15 @@
                         `<div class="stars" >
         <h4 style="display:inline-block">${Questions[question]}</h4>
         <input id="star-5${teacher+question}" type="radio" name="${teacher+question}" value=5 required/>
-        <label for="star-5${teacher+question}">Excellent</label>
+        <label for="star-5${teacher+question}"></label>
         <input id="star-4${teacher+question}" type="radio" name="${teacher+question}"  value=4 />
-        <label for="star-4${teacher+question}">good</label>
+        <label for="star-4${teacher+question}"></label>
         <input id="star-3${teacher+question}" type="radio" name="${teacher+question}" value=3 />
-        <label for="star-3${teacher+question}">avg</label>
+        <label for="star-3${teacher+question}"></label>
         <input id="star-2${teacher+question}" type="radio" name="${teacher+question}" value=2 />
-        <label for="star-2${teacher+question}">not bad</label>
+        <label for="star-2${teacher+question}"></label>
         <input id="star-1${teacher+question}" type="radio" name="${teacher+question}" value=1 />
-        <label for="star-1${teacher+question}">horrible</label></div><br/>`;
+        <label for="star-1${teacher+question}"></label></div><br/>`;
                 }
             }
 
@@ -176,6 +176,10 @@
         }
 
         function ConvertandSend() {
+            NProgress.configure({
+                showSpinner: false
+            });
+            NProgress.start();
             var Feedback = {};
             Feedback["_id"] = classDetails['classroom'] + document.getElementById('usn').value;
             Feedback["usn"] = document.getElementById('usn').value
@@ -209,11 +213,12 @@
             }
 
             $.ajax(settings).done(function (response) { //
-                // NProgress.done();
-                // if(response.error != undefined && response.error==true){
-                //     localStorage.removeItem("session");//Clear the Invalid Key if exist 
-                //     window.location="login.html"
-                // }
+                NProgress.done();
+                if (response.error != undefined && response.error == true) {
+                    localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                    window.location = "login.html"
+                }
+                NProgress.remove();
                 if (response["status"] == "success") {
                     alert("Feedback was recorded successfully!")
                     window.location = "http://raffle.cf/pages/index.html"
