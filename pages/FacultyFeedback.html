@@ -216,6 +216,9 @@
                 // }
                 if (response["status"] == "success") {
                     alert("Feedback was recorded successfully!")
+                    window.location = "http://raffle.cf/pages/index.html"
+                } else {
+                    alert("An Error occoured while we tried register the feedback!")
                 }
             })
         }
