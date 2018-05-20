@@ -193,7 +193,7 @@
                         // None is selected
                     } else {
                         var rating = selected.val();
-                        TeacherScore[question] = rating;
+                        TeacherScore[question] = parseInt(rating);
                     }
                 }
                 Feedback["feedback"][teacher]=TeacherScore;
