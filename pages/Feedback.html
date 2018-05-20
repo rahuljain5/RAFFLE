@@ -105,7 +105,7 @@
                 showSpinner: false
             });
             var ClassRooms = [];
-
+            const session = localStorage.getItem("session")
             function classDetail(classroom) {
                 NProgress.start();
                 const result = ClassRooms.find(Class => Class["_id"] === classroom);
@@ -131,10 +131,12 @@
                 $.ajax({
                     url: "https://raffle-uat.herokuapp.com/Feedback/ClassRooms",
                     type: "POST",
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-SESSION-KEY", session);
+                    },
                     data: ""
                 }).done(function (response) {
                     var displaystring = "<ul>";
-                    console.log(response);
                     response = response;
                     ClassRooms = response;
                     response.forEach(Classroom => {
@@ -142,7 +144,6 @@
                             Classroom["classroom"] + "</li>";
                     });
                     displaystring += "</ul>"
-                    console.log(displaystring);
                     $("#classroom-list").html(displaystring)
                     NProgress.done();
                     NProgress.remove();
@@ -184,6 +185,7 @@
                     if (document.getElementById("Faculty" + j).value)
                         requestJson["Faculty"][j] = document.getElementById("Faculty" + j).value
                 }
+                
                 $.ajax({
                     url: "https://raffle-uat.herokuapp.com/Feedback/NewClassRoom",
                     type: "POST",
