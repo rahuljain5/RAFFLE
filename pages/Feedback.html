@@ -20,6 +20,7 @@
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -29,7 +30,10 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <script>
+        if (localStorage.getItem("session") === null)
+            window.location = "login.html";
+    </script>
 </head>
 
 <body onload="showClassrooms()">
@@ -93,38 +97,17 @@
 
         </div>
         <!-- /#wrapper -->
-        <script src="../js/ChangeContent.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
         <!-- jQuery -->
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script>
-            //     $("#myform").submit(function(event){
-            //     event.preventDefault(); //prevent default action
-            //     var Results = "";
-            //     var placeholder = document.getElementById('form-panel');
-            //     placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
-            //     var post_url = $(this).attr("action"); //get form action url
-            //     var request_method = $(this).attr("method"); //get form GET/POST method
-            //     var form_data = $(this).serialize(); //Encode form elements for submission
-
-            //     $.ajax({
-            //         url : post_url,
-            //         type: request_method,
-            //         data : form_data
-            //     }).done(function(response){ //
-            //         // $("#server-results").html(response);
-            //         response.forEach(ResultJson => {
-            //             console.log(ResultJson);
-            //             // if(ResultJson["error"]!=true)
-            //             // placeholder.innerHTML += changeContent(JSON.parse(ResultJson))
-            //             placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
-            //         });
-
-            //     });
-            // });
+            NProgress.configure({
+                showSpinner: false
+            });
             var ClassRooms = [];
 
             function classDetail(classroom) {
-                // console.log(ClassRooms.find( Class => Class["_id"] === classroom ));
+                NProgress.start();
                 const result = ClassRooms.find(Class => Class["_id"] === classroom);
                 var details =
                     "<h4 onclick='showClassrooms()' style='cursor:pointer;'><u>Back</u></h4><h3>Class: " +
@@ -138,19 +121,21 @@
                     "</ul><br/><button class=\"btn btn-success\" onclick=\"window.location='./FacultyFeedback.html#" +
                     result["_id"] + "'\">Add Feedback</button>"
                 $("#classroom-list").html(details);
+                NProgress.done();
+                NProgress.remove();
             }
 
             function showClassrooms() {
+                NProgress.start();
                 $("#classroom-list").html("Fetching List of ClassRooms....");
                 $.ajax({
                     url: "https://raffle-uat.herokuapp.com/Feedback/ClassRooms",
                     type: "POST",
                     data: ""
                 }).done(function (response) {
-                    // $("#server-results").html(response);
                     var displaystring = "<ul>";
                     console.log(response);
-                    response = JSON.parse(response);
+                    response = response;
                     ClassRooms = response;
                     response.forEach(Classroom => {
                         displaystring += "<li onclick='classDetail(\"" + Classroom["_id"] + "\")'>" +
@@ -159,11 +144,15 @@
                     displaystring += "</ul>"
                     console.log(displaystring);
                     $("#classroom-list").html(displaystring)
+                    NProgress.done();
+                    NProgress.remove();
                 });
+
             }
             var i = 2;
 
             function addFacultyField() {
+                NProgress.start();
                 if (i <= 8) {
                     var label = document.createElement("label");
                     var newField = document.createElement("input");
@@ -179,38 +168,40 @@
                     document.getElementById("newclassform").appendChild(label);
                     document.getElementById("newclassform").appendChild(newField);
                     i++;
+                    NProgress.done();
+                    NProgress.remove();
                 }
             }
 
             function NewClassConvert() {
+                NProgress.start();
                 var requestJson = {};
-                requestJson["_id"] = document.getElementById('classroom').value +  document.getElementById('batch').value;
+                requestJson["_id"] = document.getElementById('classroom').value + document.getElementById('batch').value;
                 requestJson["classroom"] = document.getElementById('classroom').value
                 requestJson["batch"] = document.getElementById('batch').value
                 requestJson["Faculty"] = {};
-                for(var j=1; j<i; j++){
-                    if(document.getElementById("Faculty"+j).value)
-                    requestJson["Faculty"][j] = document.getElementById("Faculty"+j).value
+                for (var j = 1; j < i; j++) {
+                    if (document.getElementById("Faculty" + j).value)
+                        requestJson["Faculty"][j] = document.getElementById("Faculty" + j).value
                 }
                 $.ajax({
-        url : "https://raffle-uat.herokuapp.com/Feedback/NewClassRoom",
-        type: "POST",
-        data : requestJson 
-    }).done(function(response){ //
-        // NProgress.done();
-        // if(response.error != undefined && response.error==true){
-        //     localStorage.removeItem("session");//Clear the Invalid Key if exist 
-        //     window.location="login.html"
-        if(response["status"] == "success"){
-            alert("Classroom was created successfully!")
-            document.getElementById('resetbutton').click();
-        }
-        else alert("There was an error creating the classroom. Please try again!");
-    // }
-        
-    })
-    console.log(JSON.stringify(requestJson));
-    
+                    url: "https://raffle-uat.herokuapp.com/Feedback/NewClassRoom",
+                    type: "POST",
+                    data: requestJson
+                }).done(function (response) { //
+                    NProgress.done();
+                    if (response.error != undefined && response.error == true) {
+                        localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                        window.location = "login.html"
+                    }
+                    if (response["status"] == "success") {
+                        alert("Classroom was created successfully!")
+                        document.getElementById('resetbutton').click();
+                    } else alert("There was an error creating the classroom. Please try again!");
+                })
+                NProgress.remove();
+                console.log(JSON.stringify(requestJson));
+
             }
         </script>
 
@@ -224,6 +215,8 @@
 
         <!-- Custom Theme JavaScript -->
         <script src="../dist/js/sb-admin-2.js"></script>
+
+        <script src="../js/app.js"></script>
 
 </body>
 
