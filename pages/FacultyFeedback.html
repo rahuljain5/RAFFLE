@@ -184,10 +184,10 @@
             Feedback["feedback"][0] = {};
             Feedback["classroom"] = classDetails['classroom'];
             for (teacher in classDetails["Faculty"]) {
-                var TeacherScore={};
+                var TeacherScore = {};
                 Feedback["feedback"][teacher] = {};
                 for (question in Questions) {
-                    
+
                     var selected = $(`input[name="${teacher+question}"]:checked`, '#feedbackform');
                     if (selected.length == 0) {
                         // None is selected
@@ -196,13 +196,19 @@
                         TeacherScore[question] = parseInt(rating);
                     }
                 }
-                Feedback["feedback"][teacher]=TeacherScore;
+                Feedback["feedback"][teacher] = TeacherScore;
             }
-            $.ajax({
-                url: "https://raffle-uat.herokuapp.com/Feedback/AddFeedback",
-                type: "POST",
-                data: Feedback
-            }).done(function (response) { //
+            console.log(Feedback);
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "https://raffle-uat.herokuapp.com/Feedback/AddFeedback",
+                "method": "POST",
+                "processData": false,
+                "data": JSON.stringify(Feedback)
+            }
+
+            $.ajax(settings).done(function (response) { //
                 // NProgress.done();
                 // if(response.error != undefined && response.error==true){
                 //     localStorage.removeItem("session");//Clear the Invalid Key if exist 
