@@ -180,39 +180,40 @@
             Feedback["_id"] = classDetails['classroom'] + document.getElementById('usn').value;
             Feedback["usn"] = document.getElementById('usn').value
             Feedback["batch"] = classDetails['batch'];
-            Feedback["feedback"] = {};
-            Feedback["classroom"] =classDetails['classroom'];
+            Feedback["feedback"] = [];
+            Feedback["feedback"][0] = {};
+            Feedback["classroom"] = classDetails['classroom'];
             for (teacher in classDetails["Faculty"]) {
+                var TeacherScore={};
                 Feedback["feedback"][teacher] = {};
                 for (question in Questions) {
+                    
                     var selected = $(`input[name="${teacher+question}"]:checked`, '#feedbackform');
                     if (selected.length == 0) {
                         // None is selected
                     } else {
                         var rating = selected.val();
-                        Feedback["feedback"][teacher][question] = rating;
+                        TeacherScore[question] = rating;
                     }
                 }
+                Feedback["feedback"][teacher]=TeacherScore;
             }
             $.ajax({
-        url : "https://raffle-uat.herokuapp.com/Feedback/AddFeedback",
-        type: "POST",
-        data : Feedback 
-    }).done(function(response){ //
-        // NProgress.done();
-        // if(response.error != undefined && response.error==true){
-        //     localStorage.removeItem("session");//Clear the Invalid Key if exist 
-        //     window.location="login.html"
-    // }
-        if(response["status"] == "success"){
-            alert("Feedback was recorded successfully!")
-        }
-    })  
+                url: "https://raffle-uat.herokuapp.com/Feedback/AddFeedback",
+                type: "POST",
+                data: Feedback
+            }).done(function (response) { //
+                // NProgress.done();
+                // if(response.error != undefined && response.error==true){
+                //     localStorage.removeItem("session");//Clear the Invalid Key if exist 
+                //     window.location="login.html"
+                // }
+                if (response["status"] == "success") {
+                    alert("Feedback was recorded successfully!")
+                }
+            })
         }
     </script>
-
-
-
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
