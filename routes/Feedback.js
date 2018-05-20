@@ -110,7 +110,11 @@ router.post('/ClassDetail', function (req, res) {
 
 router.post('/AddFeedback', function (req, res) {
     var  Feedback = req.body//JSON.parse(req.body); // This is not needed As it is Parsed by body parser
-    console.log("feedBack: "+JSON.stringify(req.body));
+    for (x in Feedback["feedback"]) {
+        for (y in Feedback["feedback"][x])
+            Feedback["feedback"][x][y]=parseInt(Feedback["feedback"][x][y])
+    }
+    console.log("feedBack: "+JSON.stringify(Feedback));
     if (Feedback) {
         DB.InsertOne('Faculty_Feedback', 'Feedback', Feedback)
             .then(function (result) {
