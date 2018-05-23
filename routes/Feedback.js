@@ -163,7 +163,7 @@ router.post('/Analyze', function (req, res) {
                     })
             } else {
                 console.log("Getting Value from Redis");
-                res.send(cachedData);
+                res.send(JSON.parse(cachedData));
             }
         } else {
             console.error(err);
