@@ -103,20 +103,24 @@
                 var placeholder = document.getElementById('form-panel');
                 placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
                 event.preventDefault(); //prevent default action
-                var post_url = "https://raffle-uat.herokuapp.com/CSVResult" //get form action url
-                var request_method = "POST"; //get form GET/POST method
                 const session = localStorage.getItem("session")
                 var form_data = new FormData(this); //Creates new FormData object
                 $.ajax({
-                    url: post_url,
-                    type: request_method,
-                    data: form_data,
-                    headers: {
-                        "X-SESSION-KEY": session
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "http://raffle-uat.herokuapp.com/CSVResult",
+                    "method": "POST",
+                    "headers": {
+                        "Cache-Control": "no-cache",
+                        "Postman-Token": "66334072-d2b1-4ee9-b440-0631d579a3fe"
                     },
-                    contentType: false,
-                    cache: false,
-                    processData: false
+                     beforeSend: function (request) {
+                        request.setRequestHeader("X-SESSION-KEY", session);
+                    },
+                    "processData": false,
+                    "contentType": false,
+                    "mimeType": "multipart/form-data",
+                    "data": form_data
                 }).done(function (response) { //
                     if (response.error != undefined && response.error == true) {
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
