@@ -157,7 +157,7 @@ router.post('/Analyze', function (req, res) {
                     res.send({
                             error: true,
                             message: err,
-                            userMessage: "Improper Content Type; JSON Expected."
+                            userMessage: "Couldn't get any Stats at the moment."
                         });
                         
                     })
