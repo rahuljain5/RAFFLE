@@ -186,10 +186,12 @@
                 "headers": {
                     "Content-Type": "application/json"
                 },
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-SESSION-KEY", session);
+                },
                 "processData": false,
                 "data": Feedback
             }
-
             $.ajax(settings).done(function (response) { //
                 NProgress.done();
                 if (response.error != undefined && response.error == true) {
