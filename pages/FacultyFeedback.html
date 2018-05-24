@@ -81,7 +81,7 @@
         <div id="page-wrapper">
             <br/>
             <div class="container-fluid" id="form-panel">
-                
+
 
                 <!-- /.row -->
             </div>
@@ -159,8 +159,7 @@
             Feedback["_id"] = classDetails['classroom'] + document.getElementById('usn').value;
             Feedback["usn"] = document.getElementById('usn').value
             Feedback["batch"] = classDetails['batch'];
-            Feedback["feedback"] = [];
-            Feedback["feedback"][0] = {};
+            Feedback["feedback"] = {};
             Feedback["classroom"] = classDetails['classroom'];
             for (teacher in classDetails["Faculty"]) {
                 var TeacherScore = {};
@@ -177,18 +176,18 @@
                 }
                 Feedback["feedback"][teacher] = TeacherScore;
             }
-            console.log(Feedback);
+            console.log(JSON.stringify(Feedback));
             const session = localStorage.getItem("session")
             var settings = {
                 "async": true,
                 "crossDomain": true,
                 "url": "https://raffle-uat.herokuapp.com/Feedback/AddFeedback",
                 "method": "POST",
-                beforeSend: function (request) {
-            request.setRequestHeader("X-SESSION-KEY", session);
-        },
+                "headers": {
+                    "Content-Type": "application/json"
+                },
                 "processData": false,
-                "data": JSON.stringify(Feedback)
+                "data": Feedback
             }
 
             $.ajax(settings).done(function (response) { //
