@@ -148,7 +148,7 @@ router.post('/Analyze', function (req, res) {
                         FeedbackAnalyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function (count) {
                             var fbjson = FeedbackAnalyze.toFeedbackJson(values, count);
                             console.log("Setting Value in Redis");
-                            redis.setex("Analyze" + req.query.classroom + req.query.batch, JSON.stringify(values), config.result_ttl);
+                            redis.setex("Analyze" + req.query.classroom + req.query.batch, JSON.stringify(fbjson), config.result_ttl);
                             res.send(fbjson);
                         })
                     })
