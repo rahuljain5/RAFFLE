@@ -45,7 +45,6 @@ const Querymaker = (classroom, batch) => {
 const ScoreAggregator = (Query) => {
     return new Promise((resolve, reject) => {
         var AnalyzedFeedbackJson = {};
-        console.log(JSON.stringify(Query));
         DB.Aggregate('Faculty_Feedback', 'Feedback', Query)
             .then(function (result) {
                 AnalyzedFeedbackJson = {
