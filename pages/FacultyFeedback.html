@@ -188,7 +188,7 @@
                     "Cache-Control": "no-cache"
                 },
                 "processData": false,
-                "data": Feedback
+                "data": JSON.stringify(Feedback)
             }
             $.ajax(settings).done(function (response) { //
                 NProgress.done();
