@@ -140,19 +140,12 @@ router.post('/AddFeedback', function (req, res) {
 });
 
 router.post('/Analyze', function (req, res) {
-    redis.get("Analyze" + req.query.classroom + req.query.batch, (err, cachedData) => {
-        if (!err) {
-            if (cachedData == null || cachedData == undefined) {
                 Promise.all(FeedbackAnalyze.Feedback(req.query.classroom, req.query.batch))
                     .then(function (values) {
                         FeedbackAnalyze.getTotalFeedbacksCount(req.query.classroom, req.query.batch, function (count) {
                             var fbjson = FeedbackAnalyze.toFeedbackJson(values, count);
-                            console.log("Setting Value in Redis");
-                            redis.setex("Analyze" + req.query.classroom + req.query.batch, JSON.stringify(fbjson), config.result_ttl);
                             res.send(fbjson);
                         })
-                    })
-                    .catch(err => {
                     console.error(err);    
                     res.send({
                             error: true,
@@ -161,13 +154,6 @@ router.post('/Analyze', function (req, res) {
                         });
                         
                     })
-            } else {
-                console.log("Getting Value from Redis");
-                res.send(JSON.parse(cachedData));
-            }
-        } else {
-            console.error(err);
-        }
-    })
 })
+
 module.exports = router;
