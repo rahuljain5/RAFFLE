@@ -106,8 +106,6 @@
                 event.preventDefault(); //prevent default action
                 const session = localStorage.getItem("session")
                 var form_data = $(this).serialize(); //Encode form elements for submission
-                console.log(form_data);
-
                 $.ajax({
                     "async": true,
                     "crossDomain": true,
@@ -124,7 +122,6 @@
                     }
                     NProgress.done();
                     console.log(response);
-
                     Plotgraph(response);
                 });
             })
@@ -133,8 +130,7 @@
                 $.ajax({
                     url: "https://raffle-uat.herokuapp.com/Feedback/" + AnalysisStats["_id"],
                     type: "GET"
-                }).done(function (FacultyList) { //
-                    console.log(FacultyList);
+                }).done(function (FacultyList) {
                     for (teacher in FacultyList[0]["Faculty"]) {
                         var graph = document.createElement('div');
                         graph.id = FacultyList[0]["Faculty"][teacher];
@@ -144,7 +140,7 @@
                         document.getElementById('form-panel').appendChild(Heading)
                         document.getElementById('form-panel').appendChild(graph);
                         var numoffbs = AnalysisStats["FbCount"];
-                        var colors =[
+                        var colors = [
                             '#12d400', '#990000', '#0077b5'
                         ]
                         var colorStats;
@@ -173,7 +169,7 @@
                                 a: ((AnalysisStats[teacher]["Overall"] * 100) / (numoffbs * 5)).toFixed(2)
                             }
                         ];
-                        if((AnalysisStats[teacher]["Overall"] * 100)>80)
+                        if ((AnalysisStats[teacher]["Overall"] * 100) > 80)
                             colorStats = colors[0];
                         else colorStats = colors[1]
                         Bar(graph.id, stats, [colorStats]);
