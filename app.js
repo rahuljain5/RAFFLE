@@ -42,8 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const initroutes = (app) => {
 app.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Headers",  ["Access-Control-Allow-Origin", 'X-SESSION-KEY', 'Content-Type', 'Cache-Control']);
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers",  ["access-control-allow-origin", 'X-SESSION-KEY', 'Content-Type', 'If-None-Match']);
   next();
  });
 app.use('/users/otp', sessionAuth);
