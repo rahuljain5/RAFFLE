@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>CSV Result &middot; RAFFLE</title>
+    <title>Feedback Analysis &middot; RAFFLE</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -60,9 +60,10 @@
                             <div class="panel-body">
                                 <form role="form" method="POST" id="myform">
                                     <div class="form-group">
-                                        <h3>Upload the .CSV File with all USN in single Column.</h3>
-                                        <label>File input</label>
-                                        <input type="file" name="filetoupload">
+                                        <label>Enter class name:</label>
+                                        <input class="form-control" id="classroom" name="classroom" placeholder="Enter Class Name" required>
+                                        <label>Enter Batch:</label>
+                                        <input class="form-control" id="batch" name="batch" placeholder="Enter Batch Year" required>
                                     </div>
                                     <button type="submit" class="btn btn-default">Submit Button</button>
                                     <button type="reset" class="btn btn-default">Reset Button</button>
@@ -101,38 +102,82 @@
                 NProgress.start();
                 var Results = "";
                 var placeholder = document.getElementById('form-panel');
-                placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
+                // placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
                 event.preventDefault(); //prevent default action
                 const session = localStorage.getItem("session")
-                var form_data = new FormData(this); //Creates new FormData object
+                var form_data = $(this).serialize(); //Encode form elements for submission
                 $.ajax({
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://raffle-uat.herokuapp.com/CSVResult",
+                    "url": "https://raffle-uat.herokuapp.com/Feedback/Analyze?" + form_data,
                     "method": "POST",
-                    "headers": {
-                        "Cache-Control": "no-cache",
-                    },
-                     beforeSend: function (request) {
+                    beforeSend: function (request) {
                         request.setRequestHeader("X-SESSION-KEY", session);
-                    },
-                    "processData": false,
-                    "contentType": false,
-                    "mimeType": "multipart/form-data",
-                    "data": form_data
+                    }
                 }).done(function (response) { //
+
                     if (response.error != undefined && response.error == true) {
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                         window.location = "login.html"
                     }
                     NProgress.done();
-                    response.forEach(ResultJson => {
-                        console.log(ResultJson);
-                        placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
-                        NProgress.remove();
-                    });
+                    console.log(response);
+                    Plotgraph(response);
                 });
             })
+
+            function Plotgraph(AnalysisStats) {
+                $.ajax({
+                    url: "https://raffle-uat.herokuapp.com/Feedback/" + AnalysisStats["_id"],
+                    type: "GET"
+                }).done(function (FacultyList) {
+                    for (teacher in FacultyList[0]["Faculty"]) {
+                        var graph = document.createElement('div');
+                        graph.id = FacultyList[0]["Faculty"][teacher];
+                        var Heading = document.createElement('h3')
+                        Heading.align = "center";
+                        Heading.innerHTML = graph.id;
+                        document.getElementById('form-panel').appendChild(Heading)
+                        document.getElementById('form-panel').appendChild(graph);
+                        var numoffbs = AnalysisStats["FbCount"];
+                        var colors = [
+                            '#12d400', '#990000', '#0077b5'
+                        ]
+                        var colorStats;
+                        var stats = [{
+                                y: "Punctual",
+                                a: ((AnalysisStats[teacher]["Punctual"] * 100) / (numoffbs * 5)).toFixed(2)
+                            },
+                            {
+                                y: "CourseCompletion",
+                                a: ((AnalysisStats[teacher]["CourseCompletion"] * 100) / (numoffbs * 5)).toFixed(
+                                    2)
+                            }, {
+                                y: "DoubtClearance",
+                                a: ((AnalysisStats[teacher]["DoubtClearance"] * 100) / (numoffbs * 5)).toFixed(
+                                    2)
+                            }, {
+                                y: "Interaction",
+                                a: ((AnalysisStats[teacher]["Interaction"] * 100) / (numoffbs * 5)).toFixed(
+                                    2)
+                            }, {
+                                y: "Communication",
+                                a: ((AnalysisStats[teacher]["Communication"] * 100) / (numoffbs * 5)).toFixed(
+                                    2)
+                            }, {
+                                y: "Overall",
+                                a: ((AnalysisStats[teacher]["Overall"] * 100) / (numoffbs * 5)).toFixed(2)
+                            }
+                        ];
+                        if ((AnalysisStats[teacher]["Overall"] * 100) > 80)
+                            colorStats = colors[0];
+                        else colorStats = colors[1]
+                        Bar(graph.id, stats, [colorStats]);
+                    }
+                })
+
+
+            }
         </script>
 
         <!-- jQuery -->
@@ -145,6 +190,9 @@
         <script src="../vendor/metisMenu/metisMenu.min.js"></script>
         <script src="../js/app.js"></script>
         <!-- Custom Theme JavaScript -->
+        <script src="../data/morris-data.js"></script>
+        <script src="../vendor/raphael/raphael.min.js"></script>
+        <script src="../vendor/morrisjs/morris.min.js"></script>
         <script src="../dist/js/sb-admin-2.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
 </body>

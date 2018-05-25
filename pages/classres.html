@@ -114,6 +114,8 @@
             localStorage.removeItem("session");//Clear the Invalid Key if exist 
             window.location="login.html"
         }
+        console.log(response);
+        
         // $("#server-results").html(response);
         response.forEach(ResultJson => {
             console.log(ResultJson);

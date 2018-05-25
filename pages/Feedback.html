@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Class Result &middot; RAFFLE</title>
+    <title>Faculty Feedback &middot; RAFFLE</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -20,6 +20,7 @@
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -29,142 +30,195 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <script>
+        if (localStorage.getItem("session") === null)
+            window.location = "login.html";
+    </script>
 </head>
 
-<body>
+<body onload="showClassrooms()">
 
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" id="Navigation-Bar">
-            <script src="../js/navbar.js"></script>            
+            <script src="../js/navbar.js"></script>
             <!-- /.navbar-static-side -->
         </nav>
-
         <!-- Page Content -->
         <div id="page-wrapper">
             <br/>
             <div class="container-fluid">
                 <div class="row">
-                        <div class="col-lg-6"><div class="panel panel-default">
-                                <div class="panel-heading">
-                                    View ClassRooms 
-                                </div>
-                                <div class="panel-body">        
-                        <div id='classroom-list'>Fetching List of ClassRooms....</div>
-                    </div>
-                    </div></div>
                     <div class="col-lg-6">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Create Classroom
-                                </div>
-                                <div class="panel-body">        
-                        <form role="form" action = "https://raffle-uat.herokuapp.com/Feedback/NewClassRoom" method = "GET" id="myform">
-                            <div class="form-group">
-                                <label>Enter Name of the Class:</label>
-                                <input class="form-control" id="className" name="className" placeholder="Enter Name" required >
-                                <label>Enter Batch(Year):</label>
-                                <input class="form-control" id="batch" name="batch" placeholder="Enter Year" required >
-                                <label>Enter    :</label>
-                                <input class="form-control" id="batch" name="batch" placeholder="Enter Year" required >
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                View ClassRooms
                             </div>
-                            <button type="submit" class="btn btn-default">Submit Button</button>
-                            <button type="reset" class="btn btn-default">Reset Button</button>
-                        </form>
+                            <div class="panel-body">
+                                <div id='classroom-list'></div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Create Classroom
+                            </div>
+                            <div class="panel-body">
+                                <form role="form" action="javascript:NewClassConvert()" method="GET" id="myform">
+                                    <div class="form-group" id="newclassform">
+                                        <label>Enter Name of the Class:</label>
+                                        <input class="form-control" id="classroom" name="className" placeholder="Enter Name" required>
+                                        <label>Enter Batch(Year):</label>
+                                        <input class="form-control" id="batch" name="batch" placeholder="Enter Batch Year" required>
+                                        <label>Enter Faculty Names Below :</label>
+                                        <label for="">Faculty 1</label>
+                                        <input class="form-control" id="Faculty1" name="Faculty1" placeholder="Enter Faculty Name" required onfocus="addFacultyField()">
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Submit Button</button>
+                                    <button type="reset" class="btn btn-default" id="resetbutton">Reset Button</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
                     </div>
-                    <!-- /.col-lg-12 -->
+
+                    <!-- /.row -->
                 </div>
-                
-                <!-- /.row -->
-            </div>
-            <br>
+                <br>
                 <div class="row">
-                    <div class="panel panel-default" id="form-panel" style="overflow: auto;">
+                    <div class="col-lg-6">
 
                     </div>
                 </div>
-            <!-- /.container-fluid -->
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /#page-wrapper -->
+
         </div>
-        <!-- /#page-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-    <script src="../js/ChangeContent.js"></script>
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-   <script>
-    
-//     $("#myform").submit(function(event){
-//     event.preventDefault(); //prevent default action
-//     var Results = "";
-//     var placeholder = document.getElementById('form-panel');
-//     placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
-//     var post_url = $(this).attr("action"); //get form action url
-//     var request_method = $(this).attr("method"); //get form GET/POST method
-//     var form_data = $(this).serialize(); //Encode form elements for submission
-   
-//     $.ajax({
-//         url : post_url,
-//         type: request_method,
-//         data : form_data
-//     }).done(function(response){ //
-//         // $("#server-results").html(response);
-//         response.forEach(ResultJson => {
-//             console.log(ResultJson);
-//             // if(ResultJson["error"]!=true)
-//             // placeholder.innerHTML += changeContent(JSON.parse(ResultJson))
-//             placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
-//         });
-        
-//     });
-// });
-   var ClassRooms=[];
-   function classDetail(classroom)
-        {
-            // console.log(ClassRooms.find( Class => Class["_id"] === classroom ));
-            const result = ClassRooms.find( Class => Class["_id"] === classroom );
-            var  details = "<h3>Class: "+result["classroom"]+"</h3>"
-            details+= "<h3>Batch: "+result["batch"]+"</h3>";
-            details+= "<h3>Faculty</h3><ul>";
-            for(teacher in result["Faculty"]){
-                details+= "<li>"+result["Faculty"][teacher]+"</li>"
-            }
-            $("#classroom-list").html(details);
-        }
-$(document).ready(function(){ 
-    $.ajax({
-        url : "https://raffle-uat.herokuapp.com/Feedback/ClassRooms",
-        type: "POST",
-        data: ""
-    }).done(function(response){
-        // $("#server-results").html(response);
-            var displaystring="<ul>";
-            console.log(response);
-            response=JSON.parse(response);
-            ClassRooms = response;
-            response.forEach(Classroom => {
-                displaystring +="<li onclick='classDetail(\""+Classroom["_id"]+"\")'>"+Classroom["classroom"]+"</li>";
+        <!-- /#wrapper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+        <!-- jQuery -->
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script>
+            NProgress.configure({
+                showSpinner: false
             });
-            displaystring+="</ul>"
-            console.log(displaystring);
-            $("#classroom-list").html(displaystring) 
-        });
-});
+            var ClassRooms = [];
+            const session = localStorage.getItem("session")
+            function classDetail(classroom) {
+                NProgress.start();
+                const result = ClassRooms.find(Class => Class["_id"] === classroom);
+                var details =
+                    "<h4 onclick='showClassrooms()' style='cursor:pointer;'><u>Back</u></h4><h3>Class: " +
+                    result["classroom"] + "</h3>"
+                details += "<h3>Batch: " + result["batch"] + "</h3>";
+                details += "<h3>Faculty</h3><ul>";
+                for (teacher in result["Faculty"]) {
+                    details += "<li>" + result["Faculty"][teacher] + "</li>"
+                }
+                details +=
+                    "</ul><br/><button class=\"btn btn-success\" onclick=\"window.location='./FacultyFeedback.html#" +
+                    result["_id"] + "'\">Add Feedback</button>"
+                $("#classroom-list").html(details);
+                NProgress.done();
+                NProgress.remove();
+            }
 
-</script>
-      
-    
+            function showClassrooms() {
+                NProgress.start();
+                $("#classroom-list").html("Fetching List of ClassRooms....");
+                $.ajax({
+                    url: "https://raffle-uat.herokuapp.com/Feedback/ClassRooms",
+                    type: "POST",
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-SESSION-KEY", session);
+                    },
+                    data: ""
+                }).done(function (response) {
+                    var displaystring = "<ul>";
+                    response = response;
+                    ClassRooms = response;
+                    response.forEach(Classroom => {
+                        displaystring += "<li onclick='classDetail(\"" + Classroom["_id"] + "\")'>" +
+                            Classroom["classroom"] + "</li>";
+                    });
+                    displaystring += "</ul>"
+                    $("#classroom-list").html(displaystring)
+                    NProgress.done();
+                    NProgress.remove();
+                });
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+            }
+            var i = 2;
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+            function addFacultyField() {
+                NProgress.start();
+                if (i <= 8) {
+                    var label = document.createElement("label");
+                    var newField = document.createElement("input");
+                    label.innerText = "Faculty " + i;
+                    newField.id = "Faculty" + i;
+                    newField.name = "Faculty" + i;
+                    newField.className = "form-control";
+                    newField.placeholder = "Enter Faculty Name";
+                    newField.value = null;
+                    newField.onfocus = function (event) {
+                        addFacultyField()
+                    }
+                    document.getElementById("newclassform").appendChild(label);
+                    document.getElementById("newclassform").appendChild(newField);
+                    i++;
+                    NProgress.done();
+                    NProgress.remove();
+                }
+            }
 
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
+            function NewClassConvert() {
+                NProgress.start();
+                var requestJson = {};
+                requestJson["_id"] = document.getElementById('classroom').value + document.getElementById('batch').value;
+                requestJson["classroom"] = document.getElementById('classroom').value
+                requestJson["batch"] = document.getElementById('batch').value
+                requestJson["Faculty"] = {};
+                for (var j = 1; j < i; j++) {
+                    if (document.getElementById("Faculty" + j).value)
+                        requestJson["Faculty"][j] = document.getElementById("Faculty" + j).value
+                }
+                
+                $.ajax({
+                    url: "https://raffle-uat.herokuapp.com/Feedback/NewClassRoom",
+                    type: "POST",
+                    data: requestJson
+                }).done(function (response) { //
+                    NProgress.done();
+                    if (response.error != undefined && response.error == true) {
+                        localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                        window.location = "login.html"
+                    }
+                    if (response["status"] == "success") {
+                        alert("Classroom was created successfully!")
+                        document.getElementById('resetbutton').click();
+                    } else alert("There was an error creating the classroom. Please try again!");
+                })
+                NProgress.remove();
+                console.log(JSON.stringify(requestJson));
+
+            }
+        </script>
+
+
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="../dist/js/sb-admin-2.js"></script>
+
+        <script src="../js/app.js"></script>
 
 </body>
 

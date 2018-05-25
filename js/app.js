@@ -1,4 +1,5 @@
 $("#logout").click(function(){
+    event.preventDefault(); //prevent default action
     console.log("Inside Logout  Handler");
     NProgress.configure({ showSpinner: false });
     NProgress.start();
@@ -29,6 +30,7 @@ function getFormData($form) {
     return indexed_array;
 }
 $("#loginForm").submit(function (event) {
+    event.preventDefault(); //prevent default action
     console.log("In This Function")
     NProgress.configure({ showSpinner: false });
     NProgress.start();
@@ -67,6 +69,7 @@ $("#loginForm").submit(function (event) {
 });
 
 $("#registerForm").submit(function (event) {
+    event.preventDefault(); //prevent default action
     console.log("In This Function")
     NProgress.configure({ showSpinner: false });
     NProgress.start();
