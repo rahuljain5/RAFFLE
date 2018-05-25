@@ -184,10 +184,8 @@
                 "url": "https://raffle-uat.herokuapp.com/Feedback/AddFeedback",
                 "method": "POST",
                 "headers": {
-                    "Content-Type": "application/json"
-                },
-                beforeSend: function (request) {
-                    request.setRequestHeader("X-SESSION-KEY", session);
+                    "Content-Type": "application/json",
+                    "Cache-Control": "no-cache"
                 },
                 "processData": false,
                 "data": Feedback
