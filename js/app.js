@@ -1,5 +1,4 @@
 $("#logout").click(function() {
-  event.preventDefault(); //prevent default action
   console.log("Inside Logout  Handler");
   NProgress.configure({
     showSpinner: false
