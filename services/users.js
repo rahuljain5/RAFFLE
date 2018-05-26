@@ -193,11 +193,11 @@ const forgotpassword = (state, callback) => {
                             id: id
                         }
                     }).then((val) => {
-                        callback(response["CHANGE_SUCCESS"]).catch((err) => {
+                        callback(response["CHANGE_SUCCESS"])
+                }).catch((err) => {
                             console.error("Erorr:" + err);
                             callback(response.E05)
                         })
-                    })
             }
         }).catch((err) => {
             console.error("Erorr:" + err);
