@@ -45,21 +45,6 @@ const initmiddleware = (app) => {
   app.use('/Result', sessionAuth);
   app.use('/Feedback', sessionAuth);
   app.use('/CSVResult', sessionAuth);
-  app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
-  // error handler
-  app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-  });
-
 }
 
 const initroutes = (app) => {
@@ -87,6 +72,20 @@ const initroutes = (app) => {
   app.post('/CSVResult', upload.single('filetoupload'), function(req, res) {
     console.log("File Saved At:" + req.file.path);
     file_handler.CSVResultFetch(req.file.path, res);
+  });
+  app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  });
+  // error handler
+  app.use(function(err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
   });
 }
 const startserver = (app) => {
