@@ -1,11 +1,12 @@
 $("#logout").click(function(){
+    event.preventDefault(); //prevent default action
     console.log("Inside Logout  Handler");
     NProgress.configure({ showSpinner: false });
     NProgress.start();
     const session = localStorage.getItem("session");
     const url = "https://raffle-promise-test.herokuapp.com/users/logout"
     $.ajax({
-        url: url, 
+        url: url,
         beforeSend: function (request) {
             request.setRequestHeader("X-SESSION-KEY", session);
         },
@@ -29,6 +30,7 @@ function getFormData($form) {
     return indexed_array;
 }
 $("#loginForm").submit(function (event) {
+    event.preventDefault(); //prevent default action
     console.log("In This Function")
     NProgress.configure({ showSpinner: false });
     NProgress.start();
@@ -67,6 +69,7 @@ $("#loginForm").submit(function (event) {
 });
 
 $("#registerForm").submit(function (event) {
+    event.preventDefault(); //prevent default action
     console.log("In This Function")
     NProgress.configure({ showSpinner: false });
     NProgress.start();
