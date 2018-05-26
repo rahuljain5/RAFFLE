@@ -70,7 +70,9 @@ const initroutes = (app) => {
   });
 
 
-  app.all('/', res.send("UP"));
+  app.all('/', (req, res) => {
+    res.send("UP")
+  });
 
   app.use('/users', users);
 
