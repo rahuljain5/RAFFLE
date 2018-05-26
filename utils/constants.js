@@ -119,7 +119,7 @@ const responses = {
     "INITIED": {
         "error": false,
         "status": "SUCCESS",
-        "message": "ForgotPassword Initiated"
+        "message": "An Email with the OTP to Reset Your Password is Send to the Registered EMAIL"
     }
 }
 
