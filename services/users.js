@@ -134,9 +134,10 @@ const forgotpasswordinit = (state, callback) => {
             const otp = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
             console.log("Email: "+state.email+" OTP : "+otp);
             var forgotpasswordcontenttemp = forgotpasswordcontent.replace(/####/g, otp)
-            forgotpasswordcontenttemp = forgotpasswordcontenttemp.replace(/@@@@/, val.dataValues.username)
-            forgotpasswordcontenttemp = forgotpasswordcontenttemp.replace(/%%%%/, min)
-            const subject = "Request to reset your myDiary password"
+            forgotpasswordcontenttemp = forgotpasswordcontenttemp.replace(/@@@@/g, val.dataValues.username)
+            forgotpasswordcontenttemp = forgotpasswordcontenttemp.replace(/%%%%/g, min)
+            console.log(forgotpasswordcontenttemp);
+            const subject = "Request to reset your Raffle password"
             mailer.sendmail(state.email, subject, forgotpasswordcontenttemp)
             models.User.update({
                 "token": crypto.gethash(otp)
