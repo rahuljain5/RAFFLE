@@ -132,6 +132,7 @@ const forgotpasswordinit = (state, callback) => {
     }).then((val) => {
         if (val.dataValues.email == state.email) {
             const otp = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+            console.log("Email: "+state.email+" OTP : "+otp);
             var forgotpasswordcontenttemp = forgotpasswordcontent.replace(/####/g, otp)
             forgotpasswordcontenttemp = forgotpasswordcontenttemp.replace(/@@@@/, val.dataValues.username)
             forgotpasswordcontenttemp = forgotpasswordcontenttemp.replace(/%%%%/, min)
@@ -169,6 +170,7 @@ const forgotpassword = (state, callback) => {
             }
         }).then((val) => {
             val = val.dataValues;
+            console.log(state.otp);
             let id = val.id;
             var lastupdatetime = moment(val.updatedAt);
             var duration = moment.duration(currentTime.diff(lastupdatetime));
