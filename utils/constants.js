@@ -4,8 +4,8 @@ const forgotpasswordcontent = `<!DOCTYPE html><html><head>
 <body>
 <div class="container">
 <h2 style="font-size: 20px; font-weight: bold; margin: 0;">Reset Email Request</h2>
-<p>We received a request to reset the myDiary password for username <strong>@@@@</strong>.</p>
-<p>Please use <strong>####</strong> as a OTP to Reset your password.Your OTP will expire in <strong>%%%% </strong>mins.</p>
+<p>We received a request to reset the Raffel password for username <strong>@@@@</strong>.</p>
+<p>Please use <strong>####</strong> as a OTP to Reset your password or Click on <a href="https://lucid-shannon-c437c3.netlify.com/pages/forgotpassword.html?otp=####">Click Here</a>.Your OTP will expire in <strong>%%%% </strong>mins.</p>
 <p>Try to Remember your password next time ;) well incase you forgot we got you covered</p>
 <p>If you didn't make this request, feel free to ignore this email.</p>
 </div>
@@ -119,7 +119,7 @@ const responses = {
     "INITIED": {
         "error": false,
         "status": "SUCCESS",
-        "message": "ForgotPassword Initiated"
+        "message": "A mail with the OTP to Reset Your Password is Sent to the Registered EMAIL"
     }
 }
 
