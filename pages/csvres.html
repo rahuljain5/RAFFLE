@@ -112,15 +112,14 @@
                     "method": "POST",
                     "headers": {
                         "Cache-Control": "no-cache",
-                    },
-                     beforeSend: function (request) {
-                        request.setRequestHeader("X-SESSION-KEY", session);
+                        "X-SESSION-KEY" : session
                     },
                     "processData": false,
                     "contentType": false,
                     "mimeType": "multipart/form-data",
                     "data": form_data
-                }).done(function (response) { //
+                }).done(function (response) { 
+                    response = JSON.parse(response)
                     if (response.error != undefined && response.error == true) {
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                         window.location = "login.html"
