@@ -6,6 +6,7 @@ const response = require("../utils/constants").responses;
 module.exports = function (req, res, next) {
     const session = req.get("X-SESSION-KEY");
     try {
+        console.log("SESSION VALUE:"+session);
         var val = jwt.verify(session, config.jwtKey);
         console.log("SESSION AUTH:" + JSON.stringify(val));
         console.log(req.originalUrl)
