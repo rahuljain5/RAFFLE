@@ -118,7 +118,7 @@
         response.forEach(ResultJson => {
             console.log(ResultJson);
             if(ResultJson["error"]!=true)
-            placeholder.innerHTML += changeContent(JSON.parse(ResultJson))
+            placeholder.innerHTML += changeContent(ResultJson)
             else
             placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
              NProgress.remove();
