@@ -104,8 +104,8 @@
                 var url = "https://raffle-uat.herokuapp.com/Result/" + usn;
                 var origin = "https://raffle.cf"
                 const session = localStorage.getItem("session")
-                xhttp.setRequestHeader("X-SESSION-KEY",session);
                 xhttp.open("GET", url, true);
+                xhttp.setRequestHeader("X-SESSION-KEY",session);
                 console.log(url);
                 xhttp.onreadystatechange = function () {
 
