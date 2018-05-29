@@ -24,6 +24,12 @@ var config = require("./config/config.js")[env];
 
 
 const initmiddleware = (app) => {
+    app.use(function(req, res, next) {
+    res.setHeader("Access-Control-Allow-Headers", ["Access-Control-Allow-Origin", 'X-SESSION-KEY', 'Content-Type', 'Cache-Control']);
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    next();
+  });
+
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'pug');
@@ -48,13 +54,6 @@ const initmiddleware = (app) => {
 }
 
 const initroutes = (app) => {
-  app.use(function(req, res, next) {
-    res.setHeader("Access-Control-Allow-Headers", ["Access-Control-Allow-Origin", 'X-SESSION-KEY', 'Content-Type', 'Cache-Control']);
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    next();
-  });
-
-
   app.all('/', (req, res) => {
     res.send("UP")
   });
