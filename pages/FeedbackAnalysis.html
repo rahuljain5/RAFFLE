@@ -105,7 +105,7 @@
                 var placeholder = document.getElementById('form-panel');
                 // placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
                 event.preventDefault(); //prevent default action
-                
+
                 var form_data = $(this).serialize(); //Encode form elements for submission
                 $.ajax({
                     "async": true,
@@ -145,7 +145,7 @@
                         document.getElementById('form-panel').appendChild(graph);
                         var numoffbs = AnalysisStats["FbCount"];
                         var colors = [
-                            '#12d400', '#990000', '#0077b5'
+                            '#0C8F20', '#DA8801', '#D72901'
                         ]
                         var colorStats;
                         var stats = [{
@@ -173,10 +173,15 @@
                                 a: ((AnalysisStats[teacher]["Overall"] * 100) / (numoffbs * 5)).toFixed(2)
                             }
                         ];
-                        if ((AnalysisStats[teacher]["Overall"] * 100) > 80)
+                        if ((AnalysisStats[teacher]["Overall"] * 100) / (numoffbs * 5).toFixed(2) > 70)
                             colorStats = colors[0];
-                        else colorStats = colors[1]
+                        else if ((AnalysisStats[teacher]["Overall"] * 100) / (numoffbs * 5).toFixed(2) > 50)
+                            colorStats = colors[1]
+                        else colorStats = colors[2]
+
                         Bar(graph.id, stats, [colorStats]);
+                        var hr = document.createElement('hr')
+                        document.getElementById('form-panel').appendChild(hr)
                     }
                 })
 
