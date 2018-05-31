@@ -9,26 +9,26 @@ function changeContent(content) {
                 
                 if (content["error"] == true) {
                     console.log(content.errorMessage);
-                    return(`<h3 align='center'>${content.userMessage}</h3>`)
+                    return(`<h4 align='center'><b>${content.userMessage}</b></h4>`)
                 } else {
                     var str =
-                        `<h3>University Seat Number: ${content['University Seat Number ']}</h3><h3>Student Name: ${titleCase(content['Student Name '])}</h3>`
-                    str += `<h3>Semester: ${content["Results"]["Current"]["Semester"]}</h3>`
+                        `<h4><b>University Seat Number</b>: ${content['University Seat Number ']}</h4><h4><b>Student Name</b>: ${titleCase(content['Student Name '])}</h4>`
+                    str += `<h4><b>Semester</b>: ${content["Results"]["Current"]["Semester"]}</h4>`
                     var table =
-                        "<table class='table'><tr><th>Subject Code</th><th>Subject Name</th><th>Total Marks</th><th>Result</th></tr>"
+                        "<table class='table'><tr><th>Subject Code</th><th>Subject Name</th><th>Internal Marks</th><th>External Marks</th><th>Total Marks</th><th>Result</th></tr>"
                     var current = content["Results"]["Current"]["Result"]
                     for (subject in current) {
                         console.log(content["Results"]["Current"]["Result"]["Semester"]);
 
                         table +=
-                            `<tr><td>${current[subject]['Subject Code']}</td><td>${current[subject]['Subject Name']}</td><td>${current[subject]['Total']}</td><td>${current[subject]['Result']}</td></tr>`
+                            `<tr><td>${current[subject]['Subject Code']}</td><td>${current[subject]['Subject Name']}</td><td>${current[subject]['Internal Marks']}</td><td>${current[subject]['External Marks']}</td><td>${current[subject]['Total']}</td><td>${current[subject]['Result']}</td></tr>`
                     }
                     table += "</table>";
                     str += table;
                     var Backlogs = content["Results"]["Backlogs"]
                     for (backsem in Backlogs) {
                         console.log(Backlogs[backsem]);
-                        str += `<h3>Semester: ${Backlogs[backsem]["Semester"]}</h3><hr/>`
+                        str += `<h4><b>Semester</b>: ${Backlogs[backsem]["Semester"]}</h4><hr/>`
                         table =
                             "<table class='table'><tr><th>Subject Code</th><th>Subject Name</th><th>Total Marks</th><th>Result</th></tr>"
                         var subjects = Backlogs[backsem]
@@ -41,6 +41,7 @@ function changeContent(content) {
                         table += "</table>";
                         str += table;
                     }
+                    str += "<hr/>";
                     return(str);
                 }
             }
