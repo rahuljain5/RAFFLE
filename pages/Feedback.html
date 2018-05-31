@@ -106,6 +106,7 @@
             });
             var ClassRooms = [];
             const session = localStorage.getItem("session")
+
             function classDetail(classroom) {
                 NProgress.start();
                 const result = ClassRooms.find(Class => Class["_id"] === classroom);
@@ -136,6 +137,7 @@
                     },
                     data: ""
                 }).done(function (response) {
+                    // console.log(response); 
                     var displaystring = "<ul>";
                     response = response;
                     ClassRooms = response;
@@ -181,16 +183,26 @@
                 requestJson["classroom"] = document.getElementById('classroom').value
                 requestJson["batch"] = document.getElementById('batch').value
                 requestJson["Faculty"] = {};
+                var faculty = {};
                 for (var j = 1; j < i; j++) {
                     if (document.getElementById("Faculty" + j).value)
-                        requestJson["Faculty"][j] = document.getElementById("Faculty" + j).value
+                        faculty["" + j + ""] = document.getElementById("Faculty" + j).value
                 }
-                
+                requestJson["Faculty"] = faculty;
                 $.ajax({
+                    "async": true,
+                    "crossDomain": true,
+                    "method": "POST",
                     url: "https://raffle-uat.herokuapp.com/Feedback/NewClassRoom",
-                    type: "POST",
-                    data: requestJson
-                }).done(function (response) { //
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "Cache-Control": "no-cache",
+                        "X-SESSION-KEY": session
+                    },
+                    "processData": false,
+                    data: JSON.stringify(requestJson)
+                }).done(function (response) { 
+                    console.log(response)
                     NProgress.done();
                     if (response.error != undefined && response.error == true) {
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
@@ -202,8 +214,8 @@
                     } else alert("There was an error creating the classroom. Please try again!");
                 })
                 NProgress.remove();
-                console.log(JSON.stringify(requestJson));
-
+                // console.log(JSON.stringify(requestJson));
+                showClassrooms();
             }
         </script>
 
