@@ -89,6 +89,7 @@ function Bar(elementid, stats, colorStatus) {
         ykeys: 'a',
         labels: 'Series A',
         barColors: colorStatus,
+        gridTextColor: '#272C1E',
         hideHover: 'auto',
         resize: true
     });
