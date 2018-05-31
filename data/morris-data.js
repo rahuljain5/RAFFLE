@@ -75,7 +75,7 @@ function donut(elementid, Values, totalstuds){
             value: Values["Absent"]
         }],
         colors: [
-            '#12d400', '#990000', '#0077b5'
+            '#089C00', '#990000', '#5B5C5B'
             ],
         resize: true
     });
