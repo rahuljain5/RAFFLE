@@ -5,7 +5,7 @@ module.exports = {
     DBNAme: process.env.DBname,
     redis_url : process.env.REDIS_URL || "redis://localhost:6379",
     userdb_url: process.env.DATABASE_URL || "mysql://dummyuser:dummy123@db4free.net:3307/dummymysql",
-    loginTtl: 10.00 * 60.00, //mins
+    loginTtl: 30.00 * 60.00, //mins
     forgotexpiry : 10.00 * 60.00 * 24 ,// 1 day
     jwtKey: process.env.JWT_KEY || "secret",
     salt: process.env.COMMON_SALT || "13b7654d-fd16-488b-9e25-2113f478ccbf",
