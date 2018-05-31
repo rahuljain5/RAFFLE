@@ -61,12 +61,12 @@
                                 <form role="form" method="POST" id="myform">
                                     <div class="form-group">
                                         <label>Enter class name:</label>
-                                        <input class="form-control" id="classroom" name="classroom" placeholder="Enter Class Name" required>
+                                        <input class="form-control" id="classroom" name="classroom" placeholder="Enter Class Name. Eg: 8B" required>
                                         <label>Enter Batch:</label>
                                         <input class="form-control" id="batch" name="batch" placeholder="Enter Batch Year" required>
                                     </div>
-                                    <button type="submit" class="btn btn-default">Submit Button</button>
-                                    <button type="reset" class="btn btn-default">Reset Button</button>
+                                    <button type="submit" class="btn btn-default">Submit</button>
+                                    <button type="reset" class="btn btn-default">Reset</button>
                                 </form>
                                 <div id="server-results">
                                     <!-- For server results -->
@@ -100,12 +100,10 @@
                 NProgress.configure({
                     showSpinner: false
                 });
-                NProgress.start();
                 var Results = "";
                 var placeholder = document.getElementById('form-panel');
-                // placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
+                NProgress.start();
                 event.preventDefault(); //prevent default action
-
                 var form_data = $(this).serialize(); //Encode form elements for submission
                 $.ajax({
                     "async": true,
@@ -115,8 +113,7 @@
                     beforeSend: function (request) {
                         request.setRequestHeader("X-SESSION-KEY", session);
                     }
-                }).done(function (response) { //
-
+                }).done(function (response) {
                     if (response.error != undefined && response.error == true) {
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                         window.location = "login.html"
@@ -124,6 +121,7 @@
                     NProgress.done();
                     console.log(response);
                     Plotgraph(response);
+                    NProgress.remove();
                 });
             })
 
