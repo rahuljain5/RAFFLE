@@ -106,10 +106,10 @@
             url: "https://raffle-uat.herokuapp.com/Feedback/" + window.location.href.split("#")[1],
             type: "GET",
             beforeSend: function (request) {
-                        request.setRequestHeader("X-SESSION-KEY", session);
-                    },
+                request.setRequestHeader("X-SESSION-KEY", session);
+            },
         }).done(function (response) { //
-            console.log(response);
+            // console.log(response);
             NProgress.done();
             FormMaker(response);
             NProgress.remove();
@@ -148,11 +148,8 @@
         <label for="star-1${teacher+question}"></label></div><br/>`;
                 }
             }
-
             qform += `<button  type="submit" class="btn btn-default" align="center">submit</button>
       </form>`
-            // console.log(qform);
-
             document.getElementById('form-panel').innerHTML = qform
         }
 
@@ -182,7 +179,7 @@
                 }
                 Feedback["feedback"][teacher] = TeacherScore;
             }
-            console.log(JSON.stringify(Feedback));
+            // console.log(JSON.stringify(Feedback));
             var settings = {
                 "async": true,
                 "crossDomain": true,
