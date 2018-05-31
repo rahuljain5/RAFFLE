@@ -55,7 +55,7 @@
                     <div class="col-lg-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Find Class Result
+                                Find Class Result using a CSV File
                             </div>
                             <div class="panel-body">
                                 <form role="form" method="POST" id="myform">
@@ -64,8 +64,8 @@
                                         <label>File input</label>
                                         <input type="file" name="filetoupload">
                                     </div>
-                                    <button type="submit" class="btn btn-default">Submit Button</button>
-                                    <button type="reset" class="btn btn-default">Reset Button</button>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="reset" class="btn btn-default">Reset</button>
                                 </form>
                                 <div id="server-results">
                                     <!-- For server results -->
@@ -82,7 +82,6 @@
                 <h4 align="center">Result Source: <a href="http://results.vtu.ac.in"> results.vtu.ac.in </a></h4>
                 <div class="row">
                     <div class="panel panel-default" id="form-panel" style="overflow: auto;">
-
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -126,7 +125,7 @@
                     }
                     NProgress.done();
                     response.forEach(ResultJson => {
-                        console.log(ResultJson);
+                        // console.log(ResultJson);
                         placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
                         NProgress.remove();
                     });
