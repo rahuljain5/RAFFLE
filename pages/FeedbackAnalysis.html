@@ -95,6 +95,7 @@
         <script src="../js/ChangeContent.js"></script>
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script>
+            const session = localStorage.getItem("session")
             $("#myform").submit(function (event) {
                 NProgress.configure({
                     showSpinner: false
@@ -104,7 +105,7 @@
                 var placeholder = document.getElementById('form-panel');
                 // placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
                 event.preventDefault(); //prevent default action
-                const session = localStorage.getItem("session")
+                
                 var form_data = $(this).serialize(); //Encode form elements for submission
                 $.ajax({
                     "async": true,
@@ -129,7 +130,10 @@
             function Plotgraph(AnalysisStats) {
                 $.ajax({
                     url: "https://raffle-uat.herokuapp.com/Feedback/" + AnalysisStats["_id"],
-                    type: "GET"
+                    type: "GET",
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-SESSION-KEY", session);
+                    }
                 }).done(function (FacultyList) {
                     for (teacher in FacultyList[0]["Faculty"]) {
                         var graph = document.createElement('div');
