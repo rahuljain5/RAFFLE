@@ -52,7 +52,7 @@
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                View ClassRooms
+                                ClassRooms:
                             </div>
                             <div class="panel-body">
                                 <div id='classroom-list'></div>
@@ -111,10 +111,10 @@
                 NProgress.start();
                 const result = ClassRooms.find(Class => Class["_id"] === classroom);
                 var details =
-                    "<h4 onclick='showClassrooms()' style='cursor:pointer;'><u>Back</u></h4><h3><span style='color:#06499D'>Class</span>: " +
-                    result["classroom"] + "</h3>"
-                details += "<h3><span style='color:#06499D'>Batch</span>: " + result["batch"] + "</h3>" ;
-                details += "<h3><span style='color:#06499D'>Faculty</span>:</h3><ul><h4>";
+                    "<h4 onclick='showClassrooms()' style='cursor:pointer;'><u>Back</u></h4><h4><span style='color:#06499D'><b>Class</b></span>: " +
+                    result["classroom"] + "</h4>"
+                details += "<h4><b><span style='color:#06499D'>Batch</span></b>: " + result["batch"] + "</h4>" ;
+                details += "<h4><b><span style='color:#06499D'>Faculty</span></b>:</h4><ul><h4>";
                 for (teacher in result["Faculty"]) {
                     details += "<li>" + result["Faculty"][teacher] + "</li>"
                 }
