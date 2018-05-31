@@ -16,7 +16,8 @@
 
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-
+    <!-- Morris Charts CSS -->
+    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
@@ -66,8 +67,8 @@
                                         <label>Enter the Semester:</label>
                                         <input class="form-control" id="semester" name="semester" placeholder="Enter Semester" pattern="[1-8]" required>
                                     </div>
-                                    <button type="submit" class="btn btn-default">Submit Button</button>
-                                    <button type="reset" class="btn btn-default">Reset Button</button>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="reset" class="btn btn-default">Reset</button>
                                 </form>
                             </div>
                         </div>
@@ -79,7 +80,7 @@
                 </div>
                 <br>
                 <div class="row">
-                    <div class="panel panel-default" id="graphs" style="overflow: auto;">
+                    <div class="panel panel-default" id="graphs">
 
                     </div>
                 </div>
@@ -118,6 +119,7 @@
                         window.location = "login.html"
                     }
                     console.log(response);
+                    NProgress.done()
                     drawgraph(response)
                     NProgress.remove();
                 });
@@ -125,14 +127,17 @@
 
             function drawgraph(res) {
                 res = JSON.parse(res)
+                console.log(res);
+                
                 for (sub in res) {
                     if (sub == "TotalStudents" || sub == "TotalPassed")
                         continue;
                     else {
                         var parentdiv = document.getElementById('graphs');
                         var Heading = document.createElement('h4')
-                        Heading.align = "center"
-                        Heading.innerHTML = res[sub]["SubName"];
+                        Heading.align = "center";
+                        Heading.style = "font-weight: bold;"
+                        Heading.innerHTML = titleCase(res[sub]["SubName"]) + ` (${sub})`;
                         var graphdiv = document.createElement('div');
                         graphdiv.appendChild(Heading);
                         var graph = document.createElement('div');
@@ -149,6 +154,7 @@
                         console.log(totalstudents);
                         graphdiv.appendChild(graph)
                         parentdiv.appendChild(graphdiv);
+                        graphdiv.innerHTML += "<hr/>";
                         donut(sub, values, totalstudents)
                     }
                 }
