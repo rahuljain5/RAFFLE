@@ -82,7 +82,7 @@
                 </div>
                 <br>
                 <div class="row">
-                    <div class="panel panel-default" id="form-panel" style="overflow: auto;">
+                    <div class="panel panel-default" id="form-panel" style="">
 
                     </div>
                 </div>
@@ -138,9 +138,10 @@
                     for (teacher in FacultyList[0]["Faculty"]) {
                         var graph = document.createElement('div');
                         graph.id = FacultyList[0]["Faculty"][teacher];
-                        var Heading = document.createElement('h3')
+                        var Heading = document.createElement('h3');
+                        Heading.style = "color: #054D74; font-weight: bold"
                         Heading.align = "center";
-                        Heading.innerHTML = graph.id;
+                        Heading.innerHTML = "Mr./Ms. " + graph.id;
                         document.getElementById('form-panel').appendChild(Heading)
                         document.getElementById('form-panel').appendChild(graph);
                         var numoffbs = AnalysisStats["FbCount"];
