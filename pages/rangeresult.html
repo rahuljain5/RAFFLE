@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>RAFFLE &middot; Range Results</title>
+    <title>Range Results &middot; RAFFLE</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -67,7 +67,8 @@
                                 <form role="form" action="https://raffle-uat.herokuapp.com/RangeResult" method="GET" id="myform">
                                     <div class="form-group">
                                         <label>Enter the First 7 digits of the USN here:</label>
-                                        <input class="form-control" name="baseusn" id="baseusn" placeholder="Example: 1ox15cs" pattern="[1-4][a-z A-Z]{2}[0-9]{2}[a-z A-Z]{2}" required>
+                                        <input class="form-control" name="baseusn" id="baseusn" placeholder="Example: 1ox15cs" pattern="[1-4][a-z A-Z]{2}[0-9]{2}[a-z A-Z]{2}"
+                                            required>
                                         <label>Set the Range here:</label>
                                         <div class="form-group">
                                             <label>Start USN</label>
@@ -90,7 +91,9 @@
                     </div>
                     <!-- /.row -->
                 </div>
-                <h4 align="center">Result Source: <a href="http://results.vtu.ac.in"> results.vtu.ac.in </a></h4>
+                <h4 align="center">Result Source:
+                    <a href="http://results.vtu.ac.in"> results.vtu.ac.in </a>
+                </h4>
                 <div class="row">
                     <div class="panel panel-default" id="form-panel" style="overflow: auto;">
 
@@ -135,8 +138,8 @@
 
                 $("#myform").submit(function (event) {
                     event.preventDefault(); //prevent default action
-                    console.log("In submit function" );
-                    
+                    console.log("In submit function");
+
                     NProgress.configure({
                         showSpinner: false
                     });
@@ -148,7 +151,7 @@
                     var sliderval = slider.noUiSlider.get();
                     formval[0].value = parseInt(sliderval[0]);
                     formval[1].value = parseInt(sliderval[1]);
-                    
+
                     var post_url = $(this).attr("action"); //get form action url
                     var request_method = $(this).attr("method"); //get form GET/POST method
                     var form_data = $(this).serialize(); //Encode form elements for submission
@@ -161,10 +164,10 @@
                         headers: {
                             "X-SESSION-KEY": session
                         }
-                    }).done(function (response) { 
+                    }).done(function (response) {
                         if (response.error != undefined && response.error == true) {
                             console.log(response);
-                            
+
                             localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                             window.location = "login.html"
                         }
@@ -172,10 +175,10 @@
                         NProgress.done();
                         response.forEach(ResultJson => {
                             console.log(ResultJson);
-                            if(ResultJson["error"]!=true)
-                            placeholder.innerHTML += changeContent(ResultJson)
+                            if (ResultJson["error"] != true)
+                                placeholder.innerHTML += changeContent(ResultJson)
                             else
-                            placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
+                                placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
                         });
                         NProgress.remove();
                     });
