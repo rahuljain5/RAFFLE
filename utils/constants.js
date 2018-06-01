@@ -71,7 +71,7 @@ const responses = {
     "E12": {
         "error": true,
         "status": "FAILURE",
-        "message": "Invalid SESSION KEY"
+        "message": "Session Expired"
     },
     "E13": {
         "error": true,
