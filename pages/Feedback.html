@@ -73,7 +73,8 @@
                                         <input class="form-control" id="batch" name="batch" placeholder="Example: 2014" required />
                                         <label>Enter Faculty Names Below :</label>
                                         <label for="">Faculty 1</label>
-                                        <input class="form-control" id="Faculty1" name="Faculty1" placeholder="Enter Faculty Name" required onfocus="addFacultyField()" />
+                                        <input class="form-control" id="Faculty1" name="Faculty1" placeholder="Enter Faculty Name" required onfocus="addFacultyField()"
+                                        />
                                     </div>
                                     <button type="submit" class="btn btn-success">Submit</button>
                                     <button type="reset" class="btn btn-default" id="resetbutton">Reset</button>
@@ -113,7 +114,7 @@
                 var details =
                     "<h4 onclick='showClassrooms()' style='cursor:pointer;'><u>Back</u></h4><h4><span style='color:#06499D'><b>Class</b></span>: " +
                     result["classroom"] + "</h4>"
-                details += "<h4><b><span style='color:#06499D'>Batch</span></b>: " + result["batch"] + "</h4>" ;
+                details += "<h4><b><span style='color:#06499D'>Batch</span></b>: " + result["batch"] + "</h4>";
                 details += "<h4><b><span style='color:#06499D'>Faculty</span></b>:</h4><ul><h4>";
                 for (teacher in result["Faculty"]) {
                     details += "<li>" + result["Faculty"][teacher] + "</li>"
@@ -137,7 +138,15 @@
                     },
                     data: ""
                 }).done(function (response) {
-                    // console.log(response); 
+                    console.log(response);
+                    if (response["error"] = true) {
+                        if (response["status"] == "FAILURE") {
+                            alert(response["message"]);
+                            localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                            window.location = "login.html"
+                        }
+
+                    }
                     var displaystring = "<ul>";
                     response = response;
                     ClassRooms = response;
@@ -201,7 +210,7 @@
                     },
                     "processData": false,
                     data: JSON.stringify(requestJson)
-                }).done(function (response) { 
+                }).done(function (response) {
                     console.log(response)
                     NProgress.done();
                     if (response.error != undefined && response.error == true) {
