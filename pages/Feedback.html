@@ -151,7 +151,7 @@
                     response = response;
                     ClassRooms = response;
                     response.forEach(Classroom => {
-                        displaystring += "<li onclick='classDetail(\"" + Classroom["_id"] + "\")'>" +
+                        displaystring += "<li onclick='classDetail(\"" + Classroom["_id"] + "\")' style='cursor:pointer;'>" +
                             Classroom["classroom"] + "</li>";
                     });
                     displaystring += "</ul>"
