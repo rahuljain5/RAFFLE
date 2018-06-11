@@ -55,18 +55,18 @@
                     <div class="col-lg-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Find Class Result
+                                Analyze Feedbacks:
                             </div>
                             <div class="panel-body">
                                 <form role="form" method="POST" id="myform">
                                     <div class="form-group">
                                         <label>Enter class name:</label>
-                                        <input class="form-control" id="classroom" name="classroom" placeholder="Enter Class Name" required>
+                                        <input class="form-control" id="classroom" name="classroom" placeholder="Example: 8B" required>
                                         <label>Enter Batch:</label>
-                                        <input class="form-control" id="batch" name="batch" placeholder="Enter Batch Year" required>
+                                        <input class="form-control" id="batch" name="batch" placeholder="Example: 2014" required>
                                     </div>
-                                    <button type="submit" class="btn btn-default">Submit Button</button>
-                                    <button type="reset" class="btn btn-default">Reset Button</button>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="reset" class="btn btn-default">Reset</button>
                                 </form>
                                 <div id="server-results">
                                     <!-- For server results -->
@@ -82,7 +82,7 @@
                 </div>
                 <br>
                 <div class="row">
-                    <div class="panel panel-default" id="form-panel" style="overflow: auto;">
+                    <div class="panel panel-default" id="form-panel">
 
                     </div>
                 </div>
@@ -95,16 +95,15 @@
         <script src="../js/ChangeContent.js"></script>
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script>
+            const session = localStorage.getItem("session")
             $("#myform").submit(function (event) {
                 NProgress.configure({
                     showSpinner: false
                 });
-                NProgress.start();
                 var Results = "";
                 var placeholder = document.getElementById('form-panel');
-                // placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
+                NProgress.start();
                 event.preventDefault(); //prevent default action
-                const session = localStorage.getItem("session")
                 var form_data = $(this).serialize(); //Encode form elements for submission
                 $.ajax({
                     "async": true,
@@ -114,8 +113,7 @@
                     beforeSend: function (request) {
                         request.setRequestHeader("X-SESSION-KEY", session);
                     }
-                }).done(function (response) { //
-
+                }).done(function (response) {
                     if (response.error != undefined && response.error == true) {
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                         window.location = "login.html"
@@ -123,25 +121,30 @@
                     NProgress.done();
                     console.log(response);
                     Plotgraph(response);
+                    NProgress.remove();
                 });
             })
 
             function Plotgraph(AnalysisStats) {
                 $.ajax({
                     url: "https://raffle-uat.herokuapp.com/Feedback/" + AnalysisStats["_id"],
-                    type: "GET"
+                    type: "GET",
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-SESSION-KEY", session);
+                    }
                 }).done(function (FacultyList) {
                     for (teacher in FacultyList[0]["Faculty"]) {
                         var graph = document.createElement('div');
                         graph.id = FacultyList[0]["Faculty"][teacher];
-                        var Heading = document.createElement('h3')
+                        var Heading = document.createElement('h3');
+                        Heading.style = "color: #054D74; font-weight: bold"
                         Heading.align = "center";
-                        Heading.innerHTML = graph.id;
+                        Heading.innerHTML = "Mr./Ms. " + graph.id;
                         document.getElementById('form-panel').appendChild(Heading)
                         document.getElementById('form-panel').appendChild(graph);
                         var numoffbs = AnalysisStats["FbCount"];
                         var colors = [
-                            '#12d400', '#990000', '#0077b5'
+                            '#0C8F20', '#DA8801', '#D72901'
                         ]
                         var colorStats;
                         var stats = [{
@@ -169,10 +172,15 @@
                                 a: ((AnalysisStats[teacher]["Overall"] * 100) / (numoffbs * 5)).toFixed(2)
                             }
                         ];
-                        if ((AnalysisStats[teacher]["Overall"] * 100) > 80)
+                        if ((AnalysisStats[teacher]["Overall"] * 100) / (numoffbs * 5).toFixed(2) > 70)
                             colorStats = colors[0];
-                        else colorStats = colors[1]
+                        else if ((AnalysisStats[teacher]["Overall"] * 100) / (numoffbs * 5).toFixed(2) > 50)
+                            colorStats = colors[1]
+                        else colorStats = colors[2]
+
                         Bar(graph.id, stats, [colorStats]);
+                        var hr = document.createElement('hr')
+                        document.getElementById('form-panel').appendChild(hr)
                     }
                 })
 

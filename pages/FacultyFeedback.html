@@ -95,18 +95,24 @@
     <script src="../js/ChangeContent.js"></script>
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
     <script>
-        // NProgress.configure({
-        //     showSpinner: false
-        // });
-        // NProgress.start();
+        NProgress.configure({
+            showSpinner: false
+        });
+        NProgress.start();
+        const session = localStorage.getItem("session")
         $.ajax({
             url: "https://raffle-uat.herokuapp.com/Feedback/" + window.location.href.split("#")[1],
-            type: "GET"
+            type: "GET",
+            beforeSend: function (request) {
+                request.setRequestHeader("X-SESSION-KEY", session);
+            },
         }).done(function (response) { //
-            console.log(response);
+            // console.log(response);
+            NProgress.done();
             FormMaker(response);
-            // NProgress.remove();
+            NProgress.remove();
         })
         var Questions = {
             "Punctual": "How punctual is the teacher?",
@@ -142,11 +148,8 @@
         <label for="star-1${teacher+question}"></label></div><br/>`;
                 }
             }
-
             qform += `<button  type="submit" class="btn btn-default" align="center">submit</button>
       </form>`
-            // console.log(qform);
-
             document.getElementById('form-panel').innerHTML = qform
         }
 
@@ -176,8 +179,7 @@
                 }
                 Feedback["feedback"][teacher] = TeacherScore;
             }
-            console.log(JSON.stringify(Feedback));
-            const session = localStorage.getItem("session")
+            // console.log(JSON.stringify(Feedback));
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -185,7 +187,8 @@
                 "method": "POST",
                 "headers": {
                     "Content-Type": "application/json",
-                    "Cache-Control": "no-cache"
+                    "Cache-Control": "no-cache",
+                    "X-SESSION-KEY": session
                 },
                 "processData": false,
                 "data": JSON.stringify(Feedback)
@@ -208,7 +211,6 @@
     </script>
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../vendor/metisMenu/metisMenu.min.js"></script>

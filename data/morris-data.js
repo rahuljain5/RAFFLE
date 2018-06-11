@@ -75,7 +75,7 @@ function donut(elementid, Values, totalstuds){
             value: Values["Absent"]
         }],
         colors: [
-            '#12d400', '#990000', '#0077b5'
+            '#089C00', '#D21A01', '#5B5C5B'
             ],
         resize: true
     });
@@ -89,6 +89,7 @@ function Bar(elementid, stats, colorStatus) {
         ykeys: 'a',
         labels: 'Series A',
         barColors: colorStatus,
+        gridTextColor: '#272C1E',
         hideHover: 'auto',
         resize: true
     });
