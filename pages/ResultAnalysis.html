@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Result Analysis &middot; RAFFLE</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <!-- Morris Charts CSS -->
+    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        if (localStorage.getItem("session") === null)
+            window.location = "login.html"
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" id="Navigation-Bar">
+            <script src="../js/navbar.js"></script>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <br/>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Result Analyzer
+                            </div>
+                            <div class="panel-body">
+                                <form role="form" action="https://raffle-uat.herokuapp.com/Result/Analyze?" method="POST" id="myform">
+                                    <div class="form-group">
+                                        <label>Enter the Calender Year of which results to be analyzed:</label>
+                                        <input class="form-control" id="year" name="year" placeholder="Example: 2018" required>
+                                        <label>Enter the Semester:</label>
+                                        <input class="form-control" id="semester" name="semester" placeholder="5" pattern="[1-8]" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="reset" class="btn btn-default">Reset</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                        <div class="col-lg-2"></div>
+                    </div>
+
+                    <!-- /.row -->
+                </div>
+                <br>
+                <div class="row">
+                    <div class="panel panel-default" id="graphs">
+
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /#page-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+        <script src="../js/ChangeContent.js"></script>
+        <!-- jQuery -->
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script>
+            var Results = "";
+            // var placeholder = document.getElementById('form-panel');
+            // placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
+            $("#myform").submit(function (event) {
+                event.preventDefault(); //prevent default action
+                NProgress.configure({
+                    showSpinner: false
+                });
+                NProgress.start();
+                var request_method = $(this).attr("method"); //get form GET/POST method
+                var form_data = $(this).serialize(); //Encode form elements for submission
+                var post_url = $(this).attr("action") + form_data; //get form action url
+                const session = localStorage.getItem("session")
+                $.ajax({
+                    url: post_url,
+                    type: request_method,
+                    headers: {
+                        "X-SESSION-KEY": session
+                    }
+                }).done(function (response) { //
+                    if (response.error != undefined && response.error == true) {
+                        localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                        window.location = "login.html"
+                    }
+                    console.log(response);
+                    NProgress.done()
+                    drawgraph(response)
+                    NProgress.remove();
+                });
+            });
+
+            function drawgraph(res) {
+                res = JSON.parse(res)
+                console.log(res);
+                
+                for (sub in res) {
+                    if (sub == "TotalStudents" || sub == "TotalPassed")
+                        continue;
+                    else {
+                        var parentdiv = document.getElementById('graphs');
+                        var Heading = document.createElement('h4')
+                        Heading.align = "center";
+                        Heading.style = "font-weight: bold;"
+                        Heading.innerHTML = titleCase(res[sub]["SubName"]) + ` (${sub})`;
+                        var graphdiv = document.createElement('div');
+                        graphdiv.appendChild(Heading);
+                        var graph = document.createElement('div');
+                        graph.id = sub
+                        var values = {
+                            "Passed": 0,
+                            "Failed": 0,
+                            "Absent": 0
+                        }
+                        values["Passed"] = (res[sub]["Status"]["P"] == undefined) ? 0 : res[sub]["Status"]["P"]
+                        values["Failed"] = (res[sub]["Status"]["F"] == undefined) ? 0 : res[sub]["Status"]["F"]
+                        values["Absent"] = (res[sub]["Status"]["A"] == undefined) ? 0 : res[sub]["Status"]["A"]
+                        var totalstudents = values["Passed"] + values["Absent"] + values["Failed"];
+                        console.log(totalstudents);
+                        graphdiv.appendChild(graph)
+                        parentdiv.appendChild(graphdiv);
+                        graphdiv.innerHTML += "<hr/>";
+                        donut(sub, values, totalstudents)
+                    }
+                }
+            }
+        </script>
+
+
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../js/app.js"></script>
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+        <script src="../data/morris-data.js"></script>
+        <script src="../vendor/raphael/raphael.min.js"></script>
+        <script src="../vendor/morrisjs/morris.min.js"></script>
+        <!-- Custom Theme JavaScript -->
+        <script src="../dist/js/sb-admin-2.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+</body>
+
+</html>
