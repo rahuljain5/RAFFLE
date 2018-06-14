@@ -49,7 +49,7 @@ const extract = (usn) => {
                 //                           	console.log("Inside Axios Respone => "+ responseData)
                 responseData["error"] = false;
                 console.log("Set data in Redis");
-                DB.InsertOne('Result_analyzer', 'Results', JSON.parse(responseData))
+                DB.InsertOne('Result_analyzer', 'Results', responseData)
                 .then(function (result) {
                     console.log(`${usn} Result pushed into DB at: ${new Date().toLocaleString()}`);
                 })
