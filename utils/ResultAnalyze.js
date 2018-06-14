@@ -114,7 +114,7 @@ const Results = (year, semester) => {
 
 const toAnalyzedJson = (ResultStatsArray, Count) => {
     var SubjectJson = {};
-    console.log(ResultStatsArray)
+    console.log(JSON.stringify(ResultStatsArray))
     ResultStatsArray.forEach(SubArray => {
         SubArray.forEach(Res => {
             SubjectJson[Res._id.subCode] = {
