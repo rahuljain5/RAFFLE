@@ -61,7 +61,7 @@ const initroutes = (app) => {
 
   app.use('/users', users);
 
-  app.use('/authenticate', function(){
+  app.use('/authenticate', function(req, res) {
     res.send({error: false,
     session: "active"})
   });
