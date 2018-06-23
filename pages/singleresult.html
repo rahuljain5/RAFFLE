@@ -100,7 +100,7 @@
                     data: ""
                 }).done(function (response) {
                     console.log(response);
-                    if (response["error"] = true) {
+                    if (response["error"] == true) {
                         alert(response.userMessage)
                           localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                         window.location = "https://raffle.cf/pages/login.html";
