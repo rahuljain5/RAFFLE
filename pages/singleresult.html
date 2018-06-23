@@ -90,7 +90,22 @@
         <script src="../js/ChangeContent.js"></script>
         <script src="../vendor/jquery/jquery.min.js"></script>
        <script>
-             $("#singleResult").submit(function (event) {
+  $.ajax({
+                    url: "https://raffle-uat.herokuapp.com/authenticate",
+                    type: "POST",
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-SESSION-KEY", session);
+                    },
+                    data: ""
+                }).done(function (response) {
+                    console.log(response);
+                    if (response["error"] = true) {
+                        alert(response.userMessage)
+                          localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                        window.location = "https://raffle.cf/pages/login.html";
+                    }
+  })
+           $("#singleResult").submit(function (event) {
                 event.preventDefault(); //prevent default action
                 NProgress.configure({
                     showSpinner: false
