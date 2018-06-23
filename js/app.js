@@ -8,7 +8,7 @@ function authenticate() {
     data: ""
   }).done(function (response) {
     console.log(response);
-    if (response["error"] == true) {
+    if (response["error"] === true) {
       alert(response.message)
       localStorage.removeItem("session"); //Clear the Invalid Key if exist 
       window.location = "login.html";
