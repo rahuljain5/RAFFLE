@@ -47,7 +47,7 @@
             <!-- /.navbar-static-side -->
         </nav>
         <div id="page-wrapper" style="background-image: url('../public/images/bg2.jpeg');  display: flex; align-items: center; justify-content: center;">
-            <div class="row" >
+            <div class="row">
                 <div class="col-lg-12">
                     <br>
                 </div>
@@ -291,7 +291,24 @@
 
     </div>
     <!-- /#wrapper -->
-
+    <script>
+        const session = localStorage.getItem("session")
+        $.ajax({
+            url: "https://raffle-uat.herokuapp.com/authenticate",
+            type: "GET",
+            beforeSend: function (request) {
+                request.setRequestHeader("X-SESSION-KEY", session);
+            },
+            data: ""
+        }).done(function (response) {
+            console.log(response);
+            if (response["error"] == true) {
+                alert(response.message)
+                localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                window.location = "https://raffle.cf/pages/login.html";
+            }
+        });
+    </script>
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
 

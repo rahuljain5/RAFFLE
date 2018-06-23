@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link href = "https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"  rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
 
     <title>Class Result &middot; RAFFLE</title>
 
@@ -30,10 +30,10 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-<script>
-    if (localStorage.getItem("session") === null)
-        window.location = "login.html"
-</script>
+    <script>
+        if (localStorage.getItem("session") === null)
+            window.location = "login.html"
+    </script>
 </head>
 
 <body>
@@ -51,98 +51,117 @@
             <br/>
             <div class="container-fluid">
                 <div class="row">
-                        <div class="col-lg-2"></div>
-                    <div class="col-lg-8">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Find Class Result
-                                </div>
-                                <div class="panel-body">
-                        <form role="form" action = "https://raffle-uat.herokuapp.com/ClassResult" method = "GET" id="myform">
-                            <div class="form-group">
-                                <label>Enter the First 7 digits of the USN here:</label>
-                                <input class="form-control" id="baseusn" name="baseusn" placeholder="Example: 1ox15cs" pattern = "[1-4][a-z A-Z]{2}[0-9]{2}[a-z A-Z]{2}" required >
-                            </div>
-                            <button type="submit" class="btn btn-success">Submit</button>
-                            <button type="reset" class="btn btn-default">Reset</button>
-                        </form>
-                    </div>
-                    </div>
-                    <!-- /.col-lg-12 -->
                     <div class="col-lg-2"></div>
-                </div>
+                    <div class="col-lg-8">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Find Class Result
+                            </div>
+                            <div class="panel-body">
+                                <form role="form" action="https://raffle-uat.herokuapp.com/ClassResult" method="GET" id="myform">
+                                    <div class="form-group">
+                                        <label>Enter the First 7 digits of the USN here:</label>
+                                        <input class="form-control" id="baseusn" name="baseusn" placeholder="Example: 1ox15cs" pattern="[1-4][a-z A-Z]{2}[0-9]{2}[a-z A-Z]{2}"
+                                            required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="reset" class="btn btn-default">Reset</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                        <div class="col-lg-2"></div>
+                    </div>
 
-                <!-- /.row -->
-            </div>
-            <h4 align="center">Result Source: <a href="http://results.vtu.ac.in"> results.vtu.ac.in </a></h4>
+                    <!-- /.row -->
+                </div>
+                <h4 align="center">Result Source:
+                    <a href="http://results.vtu.ac.in"> results.vtu.ac.in </a>
+                </h4>
                 <div class="row">
                     <div class="panel panel-default" id="form-panel" style="overflow: auto;">
 
                     </div>
                 </div>
-            <!-- /.container-fluid -->
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /#page-wrapper -->
+
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /#wrapper -->
+        <script src="../js/ChangeContent.js"></script>
+        <!-- jQuery -->
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script>
+            const session = localStorage.getItem("session")
+            $.ajax({
+                url: "https://raffle-uat.herokuapp.com/authenticate",
+                type: "GET",
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-SESSION-KEY", session);
+                },
+                data: ""
+            }).done(function (response) {
+                console.log(response);
+                if (response["error"] == true) {
+                    alert(response.message);
+                    localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                    window.location = "https://raffle.cf/pages/login.html";
+                }
+            });
+            $("#myform").submit(function (event) {
+                var Results = "";
+                var placeholder = document.getElementById('form-panel');
+                placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
+                NProgress.configure({
+                    showSpinner: false
+                });
+                NProgress.start();
+                event.preventDefault(); //prevent default action
+                var post_url = $(this).attr("action"); //get form action url
+                var request_method = $(this).attr("method"); //get form GET/POST method
+                var form_data = $(this).serialize(); //Encode form elements for submission
+                $.ajax({
+                    url: post_url,
+                    type: request_method,
+                    beforeSend: function (request) {
+                        request.setRequestHeader("X-SESSION-KEY", session);
+                    },
+                    data: form_data
+                }).done(function (response) { //
+                    NProgress.done();
+                    console.log(response);
 
-    </div>
-    <!-- /#wrapper -->
-    <script src="../js/ChangeContent.js"></script>
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-   <script>
-    $("#myform").submit(function(event){
-    var Results = "";
-    var placeholder = document.getElementById('form-panel');
-    placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
-    NProgress.configure({ showSpinner: false });
-    NProgress.start();
-    event.preventDefault(); //prevent default action
-    var post_url = $(this).attr("action"); //get form action url
-    var request_method = $(this).attr("method"); //get form GET/POST method
-    var form_data = $(this).serialize(); //Encode form elements for submission
-    const session = localStorage.getItem("session")
-    $.ajax({
-        url : post_url,
-        type: request_method,
-        beforeSend: function (request) {
-            request.setRequestHeader("X-SESSION-KEY", session);
-        },
-        data : form_data
-    }).done(function(response){ //
-        NProgress.done();
-        console.log(response);
-        
-        if(response.error != undefined && response.error==true){
-            localStorage.removeItem("session");//Clear the Invalid Key if exist
-            window.location="login.html"
-        }
-        // $("#server-results").html(response);
-        response.forEach(ResultJson => {
-            console.log(ResultJson);
-            if(ResultJson["error"]!=true)
-            placeholder.innerHTML += changeContent(ResultJson)
-            else
-            placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
-             NProgress.remove();
-        });
+                    if (response.error != undefined && response.error == true) {
+                        localStorage.removeItem("session"); //Clear the Invalid Key if exist
+                        window.location = "login.html"
+                    }
+                    // $("#server-results").html(response);
+                    response.forEach(ResultJson => {
+                        console.log(ResultJson);
+                        if (ResultJson["error"] != true)
+                            placeholder.innerHTML += changeContent(ResultJson)
+                        else
+                            placeholder.innerHTML += changeContent(ResultJson) + "<hr/>"
+                        NProgress.remove();
+                    });
 
-    });
-});
-
-   </script>
+                });
+            });
+        </script>
 
 
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
-    <script src="../js/app.js"></script>
+        <!-- Custom Theme JavaScript -->
+        <script src="../dist/js/sb-admin-2.js"></script>
+        <script src="../js/app.js"></script>
 
 </body>
 

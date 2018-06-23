@@ -95,6 +95,22 @@
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script>
             var Results = "";
+            const session = localStorage.getItem("session")
+            $.ajax({
+                url: "https://raffle-uat.herokuapp.com/authenticate",
+                type: "GET",
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-SESSION-KEY", session);
+                },
+                data: ""
+            }).done(function (response) {
+                console.log(response);
+                if (response["error"] == true) {
+                    alert(response.message)
+                    localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                    window.location = "https://raffle.cf/pages/login.html";
+                }
+            });
             // var placeholder = document.getElementById('form-panel');
             // placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
             $("#myform").submit(function (event) {
@@ -129,7 +145,7 @@
             function drawgraph(res) {
                 res = JSON.parse(res)
                 console.log(res);
-                
+
                 for (sub in res) {
                     if (sub == "TotalStudents" || sub == "TotalPassed")
                         continue;

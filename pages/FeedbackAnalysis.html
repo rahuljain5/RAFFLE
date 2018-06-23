@@ -96,6 +96,21 @@
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script>
             const session = localStorage.getItem("session")
+            $.ajax({
+                url: "https://raffle-uat.herokuapp.com/authenticate",
+                type: "GET",
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-SESSION-KEY", session);
+                },
+                data: ""
+            }).done(function (response) {
+                console.log(response);
+                if (response["error"] == true) {
+                    alert(response.message)
+                    localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                    window.location = "https://raffle.cf/pages/login.html";
+                }
+            });
             $("#myform").submit(function (event) {
                 NProgress.configure({
                     showSpinner: false
