@@ -115,6 +115,7 @@
                     }
                 }).done(function (response) { //
                     if (response.error != undefined && response.error == true) {
+                        alert(response.userMessage);
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                         window.location = "login.html"
                     }
