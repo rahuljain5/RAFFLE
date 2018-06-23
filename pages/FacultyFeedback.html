@@ -196,7 +196,6 @@
             $.ajax(settings).done(function (response) { //
                 NProgress.done();
                 if (response.error != undefined && response.error == true) {
-                     if (response.error != undefined && response.error == true) {
                         alert(response.userMessage);
                         if(response.errorCode == "ExpSession"){
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
