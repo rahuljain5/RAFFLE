@@ -146,14 +146,14 @@ router.post('/Analyze', function (req, res) {
                             var fbjson = FeedbackAnalyze.toFeedbackJson(values, count);
                             res.send(fbjson);
                         })
+                }).catch(err =>{
                     console.error(err);    
                     res.send({
-                            error: true,
-                            message: err,
-                            userMessage: "Couldn't get any Stats at the moment."
-                        });
-                        
-                    })
+                        error: true,
+                        message: err,
+                        userMessage: "Couldn't get any Stats at the moment, Maybe the Classroom or batch doesn't exist."
+                    });
+                })                   
 })
 
 module.exports = router;
