@@ -126,10 +126,10 @@ router.post('/AddFeedback', function (req, res) {
                 let failresponse = {
                     error: true,
                     errorMessage: err,
-                    userMessage: "An Error Occoured recording the Feedback"
+                    userMessage: "Seems Like the feedback was already recorded for this USN."
                 }
                 console.error(err);
-                console.log(failresponse)
+                res.send(failresponse);
             })
     } else {
         res.send({
