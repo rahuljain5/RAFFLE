@@ -70,7 +70,7 @@ const OverallResults = (year, semester, cb) => {
     ]
     DB.Aggregate('Result_analyzer', 'Results', DBQuery)
         .then(function (result) {
-            console.log(result);
+            // console.log(result);
             cb(result[0]["total"])
         })
         .catch(err => {
@@ -98,10 +98,7 @@ const getTotalResultsCount = (year, semester, cb) => {
         .then(function (result) {
             // result["_id"] = classroom + batch;
             OverallResults(year, semester, function (totalpassed) {
-            console.log(result);
-            
                 cb(result, totalpassed);
-
             });
         })
         .catch(err => {
@@ -116,7 +113,7 @@ const Results = (year, semester) => {
 
 const toAnalyzedJson = (ResultStatsArray, Count) => {
     var SubjectJson = {};
-    console.log(JSON.stringify(ResultStatsArray))
+    // console.log(JSON.stringify(ResultStatsArray))
     ResultStatsArray.forEach(SubArray => {
         SubArray.forEach(Res => {
             SubjectJson[Res._id.subCode] = {
@@ -134,7 +131,7 @@ const toAnalyzedJson = (ResultStatsArray, Count) => {
             var a = Res._id.subCode
             var x = Res._id.Result;
             // console.log(JSON.stringify(SubjectJson))
-            console.log(a+x+SubjectJson[a]["Status"])
+            // console.log(a+x+SubjectJson[a]["Status"])
             SubjectJson[a]["Status"][x].push(Res.total)
         })
     });
@@ -145,7 +142,7 @@ const toAnalyzedJson = (ResultStatsArray, Count) => {
         }
     }
     SubjectJson["TotalStudents"] = Count["total"];
-    // console.log(JSON.stringify(SubjectJson));
+    console.log(JSON.stringify(SubjectJson));
     return SubjectJson;
 }
 
