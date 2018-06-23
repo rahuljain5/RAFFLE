@@ -196,8 +196,8 @@
             $.ajax(settings).done(function (response) { //
                 NProgress.done();
                 if (response.error != undefined && response.error == true) {
+                    if(response.errorCode == "ExpSession"){
                         alert(response.userMessage);
-                        if(response.errorCode == "ExpSession"){
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                         window.location = "login.html"
                         }
@@ -205,9 +205,9 @@
                 NProgress.remove();
                 if (response["status"] == "success") {
                     alert("Feedback was recorded successfully!")
-                    window.location = "http://raffle.cf/pages/index.html"
+                    window.location = window.history.back();
                 } else {
-                    alert("An Error occoured while we tried register the feedback!")
+                    alert(response.userMessage)
                 }
             })
         }
