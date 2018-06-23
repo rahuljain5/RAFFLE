@@ -72,7 +72,7 @@ const responses = {
         "errorCode" : "ExpSession",
         "error": true,
         "status": "FAILURE",
-        "message": "Session Expired"
+        "message": "Session Expired/ Does not Exist"
     },
     "E13": {
         "error": true,
