@@ -18,7 +18,7 @@ module.exports = function (req, res, next) {
                     next();
                 }
                 else {
-                    console.error("Erorr:" + err);
+                    console.error("Error:" + err);
                     res.send(response.E12);
                 }
             });

@@ -51,6 +51,7 @@ const initmiddleware = (app) => {
   app.use('/Result', sessionAuth);
   app.use('/Feedback', sessionAuth);
   app.use('/CSVResult', sessionAuth);
+  app.use('/authenticate', sessionAuth);
 }
 
 const initroutes = (app) => {
@@ -59,6 +60,11 @@ const initroutes = (app) => {
   });
 
   app.use('/users', users);
+
+  app.use('/authenticate', function(){
+    res.send({error: false,
+    session: "active"})
+  });
 
   app.use('/ClassResult', ClassResult);
 
