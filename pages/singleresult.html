@@ -93,7 +93,7 @@
       const session = localStorage.getItem("session")
         $.ajax({
                     url: "https://raffle-uat.herokuapp.com/authenticate",
-                    type: "POST",
+                    type: "GET",
                     beforeSend: function (request) {
                         request.setRequestHeader("X-SESSION-KEY", session);
                     },
