@@ -131,7 +131,8 @@ const toAnalyzedJson = (ResultStatsArray, Count) => {
         SubArray.forEach(Res => {
             var a = Res._id.subCode
             var x = Res._id.Result;
-            console.log(a+x+SubjectJson[a]["Status"][x])
+            console.log(JSON.stringify(SubjectJson))
+            console.log(x+SubjectJson[a]["Status"])
             SubjectJson[a]["Status"][x].push(Res.total)
         })
     });
