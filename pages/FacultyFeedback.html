@@ -196,8 +196,12 @@
             $.ajax(settings).done(function (response) { //
                 NProgress.done();
                 if (response.error != undefined && response.error == true) {
-                    localStorage.removeItem("session"); //Clear the Invalid Key if exist 
-                    window.location = "login.html"
+                     if (response.error != undefined && response.error == true) {
+                        alert(response.userMessage);
+                        if(response.errorCode == "ExpSession"){
+                        localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                        window.location = "login.html"
+                        }
                 }
                 NProgress.remove();
                 if (response["status"] == "success") {
