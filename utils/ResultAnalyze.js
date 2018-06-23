@@ -98,8 +98,10 @@ const getTotalResultsCount = (year, semester, cb) => {
         .then(function (result) {
             // result["_id"] = classroom + batch;
             OverallResults(year, semester, function (totalpassed) {
+            console.log(result);
+            
                 cb(result, totalpassed);
-                
+
             });
         })
         .catch(err => {
@@ -131,8 +133,8 @@ const toAnalyzedJson = (ResultStatsArray, Count) => {
         SubArray.forEach(Res => {
             var a = Res._id.subCode
             var x = Res._id.Result;
-            console.log(JSON.stringify(SubjectJson))
-            console.log(x+SubjectJson[a]["Status"])
+            // console.log(JSON.stringify(SubjectJson))
+            console.log(a+x+SubjectJson[a]["Status"])
             SubjectJson[a]["Status"][x].push(Res.total)
         })
     });
@@ -143,7 +145,7 @@ const toAnalyzedJson = (ResultStatsArray, Count) => {
         }
     }
     SubjectJson["TotalStudents"] = Count["total"];
-    console.log(JSON.stringify(SubjectJson));
+    // console.log(JSON.stringify(SubjectJson));
     return SubjectJson;
 }
 
