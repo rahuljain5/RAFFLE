@@ -116,8 +116,10 @@
                 }).done(function (response) {
                     if (response.error != undefined && response.error == true) {
                         alert(response.userMessage);
+                        if(response.errorCode == "ExpSession"){
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                         window.location = "login.html"
+                        }
                     }
                     NProgress.done();
                     console.log(response);
