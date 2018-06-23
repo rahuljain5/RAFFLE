@@ -1,14 +1,31 @@
-$("#logout").click(function() {
+function authenticate() {
+  $.ajax({
+    url: "https://raffle-uat.herokuapp.com/authenticate",
+    type: "GET",
+    beforeSend: function (request) {
+      request.setRequestHeader("X-SESSION-KEY", session);
+    },
+    data: ""
+  }).done(function (response) {
+    console.log(response);
+    if (response["error"] == true) {
+      alert(response.message)
+      localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+      window.location = "login.html";
+    }
+  });
+}
+$("#logout").click(function () {
   console.log("Inside Logout  Handler");
   NProgress.configure({
     showSpinner: false
   });
   NProgress.start();
   const session = localStorage.getItem("session");
-  const url = "https://raffle-promise-test.herokuapp.com/users/logout"
+  const url = "https://raffle-uat.herokuapp.com/users/logout"
   $.ajax({
     url: url,
-    beforeSend: function(request) {
+    beforeSend: function (request) {
       request.setRequestHeader("X-SESSION-KEY", session);
     },
     type: "GET",
@@ -24,13 +41,13 @@ $("#logout").click(function() {
 function getFormData($form) {
   var unindexed_array = $form.serializeArray();
   var indexed_array = {};
-  $.map(unindexed_array, function(n, i) {
+  $.map(unindexed_array, function (n, i) {
     indexed_array[n['name']] = n['value'];
   });
 
   return indexed_array;
 }
-$("#loginForm").submit(function(event) {
+$("#loginForm").submit(function (event) {
   event.preventDefault(); //prevent default action
   console.log("In This Function")
   NProgress.configure({
@@ -52,7 +69,7 @@ $("#loginForm").submit(function(event) {
     type: request_method,
     data: form_data,
     dataType: "json"
-  }).done(function(response) { //
+  }).done(function (response) { //
     console.log("LOGIN -> RESPONSE" + JSON.stringify(response))
     NProgress.done();
     if (response.error) {
@@ -69,7 +86,7 @@ $("#loginForm").submit(function(event) {
   });
 });
 
-$("#registerForm").submit(function(event) {
+$("#registerForm").submit(function (event) {
   event.preventDefault(); //prevent default action
   console.log("In This Function")
   NProgress.configure({
@@ -91,7 +108,7 @@ $("#registerForm").submit(function(event) {
       type: request_method,
       data: form_data,
       dataType: "json"
-    }).done(function(response) { //
+    }).done(function (response) { //
       console.log("Register -> RESPONSE" + JSON.stringify(response))
       NProgress.done();
       if (response.error) {
@@ -112,7 +129,7 @@ $("#registerForm").submit(function(event) {
   NProgress.remove();
 });
 
-$("#forgotpasswordform").submit(function(event) {
+$("#forgotpasswordform").submit(function (event) {
   event.preventDefault(); //prevent default action
   console.log("In This Function")
   NProgress.configure({
@@ -128,7 +145,7 @@ $("#forgotpasswordform").submit(function(event) {
       type: request_method,
       data: form_data,
       dataType: "json"
-    }).done(function(response) { //
+    }).done(function (response) { //
       console.log("Register -> RESPONSE" + JSON.stringify(response))
       NProgress.done();
       if (response.error) {
@@ -139,7 +156,7 @@ $("#forgotpasswordform").submit(function(event) {
       } else {
         $("#forgotpasswordError").empty()
         $("#forgotpasswordError").append("<p>" + response.message + "</p>")
-        setTimeout(function() {
+        setTimeout(function () {
           window.location = "login.html"
         }, 5000)
       }
@@ -151,7 +168,7 @@ $("#forgotpasswordform").submit(function(event) {
   NProgress.remove();
 });
 
-$("#initforgotpasswordform").submit(function(event) {
+$("#initforgotpasswordform").submit(function (event) {
   event.preventDefault(); //prevent default action
   console.log("In This Function")
   NProgress.configure({
@@ -167,7 +184,7 @@ $("#initforgotpasswordform").submit(function(event) {
       type: request_method,
       data: form_data,
       dataType: "json"
-    }).done(function(response) { //
+    }).done(function (response) { //
       NProgress.done();
       console.log("Register -> RESPONSE" + JSON.stringify(response))
       if (response.error) {
@@ -178,7 +195,7 @@ $("#initforgotpasswordform").submit(function(event) {
       } else {
         $("#initforgotpasswordError").empty()
         $("#initforgotpasswordError").append("<p>" + response.message + "</p>")
-        setTimeout(function() {
+        setTimeout(function () {
           window.location = "forgotpassword.html"
         }, 5000)
       }

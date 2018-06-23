@@ -291,23 +291,10 @@
 
     </div>
     <!-- /#wrapper -->
+    <script src="../js/app.js"></script>
     <script>
         const session = localStorage.getItem("session")
-        $.ajax({
-            url: "https://raffle-uat.herokuapp.com/authenticate",
-            type: "GET",
-            beforeSend: function (request) {
-                request.setRequestHeader("X-SESSION-KEY", session);
-            },
-            data: ""
-        }).done(function (response) {
-            console.log(response);
-            if (response["error"] == true) {
-                alert(response.message)
-                localStorage.removeItem("session"); //Clear the Invalid Key if exist 
-                window.location = "https://raffle.cf/pages/login.html";
-            }
-        });
+        authenticate();
     </script>
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
@@ -326,7 +313,7 @@
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
-    <script src="../js/app.js"></script>
+    
 </body>
 
 </html>
