@@ -69,6 +69,7 @@ const responses = {
         "message": "LOGIN TO PERFORM THIS ACTION"
     },
     "E12": {
+        "errorCode" : "ExpSession",
         "error": true,
         "status": "FAILURE",
         "message": "Session Expired"

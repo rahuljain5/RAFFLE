@@ -151,7 +151,7 @@ router.post('/Analyze', function (req, res) {
                     res.send({
                         error: true,
                         message: err,
-                        userMessage: "Couldn't get any Stats at the moment, Maybe the Classroom or batch doesn't exist."
+                        userMessage: "Couldn't get any Stats at the moment, Maybe the Classroom or batch doesn't"
                     });
                 })                   
 })
