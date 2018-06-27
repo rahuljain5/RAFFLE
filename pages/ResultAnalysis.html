@@ -93,8 +93,12 @@
         <script src="../js/ChangeContent.js"></script>
         <!-- jQuery -->
         <script src="../vendor/jquery/jquery.min.js"></script>
+
+        <script src="../js/app.js"></script>
         <script>
             var Results = "";
+            const session = localStorage.getItem("session")
+            authenticate();
             // var placeholder = document.getElementById('form-panel');
             // placeholder.innerHTML = "<div class='panel-heading'>Result(s)</div>"
             $("#myform").submit(function (event) {
@@ -115,6 +119,7 @@
                     }
                 }).done(function (response) { //
                     if (response.error != undefined && response.error == true) {
+                        alert(response.userMessage);
                         localStorage.removeItem("session"); //Clear the Invalid Key if exist 
                         window.location = "login.html"
                     }
@@ -128,7 +133,7 @@
             function drawgraph(res) {
                 res = JSON.parse(res)
                 console.log(res);
-                
+
                 for (sub in res) {
                     if (sub == "TotalStudents" || sub == "TotalPassed")
                         continue;
@@ -165,7 +170,6 @@
 
         <!-- Bootstrap Core JavaScript -->
         <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-        <script src="../js/app.js"></script>
         <!-- Metis Menu Plugin JavaScript -->
         <script src="../vendor/metisMenu/metisMenu.min.js"></script>
         <script src="../data/morris-data.js"></script>

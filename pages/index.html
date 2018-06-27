@@ -47,7 +47,7 @@
             <!-- /.navbar-static-side -->
         </nav>
         <div id="page-wrapper" style="background-image: url('../public/images/bg2.jpeg');  display: flex; align-items: center; justify-content: center;">
-            <div class="row" >
+            <div class="row">
                 <div class="col-lg-12">
                     <br>
                 </div>
@@ -291,7 +291,11 @@
 
     </div>
     <!-- /#wrapper -->
-
+    <script src="../js/app.js"></script>
+    <script>
+        const session = localStorage.getItem("session")
+        authenticate();
+    </script>
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
 
@@ -309,7 +313,7 @@
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
-    <script src="../js/app.js"></script>
+    
 </body>
 
 </html>

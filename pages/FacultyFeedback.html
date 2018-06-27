@@ -196,15 +196,18 @@
             $.ajax(settings).done(function (response) { //
                 NProgress.done();
                 if (response.error != undefined && response.error == true) {
-                    localStorage.removeItem("session"); //Clear the Invalid Key if exist 
-                    window.location = "login.html"
+                    if(response.errorCode == "ExpSession"){
+                        alert(response.userMessage);
+                        localStorage.removeItem("session"); //Clear the Invalid Key if exist 
+                        window.location = "login.html"
+                        }
                 }
                 NProgress.remove();
                 if (response["status"] == "success") {
                     alert("Feedback was recorded successfully!")
-                    window.location = "http://raffle.cf/pages/index.html"
+                    window.location = "https://raffle.cf"
                 } else {
-                    alert("An Error occoured while we tried register the feedback!")
+                    alert(response.userMessage)
                 }
             })
         }
