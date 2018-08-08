@@ -48,7 +48,7 @@ module.exports = {
     mailer_password: process.env.MAILER_PASSWORD,
     totpLable: "RAFFLE"
   },
-  result_url: 'http://results.vtu.ac.in/vitaviresultnoncbcs18/resultpage.php',
+  result_url: 'http://results.vtu.ac.in/vitaviresultcbcs2018/resultpage.php',
 
   result_ttl : 14*24*60*60// 14 Days
 
