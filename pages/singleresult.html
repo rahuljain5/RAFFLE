@@ -94,7 +94,7 @@
         <script src="../js/app.js"></script>
         <script>
             const session = localStorage.getItem("session")
-            authenticate();
+            authenticate(session);
             $("#singleResult").submit(function (event) {
                 event.preventDefault(); //prevent default action
                 NProgress.configure({

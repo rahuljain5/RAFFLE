@@ -1,9 +1,9 @@
-function authenticate() {
+function authenticate(sessionId) {
   $.ajax({
     url: "https://raffle-uat.herokuapp.com/authenticate",
     type: "GET",
     beforeSend: function (request) {
-      request.setRequestHeader("X-SESSION-KEY", session);
+      request.setRequestHeader("X-SESSION-KEY", sessionId);
     },
     data: ""
   }).done(function (response) {
