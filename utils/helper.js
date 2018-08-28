@@ -121,3 +121,4 @@ exports.getuuid = getuuid;
 exports.clean = cleanrecord;
 exports.validate = InputValidator;
 exports.getTokenId = getTokenId;
+exports.options = options
