@@ -13,6 +13,7 @@ const {
 } = jsdom;
 
 const extract = (usn) => {
+  var tokenId;
   return new Promise((resolve, reject) => {
     redis.get(usn, (err, cachedData) => {
       // console.log("USN: " + usn + " Cached Data: " + cachedData);
@@ -20,9 +21,15 @@ const extract = (usn) => {
         console.log("Resolve data from redis");
         resolve(JSON.parse(cachedData));
       } else {
+        helper.gettokenId()
+        .then(function(token){ tokenId = token})
+        .catch (err => {
+            console.error("Token Could not be Found.");
+        });
         console.log("Check Result for " + usn + " at URL:" + config.result_url);
         axios.post(config.result_url, qs.stringify({
-            lns: usn
+            lns: usn,
+            token: tokenId
           }))
           .then(function(response) {
             var str = S(response.data);
