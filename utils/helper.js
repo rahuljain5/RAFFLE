@@ -35,7 +35,7 @@ const InputValidator = (input, regex, length) => {
 }
 
 const getTokenId = () =>{
-return new promise(resolve, reject) => {
+return new Promise(resolve, reject) => {
   rp(options)
   .then(($) => {
     resolve($('input[id="tokenid"]').val());
