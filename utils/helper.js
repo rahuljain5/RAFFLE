@@ -2,9 +2,21 @@ var S = require('string');
 var fs = require('fs');
 var padder = require('zpad');
 const uuidv4 = require("uuid/v4");
+const rp = require('request-promise');
+const cheerio = require('cheerio');
+var config = require('../config/config.js');
+
+const options = {
+  uri: config.result_url,
+  transform: function (body) {
+    return cheerio.load(body);
+  }
+};
+
 const getuuid = () => {
   return uuidv4();
 }
+
 
 const cleanrecord = (rec, cleankeys) => {
   for (var i of cleankeys)
@@ -20,6 +32,19 @@ const InputValidator = (input, regex, length) => {
   if (regex != null && !regex.test(input))
     return -2;
   return 0;
+}
+
+const getTokenId = ()
+{
+return new promise(resolve, reject) => {
+  rp(options)
+  .then(($) => {
+    resolve($('input[id="tokenid"]').val());
+  })
+  .catch((err) => {
+    reject(err);
+  });
+  }
 }
 
 const ResultJsonParser = (tables, sems) => {
