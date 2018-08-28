@@ -35,7 +35,7 @@ const InputValidator = (input, regex, length) => {
 }
 
 const getTokenId = () =>{
-return new Promise(resolve, reject) => {
+return new Promise((resolve, reject) => {
   rp(options)
   .then(($) => {
     resolve($('input[id="tokenid"]').val());
@@ -43,7 +43,7 @@ return new Promise(resolve, reject) => {
   .catch((err) => {
     reject(err);
   });
-  }
+  });
 }
 
 const ResultJsonParser = (tables, sems) => {
