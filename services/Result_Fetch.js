@@ -21,7 +21,7 @@ const extract = (usn) => {
         console.log("Resolve data from redis");
         resolve(JSON.parse(cachedData));
       } else {
-        helper.gettokenId()
+        Helper.gettokenId()
         .then(function(token){ tokenId = token})
         .catch (err => {
             console.error("Token Could not be Found.");
