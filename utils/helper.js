@@ -34,8 +34,7 @@ const InputValidator = (input, regex, length) => {
   return 0;
 }
 
-const getTokenId = ()
-{
+const getTokenId = () =>{
 return new promise(resolve, reject) => {
   rp(options)
   .then(($) => {
