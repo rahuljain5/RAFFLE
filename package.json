@@ -45,6 +45,9 @@
     "speakeasy": "^2.0.0",
     "string": "^3.3.3",
     "uuid": "^3.2.1",
-    "zpad": "^0.5.0"
+    "zpad": "^0.5.0",
+    "request-promise": "latest",
+    "request": "latest",
+    "cheerio": "1.0.0-rc.2"
   }
 }
