@@ -120,3 +120,4 @@ exports.RangeUsnGenerator = RangeUsnGenerator;
 exports.getuuid = getuuid;
 exports.clean = cleanrecord;
 exports.validate = InputValidator;
+exports.getTokenId = getTokenId;
