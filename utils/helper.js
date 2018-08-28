@@ -6,7 +6,7 @@ const rp = require('request-promise');
 const cheerio = require('cheerio');
 var config = require('../config/config.js');
 
-const options = {
+const Options = {
   uri: config.result_url,
   transform: function (body) {
     return cheerio.load(body);
@@ -121,4 +121,4 @@ exports.getuuid = getuuid;
 exports.clean = cleanrecord;
 exports.validate = InputValidator;
 exports.getTokenId = getTokenId;
-exports.options = options
+module.exports.Options = Options;
