@@ -7,7 +7,7 @@ const cheerio = require('cheerio');
 var config = require('../config/config.js');
 
 const options = {
-  uri: config.result_url,
+  uri: `http://results.vtu.ac.in/vitaviresultcbcs2018/index.php`,
   transform: function (body) {
     return cheerio.load(body);
   }
