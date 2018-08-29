@@ -89,13 +89,13 @@ const extract = (usn) => {
                   userMessage: "Unable to Process the Request"
                 });
               });
-          }
+          })
+          .catch(err => {
+            console.error("Token Could not be Found." + err);
+          });
+      }
     })
   });
-})
-          .catch (err => {
-  console.error("Token Could not be Found." + err);
-});
 }
 
 const scrape = (USNs) => {
