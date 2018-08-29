@@ -34,7 +34,7 @@ const InputValidator = (input, regex, length) => {
   return 0;
 }
 
-const getTokenId = () =>{
+const getToken = () => {
 return new Promise((resolve, reject) => {
   rp(options)
   .then(($) => {
@@ -120,5 +120,5 @@ exports.RangeUsnGenerator = RangeUsnGenerator;
 exports.getuuid = getuuid;
 exports.clean = cleanrecord;
 exports.validate = InputValidator;
-exports.getTokenId = getTokenId;
-module.exports.Options = Options;
+exports.getToken = getToken;
+
