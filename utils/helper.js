@@ -6,7 +6,7 @@ const rp = require('request-promise');
 const cheerio = require('cheerio');
 var config = require('../config/config.js');
 
-const Options = {
+const options = {
   uri: config.result_url,
   transform: function (body) {
     return cheerio.load(body);
