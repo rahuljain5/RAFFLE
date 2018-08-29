@@ -22,9 +22,12 @@ const extract = (usn) => {
         resolve(JSON.parse(cachedData));
       } else {
         Helper.getToken()
-          .then(function(token){ tokenId = token})
+          .then(function(token)
+                { 
+          tokenId = token
+          })
           .catch (err => {
-            console.error("Token Could not be Found.");
+            console.error("Token Could not be Found."+err);
         });
         console.log("Check Result for " + usn + " at URL:" + config.result_url);
         axios.post(config.result_url, qs.stringify({
