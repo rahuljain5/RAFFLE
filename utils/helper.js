@@ -38,6 +38,7 @@ const getToken = () => {
 return new Promise((resolve, reject) => {
   rp(options)
   .then(($) => {
+    console.log($('input[id="tokenid"]').val());
     resolve($('input[id="tokenid"]').val());
   })
   .catch((err) => {
