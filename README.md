@@ -1,3 +1,3 @@
-# auto-result-analyzer-and-faculty-feedback-sys
+# Auto-Result-Analyzer-and-Faculty-Feedback-system
 An Automated Result analyzer and Faculty feedback system with Visualizations
 
